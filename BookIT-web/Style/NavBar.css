@@ -1,0 +1,92 @@
+﻿#NavBar {
+    background-color: var(--color-light-primary);
+    color: var(--color-light-text);
+    /*setting height and witdh*/
+    height: 5rem;
+    width: 100%;
+    /*Fixing position top*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    /*setting z-index*/
+    z-index: 1;
+    /*setting shadow*/
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    /*setting flexbox*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*setting padding*/
+    padding: 0 1rem;
+    object-fit: contain;
+}
+/*Navbar childs eaqual space*/
+#NavBar > * {
+    flex: 1;
+}
+
+
+
+#LogoContainer {
+    /*fit height to parent*/
+    height: 100%;
+    /*float left*/
+    float: left;
+    /*content left*/
+    text-align: left;
+    /*vertical center*/
+    display: flex;
+    align-items: center;
+    /*remove padding*/
+    padding: 0;
+    /*remove margin*/
+    margin: 0;
+}
+
+#MainLinksContainer {
+    /*fit height to parent*/
+    height: 100%;
+    min-width: fit-content;
+    position: relative;
+    /*Child elements inline flex*/
+}
+#MainLinksContainer ul {
+    /*fit height to parent*/
+    height: 100%;
+    max-width: fit-content;
+    /*Child elements inline flex*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*remove list style*/
+    list-style: none;
+    /*remove padding*/
+    padding: 0;
+    /*remove margin*/
+    margin: 0;
+}
+#MainLinksContainer ul li {
+    /*fit height to parent*/
+    height: 100%;
+    /*Child elements inline flex*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*remove padding*/
+    padding: 0;
+    /*remove margin*/
+    margin: 0;
+}
+
+#DropdownContainer {
+    /*fit height to parent*/
+    height: 100%;
+    /*float right*/
+    float: right;
+    /*content right*/
+    text-align: right;
+    /*vertical center*/
+    display: flex;
+    align-items: center;
+}

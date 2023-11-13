@@ -1,0 +1,32 @@
+:root {
+    /*color constants*/
+    /*light theme*/
+    --color-light-primary: #78C1F3;
+    --color-light-secondary: #9BE8D8;
+    --color-light-tertiary: #E2F6CA;
+    --color-light-quaternary: #F8FDCF;
+    --color-light-text: #302f2f;
+    /*Dark theme*/
+    --color-dark-primary: #352F44;
+    --color-dark-secondary: #5C5470;
+    --color-dark-tertiary: #B9B4C7;
+    --color-dark-quaternary: #FAF0E6;
+    --color-dark-text: #d0d0d0;
+
+    /*font constants*/
+    --font-primary: 'Roboto', sans-serif;
+    --font-secondary: 'Roboto Slab', serif;
+    /*...*/
+}
+
+body{
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    color: var(--color-light-text);
+    background-color: var(--color-light-secondary);
+}
+
+.dark-Mode{
+color: var(--color-dark-text);
+    background-color: var(--color-dark-secondary);
+}

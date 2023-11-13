@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "BookIT-web", "BookIT-web.phpproj", "{AD475A81-C285-4F11-94C8-3855F3B93E62}"
+Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "BookIT-web", "BookIT-web\BookIT-web.phpproj", "{AD475A81-C285-4F11-94C8-3855F3B93E62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

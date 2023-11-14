@@ -116,7 +116,6 @@
                     
                     // Logikk for lagring
                     // TODO: Send data inn i DB
-                    // TODO: rediriger til hovedside
 
                     /*
                     // Create connection
@@ -126,6 +125,11 @@
                     if ($conn->connect_error) {
                         exit("Connection failed: " . $conn->connect_error);
                     }*/
+                    
+
+                    // Rediriger til hovedside
+                    header("Location: ../Shared/Main.php");
+                    exit();
                 }
 
 
@@ -166,6 +170,7 @@
                 return "";
             }
 
+            // Validering av passord
             function validering_passord(string $input): string
             {
                 if ($input == null || $input == "") { return "*Passord mangler."; }
@@ -178,6 +183,7 @@
                 return "";
             }
 
+            // Validering om passord og gjentatt passord er korrekt
             function validering_repeat_passord(string $input1, string $input2): string {
                 if (($input1 != null && $input1 != "") && ($input2 == null || $input2 == "")) { return "*Gjenta passord."; }
                 if (strcmp($input1, $input2) !== 0) { return "*Gjentatt passord matcher ikke."; }

@@ -8,10 +8,13 @@
 </head>
 <body>
     <?php
-        //
+        // Session_start gjør det mulig å sjekke verdier og funksjoner relatert til sessions.
+        session_start();
+        
+        // Sjekk om session eksisterer.
         if(!isset($_SESSION)) {
             //Redirect to login mayhaps
-            header("Location: ./Shared/Main.php");
+            header("Location: ./Pages/login.php");
             exit();
         } else {
             //redirect to Main

@@ -48,14 +48,14 @@
     <?php
 
     // Funksjon for å sammenligne og verifisere om passord og hash er korrekt.
-    /*
-        if(password_verify(clean("passord"), $hash)) {
-            // Når passordet er korrekt, start session med brukeren.
 
-            session_start();
-            $_SESSION['navn'] = "b";
-            $_SESSION['id'] = 0;
-        }*/
+    if (password_verify(clean("passord"), $hash)) {
+        // Når passordet er korrekt, start session med brukeren.
+
+        session_start();
+        $_SESSION['navn'] = "b";
+        $_SESSION['id'] = 0;
+    }
 
     ?>
 </body>

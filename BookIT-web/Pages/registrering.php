@@ -110,21 +110,26 @@
             // Logikk for lagring
             // Printer ut mottatt informasjon på siden
             if (isset($_REQUEST['save'])) {
-                /*
                 if (no_error($error)) {
-                    echo "<p><strong>Informasjonen er nå lagret.</strong></p>";
+                    echo "<p><strong style='color: #0d0;'>Informasjonen er nå lagret.</strong></p>";
+                    
+                    
                     // Logikk for lagring
-                    // Send data inn i DB
+                    // TODO: Send data inn i DB
+                    // TODO: rediriger til hovedside
 
+                    /*
                     // Create connection
                     $conn = new mysqli($servername, $username, $password, $dbname);
 
                     // Check connection
                     if ($conn->connect_error) {
                         exit("Connection failed: " . $conn->connect_error);
-                    }
-                }*/
+                    }*/
+                }
 
+
+                // Print ut mottatte verdier for debugging
                 echo "<div class='debug'>";
                 echo "<div>Her er verdiene som ble mottatt:</div>
                         <div class='values-grid'>";

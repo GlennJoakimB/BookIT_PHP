@@ -19,15 +19,15 @@
     /*...*/
 }
 
-body{
+body {
     font-family: var(--font-primary);
     font-size: 1.2rem;
     color: var(--color-light-text);
     background-color: var(--color-light-secondary);
 }
 
-.dark-Mode{
-color: var(--color-dark-text);
+.dark-Mode {
+    color: var(--color-dark-text);
     background-color: var(--color-dark-secondary);
 }
 
@@ -36,9 +36,9 @@ color: var(--color-dark-text);
     margin: 2rem auto 1em auto;
     background-color: #fff;
     font-family: sans-serif;
-    box-shadow: 0 5px 10px #333;
-    padding: 16px;
-    border-radius: 3px;
+    box-shadow: 0 5px 10px #555;
+    padding: 16px 16px 32px;
+    border-radius: 5px;
 }
 
 .input_container {
@@ -60,6 +60,8 @@ color: var(--color-dark-text);
 }
 
 .input_button {
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
     background-color: var(--color-light-primary);
     /* background-color: #4c04aa; */
     border-radius: 5rem;

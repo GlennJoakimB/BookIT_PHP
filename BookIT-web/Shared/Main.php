@@ -1,4 +1,10 @@
 <?php
+    session_start();
+    if(!isset($_SESSION)) {
+        //Redirect to login mayhaps
+        header("Location: ../Pages/login.php");
+        exit();
+    }
 ?>
 <!doctype html>
 <html lang="no">
@@ -8,6 +14,9 @@
     <link rel="stylesheet" href="../Style/style.css">
     <link rel="stylesheet" href="../Style/NavBar.css" />
     <link rel="stylesheet" href="../Style/Footer.css" />
+
+    <!-- Ikoner fra https://icon-sets.iconify.design/bx/ -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
 <body>
     <div id="NavBar">

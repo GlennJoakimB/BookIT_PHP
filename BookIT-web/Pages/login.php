@@ -6,11 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="..\Style\style.css">
     <title>BookIT - Login</title>
+
+    <!-- Ikoner fra https://icon-sets.iconify.design/bx/ -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
 
 <body>
     <!-- Her er logginn-side for brukere -->
+    
     <div id="front_card">
+        <div id="logo">
+            <div>BookIT</div>
+            <iconify-icon icon="bx:book-bookmark"></iconify-icon>
+        </div>
         <h1>Login</h1>
 
         <?php
@@ -55,6 +63,7 @@
                     session_start();
                     $_SESSION['user'] = $lagring["Username"];
                     $_SESSION['id'] = 000;
+                    $_SESSION['email'] = "admin@testing.nope";
 
                     //TODO: Rediriger til meny
                     header("Location: ../Shared/Main.php");

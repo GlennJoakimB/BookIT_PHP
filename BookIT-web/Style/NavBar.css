@@ -1,5 +1,6 @@
 ﻿#NavBar {
-    background-color: var(--color-light-primary);
+    /* background-color: var(--color-light-primary);  */
+    background-color: #fff;
     color: var(--color-light-text);
     /*setting height and witdh*/
     height: 5rem;
@@ -12,21 +13,21 @@
     /*setting z-index*/
     z-index: 1;
     /*setting shadow*/
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
     /*setting flexbox*/
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 2rem;
     /*setting padding*/
     padding: 0 1rem;
     object-fit: contain;
 }
+
 /*Navbar childs eaqual space*/
-#NavBar > * {
+#NavBar>* {
     flex: 1;
 }
-
-
 
 #LogoContainer {
     /*fit height to parent*/
@@ -51,6 +52,7 @@
     position: relative;
     /*Child elements inline flex*/
 }
+
 #MainLinksContainer ul {
     /*fit height to parent*/
     height: 100%;
@@ -66,6 +68,7 @@
     /*remove margin*/
     margin: 0;
 }
+
 #MainLinksContainer ul li {
     /*fit height to parent*/
     height: 100%;
@@ -84,9 +87,18 @@
     height: 100%;
     /*float right*/
     float: right;
-    /*content right*/
-    text-align: right;
     /*vertical center*/
     display: flex;
     align-items: center;
+}
+
+#User_info {
+    margin-left: 1rem;
+}
+
+#User_email {
+    font-size: 1rem;
+}
+.user_info_devider {
+    display: inline-block;
 }

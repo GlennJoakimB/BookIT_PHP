@@ -44,10 +44,15 @@ div {
     max-width: 400px;
     margin: 2rem auto 1em auto;
     background-color: #fff;
-    font-family: sans-serif;
+    font-family: var(--font-primary);
     box-shadow: 0 5px 10px #555;
     padding: 16px 16px 32px;
     border-radius: 5px;
+}
+#logo {
+    display: flex;
+    font-weight: bold;
+    align-items: center;
 }
 
 .input_container {

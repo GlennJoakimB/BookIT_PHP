@@ -30,3 +30,66 @@ body{
 color: var(--color-dark-text);
     background-color: var(--color-dark-secondary);
 }
+
+#front_card {
+    max-width: 400px;
+    margin: 2rem auto 1em auto;
+    background-color: #fff;
+    font-family: sans-serif;
+    box-shadow: 0 5px 10px #333;
+    padding: 16px;
+    border-radius: 3px;
+}
+
+.input_container {
+    margin-bottom: 0.8rem;
+}
+
+.input_container>label {
+    margin-bottom: 10px
+}
+
+.input_container>input {
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 35px;
+
+}
+
+.input_button {
+    background-color: var(--color-light-primary);
+    /* background-color: #4c04aa; */
+    border-radius: 5rem;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin-top: 2rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+.error {
+    margin-top: 0.2rem;
+    color: #ff0000;
+}
+
+
+/*==== Debug ====*/
+.values-grid {
+    display: grid;
+    grid-template-columns: min-content max-content;
+    grid-template-rows: repeat(5, 1fr);
+    justify-items: start;
+    column-gap: 5px;
+}
+
+.debug {
+    background-color: #ddd;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+}

@@ -22,20 +22,15 @@
         <h1>Login</h1>
 
         <?php
-        function clean($var)
-        {
-            $var = strip_tags($var);
-            $var = htmlentities($var);
-            $var = trim($var);
-            return $var;
-        }
-        
+        // Inkluder ekstern fil for validering
+        require '../Logic/input_validation.php';
+                
         $lagring = array(
             "Username" => isset($_REQUEST['uword']) ? clean($_REQUEST['uword']) : null,
             "Password" => isset($_REQUEST['pword']) ? clean($_REQUEST['pword']) : null
         );
 
-
+        
         //TODO: Fjern senere når ordentlig håndtering kommer
         // Test-bruker
         $user = "Admin";
@@ -57,16 +52,14 @@
                 if (password_verify($lagring["Password"], $hash)) {
                     // Når passordet er korrekt, start session med brukeren.
 
-                    // For debugging
-                    echo "<p>Hoho, riktig info.<p>";
-
                     session_start();
                     $_SESSION['user'] = $lagring["Username"];
                     $_SESSION['id'] = 000;
                     $_SESSION['email'] = "admin@testing.nope";
+                    $_SESSION['last_activity'] = time();
 
                     //TODO: Rediriger til meny
-                    header("Location: ../Shared/Main.php");
+                    header("Location: ./");
                     exit();
                     
                 } else {

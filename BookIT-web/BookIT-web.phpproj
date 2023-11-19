@@ -6,7 +6,9 @@
     <EnvName>PHPDev</EnvName>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="src\Views\PageComponents\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="src\Models\" />
-    <Folder Include="src\Views\PageComponents\" />
   </ItemGroup>
 </Project>

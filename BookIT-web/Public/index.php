@@ -1,4 +1,6 @@
-<?php require '../Logic/session_check.php' ?>
+<?php require '../Logic/session_check.php' 
+
+?>
 <!DOCTYPE html>
 <html lang="no">
 <head>

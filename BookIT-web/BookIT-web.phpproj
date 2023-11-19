@@ -4,6 +4,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <EnvName>PHPDev</EnvName>
+    <SpecificPageValue>Public/index.php</SpecificPageValue>
+    <StartAction>SpecificPage</StartAction>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="src\Views\PageComponents\**" />

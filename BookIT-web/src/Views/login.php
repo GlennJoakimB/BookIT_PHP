@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="no">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="..\Style\style.css">
-    <title>BookIT - Login</title>
-
-    <!-- Ikoner fra https://icon-sets.iconify.design/bx/ -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-</head>
-
-<body>
     <!-- Her er logginn-side for brukere -->
-    
+    <?php include __DIR__ . '../Shared/Header.php';?>
     <div id="front_card">
         <div id="logo">
             <div>BookIT</div>
@@ -23,14 +10,14 @@
 
         <?php
         // Inkluder ekstern fil for validering
-        require '../Logic/input_validation.php';
-                
+        require __DIR__ . '../../Logic/input_validation.php';
+
         $lagring = array(
             "Username" => isset($_REQUEST['uword']) ? cleanString($_REQUEST['uword']) : null,
             "Password" => isset($_REQUEST['pword']) ? cleanString($_REQUEST['pword']) : null
         );
 
-        
+
         //TODO: Fjern senere når ordentlig håndtering kommer
         // Test-bruker
         $user = "Admin";
@@ -61,7 +48,7 @@
                     //TODO: Rediriger til meny
                     header("Location: ./");
                     exit();
-                    
+
                 } else {
                     // Skriv ut indirekte feilmelding om at noe er galt
                     echo "<div class='banner_error'>*Feil brukernavn eller passord.</div>";
@@ -88,6 +75,4 @@
         <br>
         Har du ikke bruker? <a href="registrering.php">Registrer deg her</a>.
     </div>
-</body>
-
-</html>
+<?php include __DIR__ . '../Shared/Footer.php'; ?>

@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="no">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="..\Style\style.css">
-    <title>BookIT - Login</title>
-
-    <!-- Ikoner fra https://icon-sets.iconify.design/bx/ -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-</head>
-
-<body>
     <!-- Her er logginn-side for brukere -->
-    
+    <?php include __DIR__ . '../Shared/Header.php';?>
     <div id="front_card">
         <div id="logo">
             <div>BookIT</div>
@@ -22,17 +9,12 @@
         <h1>Login</h1>
 
         <?php
-        function clean($var)
-        {
-            $var = strip_tags($var);
-            $var = htmlentities($var);
-            $var = trim($var);
-            return $var;
-        }
-        
+        // Inkluder ekstern fil for validering
+        require __DIR__ . '../../Logic/input_validation.php';
+
         $lagring = array(
-            "Username" => isset($_REQUEST['uword']) ? clean($_REQUEST['uword']) : null,
-            "Password" => isset($_REQUEST['pword']) ? clean($_REQUEST['pword']) : null
+            "Username" => isset($_REQUEST['uword']) ? cleanString($_REQUEST['uword']) : null,
+            "Password" => isset($_REQUEST['pword']) ? cleanString($_REQUEST['pword']) : null
         );
 
 
@@ -57,18 +39,16 @@
                 if (password_verify($lagring["Password"], $hash)) {
                     // Når passordet er korrekt, start session med brukeren.
 
-                    // For debugging
-                    echo "<p>Hoho, riktig info.<p>";
-
                     session_start();
                     $_SESSION['user'] = $lagring["Username"];
                     $_SESSION['id'] = 000;
                     $_SESSION['email'] = "admin@testing.nope";
+                    $_SESSION['last_activity'] = time();
 
                     //TODO: Rediriger til meny
-                    header("Location: ../Shared/Main.php");
+                    header("Location: ./");
                     exit();
-                    
+
                 } else {
                     // Skriv ut indirekte feilmelding om at noe er galt
                     echo "<div class='banner_error'>*Feil brukernavn eller passord.</div>";
@@ -95,6 +75,4 @@
         <br>
         Har du ikke bruker? <a href="registrering.php">Registrer deg her</a>.
     </div>
-</body>
-
-</html>
+<?php include __DIR__ . '../Shared/Footer.php'; ?>

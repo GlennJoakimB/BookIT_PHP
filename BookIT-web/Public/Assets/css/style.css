@@ -6,6 +6,7 @@
     --color-light-tertiary: #E2F6CA;
     --color-light-quaternary: #F8FDCF;
     --color-light-text: #302f2f;
+    
     /*Dark theme*/
     --color-dark-primary: #352F44;
     --color-dark-secondary: #5C5470;
@@ -25,6 +26,7 @@ body {
     color: var(--color-light-text);
     background-color: var(--color-light-secondary);
 }
+
 div {
     /* Endrer kalkulering av bredde og høyde på elementer for å fikse visning. */
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -36,10 +38,70 @@ div {
     color: var(--color-dark-text);
     background-color: var(--color-dark-secondary);
 }
+
 #Main_content {
     margin-top: 6rem;
+    background-color: #fff;
 }
 
+.text_icon_box {
+    display: flex;
+    align-items: center;
+}
+
+/*==== Main-page booking ====*/
+.section_title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.title_bar {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#Current_bookings {
+    /* padding: 1rem; */
+    margin-bottom: 2rem;
+}
+
+#Current_bookings_list {
+    padding: 1rem;
+    background-color: #eee;
+}
+
+.empty_list {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #777777;
+}
+
+.button {
+    font-family: var(--font-primary);
+    background-color: var(--color-light-primary);
+    font-size: 1.2rem;
+    color: white;
+    border-radius: 5rem;
+    padding-left: 1.5rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.button>.icon {
+    padding: 0.5rem;
+}
+
+.button:hover {
+    background-color: #5fb5ee;
+}
+
+
+
+
+/*==== Login/registrering ====*/
 #front_card {
     max-width: 400px;
     margin: 2rem auto 1em auto;
@@ -49,12 +111,19 @@ div {
     padding: 16px 16px 32px;
     border-radius: 5px;
 }
+
 #logo {
     display: flex;
     font-weight: bold;
     align-items: center;
 }
 
+.logo_link {
+    text-decoration: none;
+    color: var(--color-light-text);
+}
+
+/* Benyttes i innlogging og andre skjemaer */
 .input_container {
     margin-bottom: 0.8rem;
 }
@@ -75,8 +144,8 @@ div {
 
 .input_button {
     font-family: var(--font-primary);
-    font-size: 1.2rem;
     background-color: var(--color-light-primary);
+    font-size: 1.2rem;
     /* background-color: #4c04aa; */
     border-radius: 5rem;
     border: none;

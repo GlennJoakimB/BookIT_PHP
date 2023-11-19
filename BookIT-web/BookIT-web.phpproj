@@ -4,8 +4,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <EnvName>PHPDev</EnvName>
+    <SpecificPageValue>Public/index.php</SpecificPageValue>
+    <StartAction>SpecificPage</StartAction>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Pages\PageComponents\" />
+    <Content Remove="src\Views\PageComponents\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Models\" />
   </ItemGroup>
 </Project>

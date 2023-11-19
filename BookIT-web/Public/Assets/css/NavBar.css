@@ -20,14 +20,14 @@
     align-items: center;
     gap: 2rem;
     /*setting padding*/
-    padding: 0 1rem;
+    padding: 0 2rem;
     object-fit: contain;
 }
 
 /*Navbar childs eaqual space*/
-#NavBar>* {
+/* #NavBar>* {
     flex: 1;
-}
+} */
 
 #LogoContainer {
     /*fit height to parent*/
@@ -93,12 +93,67 @@
 }
 
 #User_info {
+    display: flex;
     margin-left: 1rem;
+    cursor: pointer;
+}
+
+#User_info:active>#Dropdown_menu {
+    opacity: 1;
+}
+
+#Dropdown_menu {
+    /* opacity: 0; */
+    position: relative;
 }
 
 #User_email {
     font-size: 1rem;
 }
 .user_info_devider {
-    display: inline-block;
+    margin-left: 0.5rem;
+}
+
+/*hide the inputs/checkmarks and submenu*/
+#menu_check { display: none; }
+#User_submenu { 
+    opacity: 0; 
+    position: absolute;
+    width: 17rem;
+    right: 0;
+    top: 3.5rem;
+    padding: 0;
+    background-color: #fff;
+    box-shadow: 0 5px 10px #555;
+}
+
+#User_submenu>li {
+    list-style-type: none;
+    padding: 0.5rem 0;
+}
+#User_submenu>li:hover {
+    background-color: #eee;
+} 
+
+#User_submenu>li>a {
+    align-items: end;
+    display: flex;
+    text-decoration: none;
+    color: var(--color-light-text);
+}
+
+#User_submenu>li>a>.icon {
+    margin-right: 0.5rem;
+}
+  
+/*position the label*/
+label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+  
+/*show the submenu when input is checked*/
+#menu_check:checked~#User_submenu {
+    opacity: 1;
 }

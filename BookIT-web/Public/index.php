@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Style/style.css">
-    <link rel="stylesheet" href="../Style/NavBar.css" />
-    <link rel="stylesheet" href="../Style/Footer.css" />
+    <link rel="stylesheet" href="../Assets/css/style.css">
+    <link rel="stylesheet" href="../Assets/css/NavBar.css" />
+    <link rel="stylesheet" href="../Assets/css/Footer.css" />
     <title>BookIT - Hovedside</title>
 
     <!-- Ikoner fra https://icon-sets.iconify.design/bx/ -->

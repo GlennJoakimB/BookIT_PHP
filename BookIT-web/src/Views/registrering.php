@@ -26,11 +26,11 @@
             
             // Dersom $_Request har en verdi så settes den i variabelen, ellers blir standard gitt verdi brukt
             $lagring = array(
-                "Fornavn" => isset($_REQUEST['fname']) ? ucwords(strtolower(clean($_REQUEST['fname']))) : null,
-                "Etternavn" => isset($_REQUEST['lname']) ? ucwords(strtolower(clean($_REQUEST['lname']))) : null,
-                "Epost" => isset($_REQUEST['epost']) ? filter_var(clean($_REQUEST['epost']), FILTER_SANITIZE_EMAIL) : null,
-                "Password" => isset($_REQUEST['p_word']) ? clean($_REQUEST['p_word']) : null,
-                "Password_re" => isset($_REQUEST['p_re_word']) ? clean($_REQUEST['p_re_word']) : null
+                "Fornavn" => isset($_REQUEST['fname']) ? ucwords(strtolower(cleanString($_REQUEST['fname']))) : null,
+                "Etternavn" => isset($_REQUEST['lname']) ? ucwords(strtolower(cleanString($_REQUEST['lname']))) : null,
+                "Epost" => isset($_REQUEST['epost']) ? filter_var(cleanString($_REQUEST['epost']), FILTER_SANITIZE_EMAIL) : null,
+                "Password" => isset($_REQUEST['p_word']) ? cleanString($_REQUEST['p_word']) : null,
+                "Password_re" => isset($_REQUEST['p_re_word']) ? cleanString($_REQUEST['p_re_word']) : null
             );
 
             // Matrise for feilmeldinger

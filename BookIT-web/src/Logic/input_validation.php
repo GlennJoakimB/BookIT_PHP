@@ -2,7 +2,7 @@
 // En fil for gjenbrukbare funksjoner for filtrering av diverse inputter.
 
 // Fjerner mulighet for skadelig kode som kan sendes gjennom skjemaer
-function clean(string $var): string
+function cleanString(string $var): string
 {
     $var = strip_tags($var);
     $var = htmlentities($var);

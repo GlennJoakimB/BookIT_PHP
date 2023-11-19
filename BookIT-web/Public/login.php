@@ -26,8 +26,8 @@
         require '../Logic/input_validation.php';
                 
         $lagring = array(
-            "Username" => isset($_REQUEST['uword']) ? clean($_REQUEST['uword']) : null,
-            "Password" => isset($_REQUEST['pword']) ? clean($_REQUEST['pword']) : null
+            "Username" => isset($_REQUEST['uword']) ? cleanString($_REQUEST['uword']) : null,
+            "Password" => isset($_REQUEST['pword']) ? cleanString($_REQUEST['pword']) : null
         );
 
         

@@ -6,6 +6,7 @@
     <EnvName>PHPDev</EnvName>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Pages\PageComponents\" />
+    <Folder Include="src\Models\" />
+    <Folder Include="src\Views\PageComponents\" />
   </ItemGroup>
 </Project>

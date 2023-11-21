@@ -4,7 +4,7 @@ namespace app\core;
 
 /**
  * Router for finding the right view based on request
- * 
+ *
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */
@@ -16,10 +16,10 @@ class Router
 
     /**
      * Router constructor
-     * 
+     *
      * @param Request $request
      */
-    public function __constructor(Request $request, Response $response)
+    public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
@@ -57,20 +57,22 @@ class Router
     {
         $layoutContent = $this->layoutContent();
         $viewContent = $this->renderOnlyView($view);
+        //dump($viewContent);
+
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
     protected function layoutContent()
     {
         ob_start();
-        include_once Application::$ROOT_DIR . "/../views/layouts/main.php";
+        include_once Application::$ROOT_DIR."/views/layouts/main.php";
         return ob_get_clean();
     }
 
     protected function renderOnlyView($view)
     {
         ob_start();
-        include_once Application::$ROOT_DIR . "/../views/$view.php";
+        include_once Application::$ROOT_DIR."/views/$view.php";
         return ob_get_clean();
     }
 }

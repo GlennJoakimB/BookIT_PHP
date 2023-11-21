@@ -8,9 +8,10 @@
     <StartAction>SpecificPage</StartAction>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="src\Views\PageComponents\**" />
+    <Content Remove="src\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\Models\" />
+    <Folder Include="models\" />
+    <Folder Include="controllers\" />
   </ItemGroup>
 </Project>

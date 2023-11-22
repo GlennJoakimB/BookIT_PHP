@@ -18,7 +18,7 @@
       "app\\": "."
     }
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "require": {
     "vlucas/phpdotenv": "^5.6"
   }

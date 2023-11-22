@@ -1,0 +1,21 @@
+{
+    "name": "glenn/book-it-php",
+    "autoload": {
+        "psr-4": {
+            "app\\": "."
+        }
+    },
+    "authors": [
+        {
+            "name": "GlennJoakimB",
+            "email": "89195051+GlennJoakimB@users.noreply.github.com"
+        },
+        {
+            "name": "Trivinyx",
+            "email": "tom.a.s.myre@gmail.com"
+        }
+    ],
+  "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

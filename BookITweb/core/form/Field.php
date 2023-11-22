@@ -43,7 +43,7 @@ namespace app\core\form
                 </div>
             </div>
             ',
-            $this->model->getLabes($this->attribute),
+            $this->model->getLabel($this->attribute),
             $this->type,
             $this->attribute,
             $this->model->{$this->attribute},

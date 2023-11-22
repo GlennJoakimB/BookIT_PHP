@@ -1,3 +1,2 @@
 <h1>Home</h1>
-<a href="/"></a>
-<a href="/contact"></a>
+<h3>Welcome <?= $name ?></h3>

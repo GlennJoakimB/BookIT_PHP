@@ -4,7 +4,7 @@ namespace app\core;
 
 /**
  * Application
- * 
+ *
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */
@@ -14,14 +14,37 @@ class Application
     public Router $router;
     public Request $request;
     public Response $response;
-    //public Application $app;
+    public static Application $app;
+    public Controller $controller;
+
+
     public function __construct($rootPath)
     {
         self::$ROOT_DIR = $rootPath;
-        //self::$app = $this;
+        self::$app = $this;
         $this->request = new Request();
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
+
+    }
+    /**
+     * Set the controller
+     *
+     * @param \app\core\Controller $controller
+     */
+    public function setController(Controller $controller)
+    {
+        $this->controller = $controller;
+    }
+
+    /**
+     * Get the controller
+     *
+     * @return \app\core\Controller
+     */
+    public function getController()
+    {
+        return $this->controller;
     }
 
     public function run()

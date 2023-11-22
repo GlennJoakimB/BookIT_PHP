@@ -2,7 +2,6 @@
   "name": "glenn/book-it-php",
   "description": "A simple PHP application for booking Evaluation meetings",
   "type": "project",
-  "version": "0.0.1-dev",
   "authors": [
     {
       "name": "GlennJoakimB",

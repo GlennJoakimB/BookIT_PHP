@@ -42,6 +42,7 @@ class Application
         $primaryValue = $this->session->get('user');
         if ($primaryValue) {
             $primaryKey = $this->userClass::primaryKey();
+
             try {
                 $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
             }catch(\Exception $e)

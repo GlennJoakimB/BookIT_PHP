@@ -10,7 +10,7 @@ namespace app\core;
  */
 class Response
 {
-    public function statusCode(int $code)
+    public function setStatusCode(int $code)
     {
         http_response_code($code);
     }

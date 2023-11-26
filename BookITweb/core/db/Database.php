@@ -1,7 +1,8 @@
 <?php
 
-namespace app\core
+namespace app\core\db
 {
+    use app\core\Application;
 	/**
 	 * Database short summary.
 	 *
@@ -9,7 +10,7 @@ namespace app\core
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>
-     * @package app\core
+     * @package app\core\db
 	 */
 	class Database
 	{

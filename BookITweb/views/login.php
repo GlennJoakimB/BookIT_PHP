@@ -1,4 +1,7 @@
 <?php
+    /** @var $this \app\core\View */
+    $this->title = "Login";
+
     /** @var $model \app\models\LoginForm */
 ?>
 

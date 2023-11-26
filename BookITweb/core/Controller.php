@@ -26,7 +26,7 @@ class Controller
     }
     public function render($view, $params = []): string
     {
-        return Application::$app->router->renderView($view, $params);
+        return Application::$app->view->renderView($view, $params);
     }
 
     /**

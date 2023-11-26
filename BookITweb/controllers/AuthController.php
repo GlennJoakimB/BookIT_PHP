@@ -8,7 +8,8 @@ namespace app\controllers
 	use app\core\Application;
     use app\models\LoginForm;
     use app\core\Response;
-	/**
+    use app\core\middlewares\AuthMiddleware;
+    /**
 	 * AuthController short summary.
 	 *
 	 * AuthController description.
@@ -19,6 +20,11 @@ namespace app\controllers
 	 */
 	class AuthController extends Controller
 	{
+        public function __construct()
+        {
+            $this->registerMiddleware(new AuthMiddleware(['profile']));
+        }
+
 		public function login(Request $request, Response $response)
         {
             $loginForm = new LoginForm();
@@ -64,6 +70,11 @@ namespace app\controllers
             return $this->render('register', [
                 'model' => $user
             ]);
+        }
+
+        public function profile()
+        {
+            return $this->render('profile');
         }
 	}
 }

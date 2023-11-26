@@ -32,7 +32,7 @@ namespace app\core
         protected function layoutContent()
         {
             $layout = Application::$app->layout;
-            if (Application::$app->controller) {
+            if (isset(Application::$app->controller)) {
                 $layout = Application::$app->controller->layout;
             }
             ob_start();

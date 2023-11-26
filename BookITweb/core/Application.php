@@ -42,7 +42,12 @@ class Application
         $primaryValue = $this->session->get('user');
         if ($primaryValue) {
             $primaryKey = $this->userClass::primaryKey();
-            $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
+            try {
+                $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
+            }catch(\Exception $e)
+            {
+                $this->user = null;
+            }
         } else {
             $this->user = null;
         }

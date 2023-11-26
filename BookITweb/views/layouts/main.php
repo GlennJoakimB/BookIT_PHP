@@ -1,3 +1,7 @@
+<?php 
+    use app\core\Application;
+?>
+
 <!DOCTYPE html>
 <html lang="no">
 <head>
@@ -6,7 +10,7 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <title>BookIT</title>
+    <title><?= $this->title ?></title>
 
     <!-- Ikoner fra https://icon-sets.iconify.design/bx/ -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
@@ -27,6 +31,7 @@
           <a class="nav-link" href="/contact">Contact Us</a>
         </li>
       </ul>
+        <?php if(Application::isGuest()): ?>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/login">Login</a>
@@ -35,10 +40,27 @@
           <a class="nav-link" href="/register">Register</a>
         </li>
       </ul>
+      <?php else: ?>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/logout">Welcome <?php echo Application::$app->user->getDisplayName(); ?> (Logout)</a>
+            </li>
+          </ul>
+        <?php endif; ?>
     </div>
   </div>
 </nav>
 <div class="container">
+    <?php if (Application::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success">
+            <?php echo Application::$app->session->getFlash('success'); ?>
+        </div>
+     <?php endif; ?>
     {{content}}
 </div>
 

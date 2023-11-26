@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\core\db\DbModel;
 /**
  * Class UserModel
  *

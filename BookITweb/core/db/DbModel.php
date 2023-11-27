@@ -48,6 +48,8 @@ namespace app\core\db
             return $statement->fetchObject(static::class);
         }
 
+		//implement findMany
+
         public static function prepare($sql)
         {
 			return Application::$app->db->pdo->prepare($sql);

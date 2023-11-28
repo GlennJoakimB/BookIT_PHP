@@ -3,11 +3,12 @@ use app\core\Application;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
 
-
+//getting dependencies
 require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
+//configuring the application
 $config = [
     'userClass' => \app\models\User::class,
     'db' => [
@@ -17,12 +18,17 @@ $config = [
     ]
 ];
 
+//creating the application with the config
 $app = new Application(dirname(__DIR__), $config);
 
+
+//creating the routes
+//site routes
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'contact']);
 
+//auth routes
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
@@ -31,5 +37,5 @@ $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/profile', [AuthController::class, 'profile']);
 $app->router->get('/admin', [AuthController::class, 'admin']);
 
-
+//starting the application
 $app->run();

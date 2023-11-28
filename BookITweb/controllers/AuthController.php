@@ -9,6 +9,7 @@ namespace app\controllers
     use app\models\LoginForm;
     use app\core\Response;
     use app\core\middlewares\AuthMiddleware;
+    use app\core\UserModel;
     /**
 	 * AuthController short summary.
 	 *
@@ -22,7 +23,9 @@ namespace app\controllers
 	{
         public function __construct()
         {
-            $this->registerMiddleware(new AuthMiddleware(['profile']));
+            //conifgure the middleware
+            $actions = ['profile', 'admin'];
+            $this->registerMiddleware(new AuthMiddleware($actions, ['admin' => UserModel::ROLE_ADMIN]));
         }
 
 		public function login(Request $request, Response $response)
@@ -75,6 +78,11 @@ namespace app\controllers
         public function profile()
         {
             return $this->render('profile');
+        }
+
+        public function admin()
+        {
+            return $this->render('admin');
         }
 	}
 }

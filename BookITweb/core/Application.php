@@ -105,4 +105,8 @@ class Application
     {
         return !self::$app->user;
     }
+
+    public static function isRole(string $role){
+        return self::$app->user->role === $role;
+    }
 }

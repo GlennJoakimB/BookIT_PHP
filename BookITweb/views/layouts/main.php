@@ -1,5 +1,6 @@
 <?php 
     use app\core\Application;
+    use app\core\UserModel;
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +31,11 @@
         <li class="nav-item">
           <a class="nav-link" href="/contact">Contact Us</a>
         </li>
+          <?php if(!Application::isGuest() && Application::isRole(UserModel::ROLE_ADMIN)): ?>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">Admin</a>
+            </li>
+            <?php endif; ?>
       </ul>
         <?php if(Application::isGuest()): ?>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">

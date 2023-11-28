@@ -17,10 +17,13 @@ namespace app\core\middlewares
 	class AuthMiddleware extends BaseMiddleware
 	{
 		public array $actions = [];
-        
-        public function __construct(array $actions = [])
+		//array Actions => Role
+		public array $roleActionMap = [];
+
+        public function __construct(array $actions = [], array $roleActionMap = [])
         {
             $this->actions = $actions;
+			$this->roleActionMap = $roleActionMap;
         }
 
 		public function execute()
@@ -30,8 +33,21 @@ namespace app\core\middlewares
                 {
                     throw new ForbiddenExeption();
                 }
-            }    
+            }
+			//if roleActionMap is not empty, check if the user is allowed to access the action
+            if (!empty($this->roleActionMap)) {
+                $currentAction = Application::$app->controller->action;
+                $currentRole = Application::$app->user->role ?? null;
+                if (array_key_exists($currentAction, $this->roleActionMap)) {
+                    //check if current role is correct
+                    if ($this->roleActionMap[$currentAction] === $currentRole) {
+                    } //do nothing
+                    else {
+                        throw new ForbiddenExeption();
+                    }
+                }
+            }
         }
-        
-	}
+
+    }
 }

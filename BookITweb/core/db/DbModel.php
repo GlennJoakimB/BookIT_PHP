@@ -50,6 +50,19 @@ namespace app\core\db
         }
 
 		//implement findMany
+        public static function findMany($where)
+        {
+			$tablename = static::tableName();
+			$attributes = array_keys($where);
+			$sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+			$statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
+			foreach($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+			$statement->execute();
+			//return array of objects
+            return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
+        }
 
         public static function prepare($sql)
         {

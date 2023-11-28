@@ -14,20 +14,25 @@ namespace app\models
 	 */
 	class Course extends DbModel
 	{
-        protected int $id = 0;
-        protected string $name = '';
-        protected int $status = 0;
-        protected int $owner_id = 0;
-        protected string $description = '';
-        protected string $start_date = '';
-        protected string $end_date = '';
+        const STATUS_INACTIVE = 0;
+        const STATUS_ACTIVE = 1;
+        const STATUS_DELETED = 2;
 
-        public function tableName()
+
+        public int $id = 0;
+        public string $name = '';
+        public int $status = self::STATUS_INACTIVE;
+        public ?int $owner_id;
+        public string $description = '';
+        public string $start_date = '';
+        public string $end_date = '';
+
+        public static function tableName() : string
         {
             return 'courses';
         }
 
-        public function primaryKey()
+        public static function primaryKey() : string
         {
             return 'id';
         }
@@ -47,7 +52,7 @@ namespace app\models
                 'end_date' => [self::RULE_REQUIRED]
                 ];
         }
-        
+
         public function labels(): array
         {
             return [
@@ -57,6 +62,29 @@ namespace app\models
                 'start_date' => 'Course start date',
                 'end_date' => 'Course end date'
                 ];
+        }
+
+        public function getOwner()
+        {
+            return User::findOne(['id' => $this->owner_id]);
+        }
+
+        public function customSave(bool $isSelfOwner)
+        {
+            //TODO: check if this logic is redundant later.
+            if ($isSelfOwner) {
+                $this->owner_id = Application::$app->user->id;
+            } else if (is_null($this->owner_id)) {
+                $this->owner_id = Application::$app->user->id;
+            }
+            self::save();
+        }
+
+        public function save()
+        {
+            $this->status = self::STATUS_INACTIVE;
+
+            return parent::save();
         }
 	}
 }

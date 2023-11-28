@@ -10,6 +10,7 @@ namespace app\controllers
     use app\core\Response;
     use app\core\middlewares\AuthMiddleware;
     use app\core\UserModel;
+    use app\models\Course;
     /**
 	 * AuthController short summary.
 	 *
@@ -80,9 +81,24 @@ namespace app\controllers
             return $this->render('profile');
         }
 
-        public function admin()
+        public function admin(Request $request)
         {
-            return $this->render('admin');
+            $course = new Course();
+            /** @var user app\models\user */
+            $course->owner_id = Application::$app->user->id;
+            if($request->isPost()){
+                $course->loadData($request->getBody());
+                if($course->validate() && $course->Save()){
+                    Application::$app->session->setFlash('success', 'Course added');
+                    Application::$app->response->redirect('/admin');
+                }
+                return $this->render('admin',[
+                    'model' => $course
+                ]);
+            }
+            return $this->render('admin',[
+                'model' => $course
+            ]);
         }
 	}
 }

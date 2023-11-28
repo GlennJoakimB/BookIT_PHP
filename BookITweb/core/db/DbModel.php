@@ -78,6 +78,15 @@ namespace app\core\db
             return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
         }
 
+		//get all
+        public static function findAll()
+        {
+			$tablename = static::tableName();
+            $statement = self::prepare("SELECT * FROM $tablename");
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
+        }
+
         public static function prepare($sql)
         {
 			return Application::$app->db->pdo->prepare($sql);

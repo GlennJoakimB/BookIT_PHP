@@ -84,6 +84,14 @@ namespace app\controllers
         public function admin(Request $request)
         {
             $course = new Course();
+            $courses = Course::findAll();
+            if (!($courses === [])) {
+                $courses = array_reverse($courses);
+                //loop through courses and run getOwner() on each
+                foreach ($courses as $key => $value) {
+                    $courses[$key]->owner = $value->getOwner();
+                }
+            }
             /** @var user app\models\user */
             $course->owner_id = Application::$app->user->id;
             if($request->isPost()){
@@ -93,11 +101,13 @@ namespace app\controllers
                     Application::$app->response->redirect('/admin');
                 }
                 return $this->render('admin',[
-                    'model' => $course
+                    'model' => $course,
+                    'courses' => $courses
                 ]);
             }
             return $this->render('admin',[
-                'model' => $course
+                'model' => $course,
+                'courses' => $courses
             ]);
         }
 	}

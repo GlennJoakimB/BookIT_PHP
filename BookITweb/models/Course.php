@@ -26,6 +26,7 @@ namespace app\models
         public string $description = '';
         public string $start_date = '';
         public string $end_date = '';
+        public ?User $owner = null;
 
         public static function tableName() : string
         {
@@ -66,7 +67,9 @@ namespace app\models
 
         public function getOwner()
         {
-            return User::findOne(['id' => $this->owner_id]);
+            //return User::findOne(['id' => $this->owner_id]). And sets local owner;
+            $this->owner = User::findOne(['id' => $this->owner_id]);
+            return $this->owner;
         }
 
         public function customSave(bool $isSelfOwner)

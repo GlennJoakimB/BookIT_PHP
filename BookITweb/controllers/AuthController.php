@@ -14,7 +14,7 @@ namespace app\controllers
     /**
 	 * AuthController short summary.
 	 *
-	 * AuthController description.
+	 * AuthController Handels restricted pages and the authentication of users pages.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

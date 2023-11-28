@@ -6,7 +6,7 @@ namespace app\core\form
 	/**
 	 * Form short summary.
 	 *
-	 * Form description.
+	 * Form is a class that is used to create html forms.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

@@ -5,6 +5,8 @@ namespace app\core;
 use \app\core\middlewares\BaseMiddleware;
 /**
  * Class Controller
+ * 
+ * Controller is abstarct class used for types in the core, and is the base of each controller.
  *
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core

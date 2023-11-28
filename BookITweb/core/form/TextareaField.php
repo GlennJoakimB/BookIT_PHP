@@ -5,7 +5,7 @@ namespace app\core\form
 	/**
 	 * TextareaField short summary.
 	 *
-	 * TextareaField description.
+	 * TextareaField php class for handling textarea fields
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

@@ -5,7 +5,7 @@ namespace app\core\middlewares
 	/**
 	 * BaseMiddleware short summary.
 	 *
-	 * BaseMiddleware description.
+	 * BaseMiddleware used for types in the core, and is the base of each middleware.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

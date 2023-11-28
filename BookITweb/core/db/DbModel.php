@@ -7,7 +7,8 @@ namespace app\core\db
 	/**
 	 * DbModel short summary.
 	 *
-	 * DbModel description.
+	 * DbModel extends Model and is the base of each model that is connected to the database. It
+     * contains the basic functions for interacting with the database tables.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

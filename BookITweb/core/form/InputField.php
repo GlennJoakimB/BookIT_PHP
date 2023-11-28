@@ -4,9 +4,10 @@ namespace app\core\form
 {
     use app\core\Model;
 	/**
-	 * Field short summary.
+	 * InputField short summary.
 	 *
-	 * Field description.
+	 * InputField is a class used to set up different types of html form <input> through 
+     * php. 
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

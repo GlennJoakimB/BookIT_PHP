@@ -8,7 +8,7 @@ namespace app\core\middlewares
 	/**
 	 * AuthMiddleware short summary.
 	 *
-	 * AuthMiddleware description.
+	 * AuthMiddleware restricts access to pages based on the users role or if the user is logged in.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

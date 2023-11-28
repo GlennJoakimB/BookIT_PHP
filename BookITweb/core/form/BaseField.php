@@ -6,7 +6,7 @@ namespace app\core\form
 	/**
 	 * BaseField short summary.
 	 *
-	 * BaseField description.
+	 * BaseField is the base class for all form fields.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

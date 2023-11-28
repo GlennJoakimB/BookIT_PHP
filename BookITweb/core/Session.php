@@ -5,6 +5,9 @@ namespace app\core;
 /**
  * Session controller for 
  * 
+ * Session, is resposible for interacting and using the Global Type $_SESSION variable.
+ * 
+ * @version 1.0
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */

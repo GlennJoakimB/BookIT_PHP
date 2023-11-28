@@ -5,7 +5,7 @@ namespace app\core\exeption
 	/**
 	 * NotFoundExeption short summary.
 	 *
-	 * NotFoundExeption description.
+	 * NotFoundExeption is thrown when a page is not found.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

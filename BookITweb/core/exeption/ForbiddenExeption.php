@@ -5,7 +5,7 @@ namespace app\core\exeption
 	/**
 	 * ForbiddenExeption short summary.
 	 *
-	 * ForbiddenExeption description.
+	 * ForbiddenExeption is an exeption that is thrown when a user tries to access a page they don't have permission to access.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

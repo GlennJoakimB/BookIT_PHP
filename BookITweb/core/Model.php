@@ -5,7 +5,7 @@ namespace app\core
     /**
     * Model short summary.
     *
-    * Model description.
+    * Model is the base class for all models, it provides the basic functionality for validation and error handling.
     *
     * @version 1.0
     * @author Trivinyx <tom.a.s.myre@gmail.com>

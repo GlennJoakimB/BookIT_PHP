@@ -5,6 +5,9 @@ namespace app\core;
 /**
  * Request class
  *
+ * Request class is responsible for handling the request from the client. With methods like
+ * getPath, method, isGet, isPost and getBody.
+ * 
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */

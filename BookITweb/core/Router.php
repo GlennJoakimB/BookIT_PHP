@@ -4,8 +4,12 @@ namespace app\core;
 
 use app\core\exeption\NotFoundExeption;
 /**
- * Router for finding the right view based on request
- *
+ * Class Router
+ * 
+ * Responsible for routing user requests to the correct controller and action,
+ * based on the request method and path. Routes must be predifined to be used.
+ * 
+ * @version 1.0
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */

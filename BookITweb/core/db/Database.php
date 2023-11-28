@@ -6,7 +6,7 @@ namespace app\core\db
 	/**
 	 * Database short summary.
 	 *
-	 * Database description.
+	 * Database is responsible for handling the connection to the database, and applying database migrations.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

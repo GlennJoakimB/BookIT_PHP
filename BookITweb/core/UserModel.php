@@ -6,6 +6,9 @@ use app\core\db\DbModel;
 /**
  * Class UserModel
  *
+ * UserModel is abstarct class used for types in the core, and is the base of each user model.
+ * 
+ * @version 1.0
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */

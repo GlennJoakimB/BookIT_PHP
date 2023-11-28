@@ -5,7 +5,7 @@ namespace app\core
 	/**
 	 * View short summary.
 	 *
-	 * View description.
+	 * View handels all rendering of views and layouts and is the base for all views.
 	 *
 	 * @version 1.0
      * @author Trivinyx <tom.a.s.myre@gmail.com>

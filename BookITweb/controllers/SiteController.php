@@ -10,7 +10,7 @@ namespace app\controllers
 	/**
 	 * SiteController short summary.
 	 *
-	 * SiteController description.
+	 * SiteController manages the public accessible pages.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

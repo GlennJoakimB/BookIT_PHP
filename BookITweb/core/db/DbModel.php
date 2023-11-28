@@ -63,6 +63,21 @@ namespace app\core\db
             return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
         }
 
+		//implement SearchForValues
+        public static function SearchForValues($where)
+        {
+			$tablename = static::tableName();
+            $attributes = array_keys($where);
+			$sql = implode("AND ", array_map(fn($attr) => "$attr LIKE :$attr", $attributes));
+			$statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
+            foreach($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+			$statement->execute();
+			//return array of objects
+            return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
+        }
+
         public static function prepare($sql)
         {
 			return Application::$app->db->pdo->prepare($sql);

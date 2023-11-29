@@ -6,9 +6,7 @@ namespace app\models
     use app\models\User;
     use app\core\Application;
 	/**
-	 * LoginForm short summary.
-	 *
-	 * LoginForm description.
+	 * LoginForm is the model for the login form.
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

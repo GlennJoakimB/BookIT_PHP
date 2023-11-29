@@ -21,22 +21,27 @@ namespace app\models
 
         public function rules(): array
         {
+            //rules come from the model
             return [
                 'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
                 'password' => [self::RULE_REQUIRED]
             ];
         }
 
+        //override the labels function to provide custom labels
         public function labels(): array
         {
+            //custom labels
             return [
                 'email' => 'Your email',
                 'password' => 'Password'
             ];
         }
 
+        //login the user
         public function login()
         {
+            //validate the model
             $user = User::findOne(['email' => $this->email]);
             if(!$user)
             {
@@ -50,6 +55,7 @@ namespace app\models
                 return false;
             }
 
+            //send the user to the login function in the application, and return the result
             return Application::$app->login($user);
         }
 	}

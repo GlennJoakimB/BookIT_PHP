@@ -19,15 +19,15 @@ namespace app\core\db
 		abstract public static function tableName(): string;
 		abstract public function attributes(): array;
 		abstract public static function primaryKey(): string;
-		
+
 		public function save()
         {
 			$tablename = $this->tableName();
 			$attributes = $this->attributes();
 			$params = array_map(fn($attr) => ":$attr", $attributes);
-			$statement = self::prepare("INSERT INTO $tablename (".implode(',', $attributes).") 
+			$statement = self::prepare("INSERT INTO $tablename (".implode(',', $attributes).")
 						VALUES (".implode(',', $params).")");
-			
+
 			foreach($attributes as $attribute)
 			{
                 $statement->bindValue(":$attribute", $this->{$attribute});
@@ -35,6 +35,33 @@ namespace app\core\db
             $statement->execute();
             return true;
 		}
+
+        public function update()
+        {
+			$tablename = $this->tableName();
+			$attributes = $this->attributes();
+			//get self::primaryKey() value
+			$primaryKey = $this->primaryKey();
+            $primaryKeyValue = $this->{$primaryKey};
+			$attributes = $this->attributes();
+
+			//if primary key is in attributes, remove it
+			if(($key = array_search($primaryKey, $attributes)) !== false) {
+                unset($attributes[$key]);
+            }
+            //map attributes to sql syntax
+			$params = array_map(fn($attr) => "$attr = :$attr", $attributes);
+            $statement = self::prepare("UPDATE $tablename SET ".implode(',', $params)."
+							WHERE $primaryKey = :primaryKey");
+            //bind primary key value
+            $statement->bindValue(":primaryKey", $primaryKeyValue);
+			//bind attributes
+            foreach ($attributes as $attribute) {
+                $statement->bindValue(":$attribute", $this->{$attribute});
+            }
+            $statement->execute();
+            return true;
+        }
 
         public static function findOne($where)
         {

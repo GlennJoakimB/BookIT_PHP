@@ -20,6 +20,11 @@ namespace app\core\db
 		abstract public function attributes(): array;
 		abstract public static function primaryKey(): string;
 		
+		/**
+		 * Base function for saving data to the database. Returns true when process is successful. 
+         * 
+		 * @return bool
+		 */
 		public function save()
         {
 			$tablename = $this->tableName();

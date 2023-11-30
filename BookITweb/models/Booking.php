@@ -6,7 +6,7 @@ namespace app\models
 	/**
 	 * Booking short summary.
 	 *
-	 * Booking description.
+	 * Booking description.   00-06, 06-12, 12-18, 18-24  eks 8 bokinger i 12-18 7 er ledig
 	 *
 	 * @version 1.0
 	 * @author Trivinyx <tom.a.s.myre@gmail.com>

@@ -64,7 +64,7 @@ namespace app\models
             ];
         }
 
-        public function attributes(): array
+        public static function attributes(): array
         {
             return ['firstname', 'lastname', 'email', 'password', 'status'];
         }

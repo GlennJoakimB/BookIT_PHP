@@ -17,7 +17,7 @@ namespace app\core\db
     abstract class DbModel extends Model
     {
 		abstract public static function tableName(): string;
-		abstract public function attributes(): array;
+		abstract public static function attributes(): array;
 		abstract public static function primaryKey(): string;
 
 		public function save()
@@ -35,6 +35,14 @@ namespace app\core\db
             $statement->execute();
             return true;
 		}
+        public function toArray()
+        {
+            $array = [];
+            foreach (static::attributes() as $attribute) {
+                $array[$attribute] = $this->{$attribute};
+            }
+            return $array;
+        }
 
         public function update()
         {
@@ -96,7 +104,7 @@ namespace app\core\db
         {
 			$tablename = static::tableName();
             $attributes = array_keys($where);
-			$sql = implode("AND ", array_map(fn($attr) => "$attr LIKE :$attr", $attributes));
+			$sql = implode(" OR ", array_map(fn($attr) => "$attr LIKE :$attr", $attributes));
 			$statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
             foreach($where as $key => $item) {
                 $statement->bindValue(":$key", $item);

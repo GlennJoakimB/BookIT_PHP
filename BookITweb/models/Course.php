@@ -22,7 +22,7 @@ namespace app\models
         public int $id = 0;
         public string $name = '';
         public int $status = self::STATUS_INACTIVE;
-        public ?int $owner_id;
+        public ?int $owner_id = null;
         public string $description = '';
         public string $start_date = '';
         public string $end_date = '';
@@ -38,7 +38,7 @@ namespace app\models
             return 'id';
         }
 
-        public function attributes(): array
+        public static function attributes(): array
         {
             return ['name', 'status', 'owner_id', 'description', 'start_date', 'end_date'];
         }

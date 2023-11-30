@@ -37,6 +37,7 @@ namespace app\core
                 }
             }
         }
+        
 
         public function labels(): array
         {

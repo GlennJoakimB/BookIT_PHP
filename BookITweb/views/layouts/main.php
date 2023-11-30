@@ -28,7 +28,7 @@ use app\core\UserModel;
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/contact">Contact Us</a>
@@ -42,7 +42,7 @@ use app\core\UserModel;
                 <?php if (Application::isGuest()): ?>
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                            <a class="nav-link" aria-current="page" href="/login">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/register">Register</a>
@@ -51,12 +51,12 @@ use app\core\UserModel;
                 <?php else: ?>
                     <ul class="navbar-nav me-3 mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
+                            <a class="nav-link" aria-current="page" href="/profile">Profile</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/logout">Welcome <?php echo Application::$app->user->getDisplayName(); ?> (Logout)</a>
+                            <a class="nav-link" aria-current="page" href="/logout">Welcome <?= Application::$app->user->getDisplayName(); ?> (Logout)</a>
                         </li>
                     </ul>
                 <?php endif; ?>

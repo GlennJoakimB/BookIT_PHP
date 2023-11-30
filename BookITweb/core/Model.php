@@ -82,18 +82,15 @@ namespace app\core
                         $this->addErrorForRule($attribute, self::RULE_EMAIL);
                     }
                     //check if the rule is min and if the value is shorter than the min value
-                    if($ruleName === self::RULE_MIN && strlen($value) < $rule['min'])
-                    {
+                    if ($ruleName === self::RULE_MIN && strlen($value) < $rule[self::RULE_MIN]) {
                         $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
                     }
                     //check if the rule is max and if the value is longer than the max value
-                    if($ruleName === self::RULE_MAX && strlen($value) > $rule['max'])
-                    {
+                    if ($ruleName === self::RULE_MAX && strlen($value) > $rule[self::RULE_MAX]) {
                         $this->addErrorForRule($attribute, self::RULE_MAX, $rule);
                     }
                     //check if the rule is match and if the value is not the same as the match value
-                    if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']})
-                    {
+                    if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule[self::RULE_MATCH]}) {
                         $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                     }
                     //check if the rule is unique (in database to) and if the value is not unique

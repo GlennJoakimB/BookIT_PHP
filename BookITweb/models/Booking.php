@@ -3,36 +3,38 @@
 namespace app\models
 {
     use app\core\db\DbModel;
-	/**
-	 * Booking short summary.
-	 *
-	 * Booking description.
-	 *
-	 * @version 1.0
-	 * @author Trivinyx <tom.a.s.myre@gmail.com>
-     * @package app\models
-	 */
-	class Booking extends DbModel
-	{
-        protected int $id = 0;
-        protected int $course_id = 0;
-        protected string $subject = '';
-        protected int $holder_id = 0;
-        protected string $start_time = '';
-        protected string $end_time = '';
-        protected ?int $booker_id = 0;
-        protected ?string $booker_note = '';
-        protected int $status = 0;
-        protected string $last_updated = '';
 
-		public function tableName()
+    /**
+     * Booking short summary.
+     *
+     * Booking description.
+     *
+     * @version 1.0
+     * @author Trivinyx <tom.a.s.myre@gmail.com>
+     * @package app\models
+     */
+    class Booking extends DbModel
+    {
+        public ?int $id = 0;
+        public int $course_id = 0;
+        public string $subject = '';
+        public int $holder_id = 0;
+        public string $start_time = '';
+        public string $end_time = '';
+        public ?int $booker_id = 0;
+        public ?string $booker_note = '';
+        public int $status = 0;
+        public string $last_updated = '';
+        public int $la_booked = 0;
+
+        public static function tableName(): string
         {
             return 'bookings';
         }
 
-        public function primaryKey()
+        public static function primaryKey(): string
         {
-			return 'id';
+            return 'id';
         }
 
         public function attributes(): array
@@ -43,8 +45,24 @@ namespace app\models
 
         public function rules(): array
         {
-            //not implemented return empty array
             return [];
+        }
+
+        public function labels(): array
+        {
+            return [
+                'booker_note' => 'Booking notes'
+            ];
+        }
+
+        public function save()
+        {
+            //format variables
+            //$this->status = self::STATUS_INACTIVE;
+            //$this->password = password_hash($this->password, PASSWORD_DEFAULT);
+
+            //tell DbModel to save
+            return parent::save();
         }
 
     }

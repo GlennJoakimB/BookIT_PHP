@@ -3,9 +3,10 @@
 namespace app\core
 {
     /**
-    * Model short summary.
+    * Model
     *
-    * Model is the base class for all models, it provides the basic functionality for validation and error handling.
+    * Model is the base class for all models, it provides the basic 
+    * functionality for validation and error handling.
     *
     * @version 1.0
     * @author Trivinyx <tom.a.s.myre@gmail.com>
@@ -39,48 +40,66 @@ namespace app\core
         }
         
 
+        //returns an array of attributes and their labels
         public function labels(): array
         {
             return [];
         }
 
+        //get the label for a specific attribute
         public function getLabel($attribute)
         {
             return $this->labels()[$attribute] ?? $attribute;
         }
 
+        /**
+         * Validate
+         * 
+         * Validate the model fields against the rules defined and specified 
+         * in the model.
+         * @return bool
+         */
         public function validate(): bool
         {
+            //loop through the rules defined in the model
             foreach($this->rules() as $attribute => $rules)
             {
                 $value = $this->$attribute;
+                //loop through the rules for the attribute
                 foreach($rules as $rule)
                 {
                     $ruleName = $rule;
                     if(!is_string($ruleName))
                     {
+                        //if the rule is not a string, it is an array with the rule name as the first element
                         $ruleName = $rule[0];
                     }
+                    //check if the rule is required and if the value is empty
                     if($ruleName === self::RULE_REQUIRED && !$value)
                     {
                         $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                     }
+                    //check if the rule is email and if the value is not a valid email
                     if($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL))
                     {
                         $this->addErrorForRule($attribute, self::RULE_EMAIL);
                     }
+                    //check if the rule is min and if the value is shorter than the min value
                     if($ruleName === self::RULE_MIN && strlen($value) < $rule['min'])
                     {
                         $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
                     }
+                    //check if the rule is max and if the value is longer than the max value
                     if($ruleName === self::RULE_MAX && strlen($value) > $rule['max'])
                     {
                         $this->addErrorForRule($attribute, self::RULE_MAX, $rule);
                     }
+                    //check if the rule is match and if the value is not the same as the match value
                     if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']})
                     {
                         $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                     }
+                    //check if the rule is unique (in database to) and if the value is not unique
                     if($ruleName === self::RULE_UNIQUE)
                     {
                         $className = $rule['class'];
@@ -124,6 +143,7 @@ namespace app\core
             return empty($this->errors);
         }
 
+        //add an error for a specific attribute and rule
         private function addErrorForRule($attribute, $rule, $params = [])
         {
             $message = $this->errorMessages()[$rule] ?? '';
@@ -134,11 +154,13 @@ namespace app\core
             $this->errors[$attribute][] = $message;
         }
 
+        //add an error for a specific attribute
         public function addError($attribute, $message)
         {
             $this->errors[$attribute][] = $message;
         }
 
+        //get the error message [] for a specific rule
         public function errorMessages()
         {
             return [
@@ -154,11 +176,13 @@ namespace app\core
             ];
         }
 
+        //check if the model has errors
         public function hasError($attribute)
         {
             return $this->errors[$attribute] ?? false;
         }
 
+        //get the first error for a specific attribute
         public function getFirstError($attribute)
         {
             return $this->errors[$attribute][0] ?? false;

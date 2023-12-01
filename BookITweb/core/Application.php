@@ -6,7 +6,7 @@ use app\core\db\Database;
 /**
  * Application
  *
- * Apllication is the core of the framework and the top of the hierarchy.
+ * The core of the framework and the top of the hierarchy.
  * Defines services and properties used by the framework. Responsible for running, and delegating tasks.
  * 
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>

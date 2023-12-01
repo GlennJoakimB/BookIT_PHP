@@ -49,13 +49,13 @@ namespace app\core\middlewares
                         }
                     } elseif ($CurrentActionLvl === 'CourseOwner'){
                         // implement logic for course owner
-                        if($currentRole != '' || $currentRole != UserModel::ROLE_ADMIN){
+                        if($currentRole != '' && $currentRole != UserModel::ROLE_ADMIN){
                             throw new ForbiddenExeption();
                         }
 
                     } elseif ($CurrentActionLvl === ''){
-                        if($currentRole != 'LA' || $currentRole != 'CourseOwner'
-                            || $currentRole != UserModel::ROLE_ADMIN)
+                        if($currentRole != 'LA' && $currentRole != 'CourseOwner'
+                            && $currentRole != UserModel::ROLE_ADMIN)
                         {
                              throw new ForbiddenExeption();
                         }

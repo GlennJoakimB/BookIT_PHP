@@ -3,22 +3,24 @@
 namespace app\models
 {
     use app\core\UserModel;
-	/**
-	 * RegisterModel short summary.
-	 *
-	 * RegisterModel description.
-	 *
-	 * @version 1.0
-	 * @author Trivinyx <tom.a.s.myre@gmail.com>
+
+    /**
+     * RegisterModel short summary.
+     *
+     * RegisterModel description.
+     *
+     * @version 1.0
+     * @author Trivinyx <tom.a.s.myre@gmail.com>
      * @package app\models
-	 */
-	class User extends UserModel
-	{
+     */
+    class User extends UserModel
+    {
         const STATUS_INACTIVE = 0;
         const STATUS_ACTIVE = 1;
         const STATUS_DELETED = 2;
 
-		public string $firstname = '';
+        public int $id = 0;
+        public string $firstname = '';
         public string $lastname = '';
         public string $email = '';
         public int $status = self::STATUS_INACTIVE;
@@ -40,9 +42,9 @@ namespace app\models
             return $this->firstname . ' ' . $this->lastname;
         }
 
-		public function save()
+        public function save()
         {
-            $this->status = self::STATUS_INACTIVE;
+            $this->status = self::STATUS_ACTIVE;
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
 
             return parent::save();
@@ -61,12 +63,17 @@ namespace app\models
                         'class' => self::class
                     ]
                 ],
-                'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 24]],
+                'password' => [
+                    self::RULE_REQUIRED,
+                    [self::RULE_MIN, 'min' => 8],
+                    self::RULE_PWD_STRENGTH,
+                    [self::RULE_MAX, 'max' => 24]
+                ],
                 'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
             ];
         }
 
-        public function attributes(): array
+        public static function attributes(): array
         {
             return ['firstname', 'lastname', 'email', 'password', 'status'];
         }
@@ -82,5 +89,5 @@ namespace app\models
             ];
         }
 
-	}
+    }
 }

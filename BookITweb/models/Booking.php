@@ -15,6 +15,10 @@ namespace app\models
      */
     class Booking extends DbModel
     {
+        const STATUS_AVAILABLE = 0;
+        const STATUS_UNAVAILABLE = 1;
+        const STATUS_DELETED = 2;
+
         public ?int $id = 0;
         public int $course_id = 0;
         public string $subject = '';
@@ -37,7 +41,7 @@ namespace app\models
             return 'id';
         }
 
-        public function attributes(): array
+        public static function attributes(): array
         {
             //array of attributes, excluding the primary key, last_updated.
             return ['course_id', 'subject', 'holder_id', 'start_time', 'end_time', 'booker_id', 'booker_note', 'status'];

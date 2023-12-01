@@ -30,6 +30,8 @@ namespace app\controllers
             return $this->render('home', $params);
 
         }
+
+        //logic for the contact page
         public function contact(Request $request, Response $response)
         {
             //base model for the contact form
@@ -50,7 +52,7 @@ namespace app\controllers
             ]);
         }
 
-        //render the booking view
+        //logic for the booking page
         public function booking(Request $request, Response $response)
         {
             //base model for the contact form

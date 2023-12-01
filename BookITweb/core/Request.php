@@ -7,7 +7,7 @@ namespace app\core;
  *
  * Request class is responsible for handling the request from the client. With methods like
  * getPath, method, isGet, isPost and getBody.
- * 
+ *
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */
@@ -21,10 +21,28 @@ class Request
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $position = strpos($path, '?');
-        if($position === false) {
+        if ($position === false) {
             return $path;
         }
         return substr($path, 0, $position);
+    }
+
+    //get Uri params method
+    public function getUriParams()
+    {
+        $path = $_SERVER['REQUEST_URI'] ?? '/';
+        $position = strpos($path, '?');
+        if ($position === false) {
+            return [];
+        }
+        $params = substr($path, $position + 1);
+        $params = explode('&', $params);
+        $paramsArray = [];
+        foreach ($params as $param) {
+            $param = explode('=', $param);
+            $paramsArray[$param[0]] = $param[1];
+        }
+        return $paramsArray;
     }
 
     public function method()
@@ -46,18 +64,18 @@ class Request
     {
         $body = [];
 
-        if($this->method() === 'get'){
-            foreach($_GET as $key => $value){
+        if ($this->method() === 'get') {
+            foreach ($_GET as $key => $value) {
                 $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
 
-        if($this->method() === 'post'){
-            foreach($_POST as $key => $value){
+        if ($this->method() === 'post') {
+            foreach ($_POST as $key => $value) {
                 $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
-            
+
         return $body;
     }
 

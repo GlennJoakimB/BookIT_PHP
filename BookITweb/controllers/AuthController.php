@@ -96,8 +96,7 @@ namespace app\controllers
                     $courses[$key]->owner = $value->getOwner();
                 }
             }
-            /** @var user app\models\user */
-            $course->owner_id = Application::$app->user->id;
+
             if($request->isPost()){
                 $course->loadData($request->getBody());
                 if($course->validate() && $course->Save()){
@@ -106,6 +105,8 @@ namespace app\controllers
                 }
                 return $this->adminRender($course, $courses);
             }
+            /** @var user app\models\user */
+            $course->owner_id = Application::$app->user->id;
             return $this->adminRender($course, $courses);
         }
 
@@ -126,6 +127,16 @@ namespace app\controllers
             if ($course->owner_id === null){
                 $course->owner_id = Application::$app->user->id;
             }
+            //if input values empty makes them default
+            if(!isset($courses)){
+                $courses = [];}
+            if(!isset($isEdit)){
+                $isEdit = false;}
+            if(!isset($potentialHolders)){
+                $potentialHolders = [];}
+            if(!isset($search)){
+                $search = '';}
+
             return $this->render('admin', [
                 'model' => $course,
                 'courses' => $courses,
@@ -164,31 +175,29 @@ namespace app\controllers
             if($request->isGet()){ $this->admin($request); }
             $body = $request->getBody();
             $isEdit = $body['isEdit'];
+
             $course = new Course();
-            $course->loadData(explode('&',$body['course']));
-            $oldOwnerId = $course->owner_id;
-            $course->owner_id = $body['uid'];
+            $course->loadData($course->fromString($body['course']));
+
+            $course->owner_id = (int) $body['uid'];
+
             $courses = Course::findAll();
-            if($course->validate()){
-                Application::$app->session->setFlash('success', 'New holder set!');
-                return $this->adminRender($course, $courses, $isEdit,[], $body['search']);
-            }else{
-                //if validation fails, set owner_id back to old value and set flash message
-                Application::$app->session->setFlash('error', 'New holder could not be set');
-                $course->owner_id = $oldOwnerId;
-            }
+            Application::$app->session->setFlash('success', 'New holder set!');
+
             return $this->adminRender($course, $courses, (bool)$isEdit);
         }
 
         public function postSearch(Request $request){
             //if get request, redirect to admin
             if ($request->isGet()) { $this->admin($request);}
+            $body = $request->getBody();
 
-            $search = $request->getBody()['search'];
-            $isEdit = unserialize($request->getBody()['isEdit']);
+            $search = $body['search'];
+            $isEdit = unserialize($body['isEdit']);
             $course = new course();
 
-            $course->loadData(explode('&',($request->getBody()['course'])));
+            $course->loadData($course->fromString($body['course']));
+
             $courses = Course::findAll();
 
             //run search of users, mathing the search string on db

@@ -26,6 +26,14 @@ class Controller
     {
         $this->layout = $layout;
     }
+    
+    /**
+     * Render the view with given paramaters
+     * 
+     * @param mixed $view 
+     * @param mixed $params 
+     * @return array|string
+     */
     public function render($view, $params = []): string
     {
         return Application::$app->view->renderView($view, $params);
@@ -33,7 +41,7 @@ class Controller
 
     /**
      * Register middleware
-     *
+     * 
      * @param \app\core\BaseMiddleware $middleware
      */
     public function registerMiddleware(BaseMiddleware $middleware){

@@ -35,13 +35,14 @@ $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
 $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/profile', [AuthController::class, 'profile']);
-$app->router->get('/admin', [AuthController::class, 'admin']);
-$app->router->post('/admin', [AuthController::class, 'admin']);
 
-$app->router->get('/admin/editcourse', [AuthController::class, 'editCourse']);
-$app->router->post('/admin/editcourse', [AuthController::class, 'editCourse']);
-$app->router->post('/admin/search', [AuthController::class, 'postSearch']);
-$app->router->post('/admin/newHolder', [AuthController::class, 'postSetNewHolder']);
+//Admin routes
+$app->router->get('/admin', [AdminController::class, 'admin']);
+$app->router->post('/admin', [AdminController::class, 'admin']);
+$app->router->get('/admin/editcourse', [AdminController::class, 'editCourse']);
+$app->router->post('/admin/editcourse', [AdminController::class, 'editCourse']);
+$app->router->post('/admin/search', [AdminController::class, 'postSearch']);
+$app->router->post('/admin/newHolder', [AdminController::class, 'postSetNewHolder']);
 
 //starting the application
 $app->run();

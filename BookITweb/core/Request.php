@@ -14,7 +14,7 @@ namespace app\core;
 class Request
 {
     /**
-     * Extracts url from request
+     * Extracts url from request 
      * @return path string
      */
     public function getPath()
@@ -25,6 +25,24 @@ class Request
             return $path;
         }
         return substr($path, 0, $position);
+    }
+
+    //get Uri params method
+    public function getUriParams()
+    {
+        $path = $_SERVER['REQUEST_URI'] ?? '/';
+        $position = strpos($path, '?');
+        if($position === false) {
+            return [];
+        }
+        $params = substr($path, $position + 1);
+        $params = explode('&', $params);
+        $paramsArray = [];
+        foreach($params as $param){
+            $param = explode('=', $param);
+            $paramsArray[$param[0]] = $param[1];
+        }
+        return $paramsArray;
     }
 
     public function method()

@@ -17,8 +17,7 @@ namespace app\core\db
     abstract class DbModel extends Model
     {
 		abstract public static function tableName(): string;
-		abstract public function attributes(): array;
-		abstract public static function primaryKey(): string;
+		abstract public static function attributes(): array;
 		
 		/**
 		 * Base function for saving data to the database. Returns true when process is successful. 
@@ -30,9 +29,9 @@ namespace app\core\db
 			$tablename = $this->tableName();
 			$attributes = $this->attributes();
 			$params = array_map(fn($attr) => ":$attr", $attributes);
-			$statement = self::prepare("INSERT INTO $tablename (".implode(',', $attributes).") 
+			$statement = self::prepare("INSERT INTO $tablename (".implode(',', $attributes).")
 						VALUES (".implode(',', $params).")");
-			
+
 			foreach($attributes as $attribute)
 			{
                 $statement->bindValue(":$attribute", $this->{$attribute});
@@ -40,6 +39,41 @@ namespace app\core\db
             $statement->execute();
             return true;
 		}
+        public function toArray()
+        {
+            $array = [];
+            foreach (static::attributes() as $attribute) {
+                $array[$attribute] = $this->{$attribute};
+            }
+            return $array;
+        }
+
+        public function update()
+        {
+			$tablename = $this->tableName();
+			$attributes = $this->attributes();
+			//get self::primaryKey() value
+			$primaryKey = $this->primaryKey();
+            $primaryKeyValue = $this->{$primaryKey};
+			$attributes = $this->attributes();
+
+			//if primary key is in attributes, remove it
+			if(($key = array_search($primaryKey, $attributes)) !== false) {
+                unset($attributes[$key]);
+            }
+            //map attributes to sql syntax
+			$params = array_map(fn($attr) => "$attr = :$attr", $attributes);
+            $statement = self::prepare("UPDATE $tablename SET ".implode(',', $params)."
+							WHERE $primaryKey = :primaryKey");
+            //bind primary key value
+            $statement->bindValue(":primaryKey", $primaryKeyValue);
+			//bind attributes
+            foreach ($attributes as $attribute) {
+                $statement->bindValue(":$attribute", $this->{$attribute});
+            }
+            $statement->execute();
+            return true;
+        }
 
         public static function findOne($where)
         {
@@ -55,6 +89,43 @@ namespace app\core\db
         }
 
 		//implement findMany
+        public static function findMany($where)
+        {
+			$tablename = static::tableName();
+			$attributes = array_keys($where);
+			$sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+			$statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
+			foreach($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+			$statement->execute();
+			//return array of objects
+            return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
+        }
+
+		//implement SearchForValues
+        public static function SearchForValues($where)
+        {
+			$tablename = static::tableName();
+            $attributes = array_keys($where);
+			$sql = implode(" OR ", array_map(fn($attr) => "$attr LIKE :$attr", $attributes));
+			$statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
+            foreach($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+			$statement->execute();
+			//return array of objects
+            return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
+        }
+
+		//get all
+        public static function findAll()
+        {
+			$tablename = static::tableName();
+            $statement = self::prepare("SELECT * FROM $tablename");
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_CLASS, static::class);
+        }
 
         public static function prepare($sql)
         {

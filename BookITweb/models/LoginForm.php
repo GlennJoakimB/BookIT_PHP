@@ -39,6 +39,7 @@ namespace app\models
         //login the user
         public function login()
         {
+            //TODO: Add more anonomous login attempts errormessages to prevent bruteforce attacks
             //validate the model
             $user = User::findOne(['email' => $this->email]);
             if(!$user)

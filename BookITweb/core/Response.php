@@ -12,9 +12,13 @@ namespace app\core;
  */
 class Response
 {
-    public function setStatusCode(int $code)
+    public function setStatusCode($code)
     {
-        http_response_code($code);
+        if (is_int($code)) {
+            http_response_code($code);
+        } else {
+            http_response_code(500);
+        }
     }
 
     public function redirect($url)

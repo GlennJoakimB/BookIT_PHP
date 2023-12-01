@@ -21,6 +21,8 @@ namespace app\core
         public const RULE_MAX = 'max';
         public const RULE_MATCH = 'match';
         public const RULE_UNIQUE = 'unique';
+        public const RULE_USER_EXISTS = 'user_exists';
+        public const RULE_PWD_STRENGTH = 'pwd_strength';
 
         public array $errors = [];
 
@@ -36,6 +38,7 @@ namespace app\core
                 }
             }
         }
+        
 
         //returns an array of attributes and their labels
         public function labels(): array
@@ -111,6 +114,30 @@ namespace app\core
                             $this->addErrorForRule($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
                         }
                     }
+                    if($ruleName === self::RULE_USER_EXISTS)
+                    {
+                        //get tablename from application userClass
+                        $tableName = Application::$app->userClass::tableName();
+                        $stmt = Application::$app->db->prepare("SELECT * FROM $tableName WHERE id = :attr");
+                        $stmt->bindValue(":attr", $value);
+                        $stmt->execute();
+                        $record = $stmt->fetchObject();
+                        if(!$record)
+                        {
+                            $this->addErrorForRule($attribute, self::RULE_USER_EXISTS);
+                        }
+                    }
+                    if($ruleName === self::RULE_PWD_STRENGTH)
+                    {
+                        $uppercase = preg_match('@[A-Z]@', $value);
+                        $lowercase = preg_match('@[a-z]@', $value);
+                        $number    = preg_match('@[0-9]@', $value);
+                        $specialChars = preg_match('@[^\w]@', $value);
+                        if(!$uppercase || !$lowercase || !$number || !$specialChars)
+                        {
+                            $this->addErrorForRule($attribute, self::RULE_PWD_STRENGTH);
+                        }
+                    }
                 }
             }
             return empty($this->errors);
@@ -142,7 +169,10 @@ namespace app\core
                 self::RULE_MIN => 'Min length of this field must be {min}',
                 self::RULE_MAX => 'Max length of this field must be {max}',
                 self::RULE_MATCH => 'This field must be the same as {match}',
-                self::RULE_UNIQUE => 'Record with this {field} already exists'
+                self::RULE_UNIQUE => 'Record with this {field} already exists',
+                self::RULE_USER_EXISTS => 'Invalid User selected, try another.',
+                self::RULE_PWD_STRENGTH => 'Password must contain at least 1 uppercase,
+                                        1 lowercase, 1 number and 1 special character.'
             ];
         }
 

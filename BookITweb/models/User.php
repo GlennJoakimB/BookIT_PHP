@@ -18,6 +18,7 @@ namespace app\models
         const STATUS_ACTIVE = 1;
         const STATUS_DELETED = 2;
 
+        public int $id = 0;
 		public string $firstname = '';
         public string $lastname = '';
         public string $email = '';
@@ -56,12 +57,14 @@ namespace app\models
                 'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [
                     self::RULE_UNIQUE, 'class' => self::class
                     ]],
-                'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 24]],
+                'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8],
+                              self::RULE_PWD_STRENGTH , [self::RULE_MAX, 'max' => 24]
+                              ],
                 'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
             ];
         }
 
-        public function attributes(): array
+        public static function attributes(): array
         {
             return ['firstname', 'lastname', 'email', 'password', 'status'];
         }

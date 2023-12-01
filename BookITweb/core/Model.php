@@ -22,16 +22,16 @@ namespace app\core
         public const RULE_MATCH = 'match';
         public const RULE_UNIQUE = 'unique';
 
+        public string $bannerError = '';
         public array $errors = [];
 
         abstract public function rules(): array;
 
         public function loadData($data)
         {
-            foreach($data as $key => $value)
+            foreach ($data as $key => $value)
             {
-                if(property_exists($this, $key))
-                {
+                if (property_exists($this, $key)) {
                     $this->$key = $value;
                 }
             }
@@ -59,26 +59,21 @@ namespace app\core
         public function validate(): bool
         {
             //loop through the rules defined in the model
-            foreach($this->rules() as $attribute => $rules)
-            {
+            foreach ($this->rules() as $attribute => $rules) {
                 $value = $this->$attribute;
                 //loop through the rules for the attribute
-                foreach($rules as $rule)
-                {
+                foreach ($rules as $rule) {
                     $ruleName = $rule;
-                    if(!is_string($ruleName))
-                    {
+                    if (!is_string($ruleName)) {
                         //if the rule is not a string, it is an array with the rule name as the first element
                         $ruleName = $rule[0];
                     }
                     //check if the rule is required and if the value is empty
-                    if($ruleName === self::RULE_REQUIRED && !$value)
-                    {
+                    if ($ruleName === self::RULE_REQUIRED && !$value) {
                         $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                     }
                     //check if the rule is email and if the value is not a valid email
-                    if($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL))
-                    {
+                    if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                         $this->addErrorForRule($attribute, self::RULE_EMAIL);
                     }
                     //check if the rule is min and if the value is shorter than the min value
@@ -94,7 +89,7 @@ namespace app\core
                         $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                     }
                     //check if the rule is unique (in database to) and if the value is not unique
-                    if($ruleName === self::RULE_UNIQUE)
+                    if ($ruleName === self::RULE_UNIQUE) {
                     {
                         $className = $rule['class'];
                         $uniqueAttr = $rule['attribute'] ?? $attribute;
@@ -103,8 +98,7 @@ namespace app\core
                         $stmt->bindValue(":attr", $value);
                         $stmt->execute();
                         $record = $stmt->fetchObject();
-                        if($record)
-                        {
+                        if ($record) {
                             $this->addErrorForRule($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
                         }
                     }
@@ -117,8 +111,7 @@ namespace app\core
         private function addErrorForRule($attribute, $rule, $params = [])
         {
             $message = $this->errorMessages()[$rule] ?? '';
-            foreach($params as $key => $value)
-            {
+            foreach ($params as $key => $value) {
                 $message = str_replace("{{$key}}", $value, $message);
             }
             $this->errors[$attribute][] = $message;
@@ -128,6 +121,12 @@ namespace app\core
         public function addError($attribute, $message)
         {
             $this->errors[$attribute][] = $message;
+        }
+
+        //add a banner error for an entire form
+        public function addBannerError(string $error)
+        {
+            $this->bannerError = sprintf('<div class="alert alert-danger" role="alert">%s</div>', $error);
         }
 
         //get the error message [] for a specific rule

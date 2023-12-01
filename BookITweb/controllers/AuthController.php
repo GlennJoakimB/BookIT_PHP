@@ -29,9 +29,18 @@ namespace app\controllers
             $this->registerMiddleware(new AuthMiddleware($actions, ['admin' => UserModel::ROLE_ADMIN]));
         }
 
+
+        /**
+         * Method for handeling login logic.
+         *
+         * @param Request $request
+         * @param Response $response
+         * @return array|string
+         */
         public function login(Request $request, Response $response)
         {
             $loginForm = new LoginForm();
+            $bannerError = '';
             if ($request->isPost()) {
                 $loginForm->loadData($request->getBody());
 
@@ -40,10 +49,14 @@ namespace app\controllers
 
                     return;
                 }
+
+                //retrieve banner error if any
+                $bannerError = $loginForm->bannerError;
             }
             $this->setLayout('auth');
             return $this->render('login', [
-                'model' => $loginForm
+                'model' => $loginForm,
+                'bannerError' => $bannerError
             ]);
         }
 

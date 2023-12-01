@@ -8,10 +8,10 @@ $this->title = "Home";
 
 
 <div class="my-5">
-    Temp_list of available courses:
+    <!--Temp_list of courses:-->
     <div id="Topbar_courses" class="">
         <div>
-            <a href="/booking">Book</a>
+            <a href="/booking">Book appointment </a>
         </div>
     </div>
     <div class="list-group"></div>

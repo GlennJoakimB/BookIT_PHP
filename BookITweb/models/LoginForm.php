@@ -2,18 +2,19 @@
 
 namespace app\models
 {
-	use app\core\Model;
+    use app\core\Model;
     use app\models\User;
     use app\core\Application;
-	/**
-	 * LoginForm is the model for the login form.
-	 *
-	 * @version 1.0
-	 * @author Trivinyx <tom.a.s.myre@gmail.com>
+
+    /**
+     * LoginForm is the model for the login form.
+     *
+     * @version 1.0
+     * @author Trivinyx <tom.a.s.myre@gmail.com>
      * @package app\models
-	 */
-	class LoginForm extends Model
-	{
+     */
+    class LoginForm extends Model
+    {
         public string $email = '';
         public string $password = '';
 
@@ -41,20 +42,18 @@ namespace app\models
         {
             //validate the model
             $user = User::findOne(['email' => $this->email]);
-            if(!$user)
-            {
-                $this->addError('email', 'User does not exist with this email address');
-                return false;
-            }
+            if (!$user || !password_verify($this->password, $user->password)) {
+                //write an unspecific error regarding wrong input
+                $this->addBannerError('Username or password is incorrect');
 
-            if(!password_verify($this->password, $user->password))
-            {
-                $this->addError('password', 'Password is incorrect');
+                //just mark fields as red, with no message added
+                $this->addError('email', '');
+                $this->addError('password', '');
                 return false;
             }
 
             //send the user to the login function in the application, and return the result
             return Application::$app->login($user);
         }
-	}
+    }
 }

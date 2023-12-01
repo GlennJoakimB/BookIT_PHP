@@ -5,6 +5,7 @@ namespace app\core\middlewares
 	use app\core\Application;
     use app\core\middlewares\BaseMiddleware;
 	use app\core\exeption\ForbiddenExeption;
+    use app\core\UserModel;
 	/**
 	 * AuthMiddleware short summary.
 	 *
@@ -39,10 +40,26 @@ namespace app\core\middlewares
                 $currentAction = Application::$app->controller->action;
                 $currentRole = Application::$app->user->role ?? null;
                 if (array_key_exists($currentAction, $this->roleActionMap)) {
-                    //check if current role is correct
-                    if ($this->roleActionMap[$currentAction] === $currentRole) {
-                    } //do nothing
-                    else {
+                    //gets min auth lvl
+                    $CurrentActionLvl = $this->roleActionMap[$currentAction];
+
+                    if($CurrentActionLvl=== UserModel::ROLE_ADMIN){
+                        if($currentRole != UserModel::ROLE_ADMIN){
+                            throw new ForbiddenExeption();
+                        }
+                    } elseif ($CurrentActionLvl === 'CourseOwner'){
+                        // implement logic for course owner
+                        if($currentRole != '' || $currentRole != UserModel::ROLE_ADMIN){
+                            throw new ForbiddenExeption();
+                        }
+
+                    } elseif ($CurrentActionLvl === ''){
+                        if($currentRole != 'LA' || $currentRole != 'CourseOwner'
+                            || $currentRole != UserModel::ROLE_ADMIN)
+                        {
+                             throw new ForbiddenExeption();
+                        }
+                    } else{
                         throw new ForbiddenExeption();
                     }
                 }

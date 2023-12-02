@@ -2,6 +2,8 @@
 use app\core\Application;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
+use app\controllers\AdminController;
+use app\controllers\CourseController;
 
 //getting dependencies
 require_once __DIR__ . '/../vendor/autoload.php';

@@ -29,5 +29,10 @@ namespace app\core\form
         {
             return new InputField($model, $attribute);
         }
+
+        public function selectionField(Model $model, $attribute)
+        {
+            return new SelectField($model, $attribute);
+        }
 	}
 }

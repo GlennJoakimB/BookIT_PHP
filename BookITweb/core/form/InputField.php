@@ -20,7 +20,6 @@ namespace app\core\form
         public const TYPE_PASSWORD = 'password';
         public const TYPE_NUMBER = 'number';
         public const TYPE_DATE = 'datetime-local';
-        public const TYPE_HIDDEN = 'hidden';
 
         public string $type;
 
@@ -35,14 +34,9 @@ namespace app\core\form
             $this->type = self::TYPE_PASSWORD;
             return $this;
         }
-        public function dateField(){
-            $this->type = self::TYPE_DATE;
-            return $this;
-        }
-
-        public function hiddenField()
+        public function dateField()
         {
-            $this->type = self::TYPE_HIDDEN;
+            $this->type = self::TYPE_DATE;
             return $this;
         }
 

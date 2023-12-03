@@ -22,7 +22,7 @@ namespace app\models
         public int $id = 0;
         public string $name = '';
         public int $status = self::STATUS_INACTIVE;
-        public ?int $owner_id = null;
+        public int $owner_id = 0;
         public string $description = '';
         public string $start_date = '';
         public string $end_date = '';
@@ -89,5 +89,6 @@ namespace app\models
 
             return parent::save();
         }
+
 	}
 }

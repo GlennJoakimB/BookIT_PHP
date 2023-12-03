@@ -49,6 +49,28 @@ namespace app\core\db
             return $array;
         }
 
+        public function toString()
+        {
+            return implode('|', self::toArray());
+        }
+
+        public function fromString(string $input)
+        {
+            $array = explode('|', $input);
+            $returnArray = [];
+            $i = 0;
+            foreach(static::attributes() as $attribute){
+                $type = gettype($this->{$attribute});
+                $sucsessCast = settype($array[$i],$type);
+                if(!$sucsessCast){
+                    throw new \Exception();
+                }
+                $returnArray[$attribute] = $array[$i];
+                $i++;
+            }
+            return $returnArray;
+        }
+
         public function update()
         {
             $tablename = $this->tableName();

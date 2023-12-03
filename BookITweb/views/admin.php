@@ -8,7 +8,8 @@
 
 //other then main post (Course form), The post body should be constructed like this:
 // $postBody = [course => [$course], isEdit => (boool) $isEdit, search => (string) $search, uid =>  (int)$uid];
-$course = implode('&', $model->toArray());
+
+$course = $model->toString();
 
 $this->title = "admin";
 ?>
@@ -60,7 +61,7 @@ $this->title = "admin";
                     $showResultAmount;
                     $arrayLen = sizeof($potentialHolders);
                     $i = 0;
-                    while ($i <= $showResultAmount || $i < $arrayLen):
+                    while ($i <= $showResultAmount && $i<$arrayLen) : 
                         $holder = $potentialHolders[$i];
                         ?>
                         <tr>
@@ -73,7 +74,7 @@ $this->title = "admin";
                                     <input type="hidden" name="isEdit" value="<?= serialize($isEdit) ?>" />
                                     <input type="hidden" name="search" value="<?= $searchValue ?>" />
                                     <input type="hidden" name="uid" value="<?= $holder->id ?>" />
-                                    <button type="submit" class="btn btn-primary">Set as course holder</button>
+                                    <button type="submit" class="m-lg-1 btn btn-primary" id="SetButton<?= $i?>">Set as course holder</button>
                                 </form>
                             </td>
                         </tr>
@@ -86,7 +87,7 @@ $this->title = "admin";
     <!-- Left colum-->
     <div class="col">
         <p> 2. Fill out the form below to create a new course</p>
-        <?php $form = \app\core\form\Form::begin('', "post") ?>
+        <?php $form = \app\core\form\Form::begin('/admin', "post") ?>
         <?php echo $form->field($model, 'name') ?>
         <?php
         //Display dislpayname of $model->owner_id if it exists
@@ -94,8 +95,10 @@ $this->title = "admin";
             $ownerName = $model->getOwner()->getDisplayName();
             echo "<p>Course holder: (Use the right search to change) </p>
                   <p> $ownerName</p>";
+            
         }
         ?>
+        <input type="hidden" name="owner_id" value="<?= $model->owner_id?>" />
         <?php echo $form->field($model, 'description') ?>
         <div class="row">
             <div class="col">

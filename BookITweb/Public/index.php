@@ -2,6 +2,7 @@
 use app\core\Application;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
+use app\controllers\BookingController;
 use app\controllers\AdminController;
 use app\controllers\CourseController;
 
@@ -30,6 +31,12 @@ $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'contact']);
 
+//booking routes
+$app->router->get('/booking', [BookingController::class, 'booking']);
+$app->router->post('/booking', [BookingController::class, 'booking']);
+$app->router->get('/booking/setup', [BookingController::class, 'bookingSetup']);
+$app->router->post('/booking/setup', [BookingController::class, 'bookingSetup']);
+
 //auth routes
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
@@ -45,6 +52,7 @@ $app->router->get('/admin/editcourse', [AdminController::class, 'editCourse']);
 $app->router->post('/admin/editcourse', [AdminController::class, 'editCourse']);
 $app->router->post('/admin/search', [AdminController::class, 'postSearch']);
 $app->router->post('/admin/newHolder', [AdminController::class, 'postSetNewHolder']);
+
 
 //starting the application
 $app->run();

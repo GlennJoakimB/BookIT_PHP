@@ -8,6 +8,7 @@
 
 //other then main post (Course form), The post body should be constructed like this:
 // $postBody = [course => [$course], isEdit => (boool) $isEdit, search => (string) $search, uid =>  (int)$uid];
+
 $course = $model->toString();
 
 $this->title = "admin";
@@ -20,10 +21,10 @@ $this->title = "admin";
 </div>
 
 <!--/.Page intro-->
-<?php if ($isEdit) : ?>
+<?php if ($isEdit): ?>
     <h3>Edit course:</h3>
     <a href="/admin" class="btn btn-primary">Create new course</a>
-<?php else : ?>
+<?php else: ?>
     <h3>Create a new course:</h3>
 <?php endif; ?>
 
@@ -37,17 +38,17 @@ $this->title = "admin";
                 <form action="/admin/search" method="post">
                     <input type="hidden" name="course" value="<?= $course ?>" />
                     <input type="hidden" name="isEdit" value="<?= serialize($isEdit) ?>" />
-                    <input type="text" class="form-control"  name="search" value="<?= $searchValue ?>" aria-describedby="button-addon2" />
+                    <input type="text" class="form-control" name="search" value="<?= $searchValue ?>" aria-describedby="button-addon2" />
                     <input type="hidden" name="uid" value="<?= null; ?>" />
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-outline-secondary" id="button-addon2">Search</button>
                     </div>
-                 </form>
+                </form>
             </div>
         </div>
         <p>Search results</p>
         <!-- TODO: Add display list of holders, with button to insert them into $model->owner_id-->
-        <?php if (!empty($potentialHolders)) : ?>
+        <?php if (!empty($potentialHolders)): ?>
             <table>
                 <thead>
                     <tr>
@@ -56,7 +57,7 @@ $this->title = "admin";
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     $showResultAmount;
                     $arrayLen = sizeof($potentialHolders);
                     $i = 0;
@@ -77,9 +78,9 @@ $this->title = "admin";
                                 </form>
                             </td>
                         </tr>
-                    <?php $i++; endwhile; ?>
+                        <?php $i++; endwhile; ?>
             </table>
-        <?php else : ?>
+        <?php else: ?>
             <p>No results found</p>
         <?php endif; ?>
     </div>
@@ -116,32 +117,32 @@ $this->title = "admin";
 <h3>Current courses</h3>
 
 <!--Table-->
-<?php if (!empty($courses)) : ?>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Course name</th>
-            <th scope="col">Course holder</th>
-            <th scope="col">Start date</th>
-            <th scope="col">End date</th>
-            <th scope="col">Edit</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($courses as $course) : ?>
-        <?php /** @var $course app\models\course */
-              $ownerName = $course->getOwner()->getDisplayName();
-        ?>
+<?php if (!empty($courses)): ?>
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td><?php echo $course->name ?></td>
-                <td><?php echo $ownerName ?></td>
-                <td><?php echo $course->start_date ?></td>
-                <td><?php echo $course->end_date ?></td>
-                <td><a href="/admin/editcourse?id=<?= $course->id ?>" class="btn btn-primary">Edit</a></td>
+                <th scope="col">Course name</th>
+                <th scope="col">Course holder</th>
+                <th scope="col">Start date</th>
+                <th scope="col">End date</th>
+                <th scope="col">Edit</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-<?php else : ?>
+        </thead>
+        <tbody>
+            <?php foreach ($courses as $course): ?>
+                <?php /** @var $course app\models\course */
+                $ownerName = $course->getOwner()->getDisplayName();
+                ?>
+                <tr>
+                    <td><?php echo $course->name ?></td>
+                    <td><?php echo $ownerName ?></td>
+                    <td><?php echo $course->start_date ?></td>
+                    <td><?php echo $course->end_date ?></td>
+                    <td><a href="/admin/editcourse?id=<?= $course->id ?>" class="btn btn-primary">Edit</a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
     <p>No courses found</p>
 <?php endif; ?>

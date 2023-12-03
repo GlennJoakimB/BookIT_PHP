@@ -14,9 +14,17 @@ namespace app\core\form
 	 */
 	class Form
 	{
-		public static function begin($action, $method)
+		/**
+		 * Begins a new form using given variables
+         * 
+		 * @param mixed $action The action the form with preform when submitting data. 
+		 * @param mixed $method post or get.
+		 * @param mixed $id Gives an id to the form.
+		 * @return Form
+		 */
+		public static function begin($action, $method, $id = '')
         {
-            echo sprintf('<form action="%s" method="%s">', $action, $method);
+            echo sprintf('<form action="%s" method="%s" id="%s">', $action, $method, $id);
             return new Form();
         }
 
@@ -28,6 +36,11 @@ namespace app\core\form
         public function field(Model $model, $attribute)
         {
             return new InputField($model, $attribute);
+        }
+
+        public function selectionField(Model $model, $attribute)
+        {
+            return new SelectField($model, $attribute);
         }
 	}
 }

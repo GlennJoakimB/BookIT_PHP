@@ -1,0 +1,8 @@
+.logo {
+    display: flex;
+    align-items: center;
+}
+.booking_info_label {
+    color: #6e7b89;
+    font-size: 0.8rem;
+}

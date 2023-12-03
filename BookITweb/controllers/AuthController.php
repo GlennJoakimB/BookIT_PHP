@@ -68,7 +68,7 @@ namespace app\controllers
         public function logout(Request $request, Response $response)
         {
             Application::$app->logout();
-            $response->redirect('/');
+            $response->redirect('/login');
         }
 
         public function register(Request $request)
@@ -81,9 +81,9 @@ namespace app\controllers
                     Application::$app->session->setFlash('success', 'Thanks for registering');
                     Application::$app->response->redirect('/');
                 }
-                return $this->render('register', [
-                    'model' => $user
-                ]);
+                //return $this->render('register', [
+                //    'model' => $user
+                //]);
             }
             $this->setLayout('auth');
             return $this->render('register', [

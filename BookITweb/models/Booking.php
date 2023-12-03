@@ -2,6 +2,7 @@
 
 namespace app\models
 {
+    use app\core\Application;
     use app\core\db\DbModel;
 
     /**
@@ -15,21 +16,29 @@ namespace app\models
      */
     class Booking extends DbModel
     {
-        const STATUS_AVAILABLE = 0;
-        const STATUS_UNAVAILABLE = 1;
-        const STATUS_DELETED = 2;
+        const STATUS_DELETED = 0;
+        const STATUS_AVAILABLE = 1;
+        const STATUS_UNAVAILABLE = 2;
 
         public ?int $id = 0;
+        public string $group_id = '';
         public int $course_id = 0;
+        public string $course_name = '';
         public string $subject = '';
         public int $holder_id = 0;
+        public ?User $holder = null;
+        public string $date = '';
         public string $start_time = '';
         public string $end_time = '';
-        public ?int $booker_id = 0;
+        public ?int $booker_id = null;
+        public ?User $booker = null;
         public ?string $booker_note = '';
         public int $status = 0;
         public string $last_updated = '';
-        public int $la_booked = 0;
+
+        //for determining the button pressed
+        public string $submit = '';
+
 
         public static function tableName(): string
         {
@@ -49,25 +58,62 @@ namespace app\models
 
         public function rules(): array
         {
-            return [];
+            return [
+                'course_id' => [self::RULE_REQUIRED],
+                'subject' => [self::RULE_REQUIRED],
+                'date' => [self::RULE_REQUIRED],
+                'start_time' => [self::RULE_REQUIRED],
+                'end_time' => [self::RULE_REQUIRED]
+            ];
         }
 
         public function labels(): array
         {
             return [
+                'course_id' => 'Course',
+                'subject' => 'Subject',
+                'date' => 'Date',
+                'start_time' => 'Start time',
+                'end_time' => 'End time',
                 'booker_note' => 'Booking notes'
             ];
+        }
+
+        //finds holder from db
+        public function getHolder()
+        {
+            //return User::findOne(['id' => $this->holder_id]) and set local holder;
+            $this->holder = User::findOne(['id' => $this->holder_id]);
+            return $this->holder;
+        }
+
+        //find booker from db
+        public function getBooker()
+        {
+            //return User::findOne(['id' => $this->booker_id]) and set local booker;
+            $this->booker = User::findOne(['id' => $this->booker_id]);
+            return $this->booker;
         }
 
         public function save()
         {
             //format variables
-            //$this->status = self::STATUS_INACTIVE;
-            //$this->password = password_hash($this->password, PASSWORD_DEFAULT);
+            $this->start_time = $this->date . 'T' . $this->start_time;
+
 
             //tell DbModel to save
-            return parent::save();
+            //return parent::save();
         }
 
+
+        public function create() {
+            //format variables
+            $this->holder_id = Application::$app->user->id;
+            $this->status = self::STATUS_AVAILABLE;
+
+
+            //tell DbModel to save
+            //return parent::save();
+        }
     }
 }

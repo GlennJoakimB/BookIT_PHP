@@ -5,10 +5,8 @@ namespace app\controllers
     use app\core\Application;
     use app\core\Controller;
     use app\core\Request;
-    use app\models\Booking;
     use app\models\ContactForm;
     use app\core\Response;
-
 
     /**
      * SiteController short summary.
@@ -25,7 +23,7 @@ namespace app\controllers
         {
             //renders the home page on get and post
             $params = [
-                'name' => !Application::isGuest() ? Application::$app->user->getDisplayName() : ''
+                'name' => !Application::isGuest() ? 'Welcome ' . Application::$app->user->getDisplayName() : ''
             ];
             return $this->render('home', $params);
 
@@ -49,32 +47,6 @@ namespace app\controllers
             //render the contact page, with the contact model
             return $this->render('contact', [
                 'model' => $contact
-            ]);
-        }
-
-        //logic for the booking page
-        public function booking(Request $request, Response $response)
-        {
-            //base model for the contact form
-            $bookingform = new Booking();
-
-            //get available bookings from db
-            $bookings = Booking::findMany(['la_booked' => 1]);
-
-            //if the request is post, load the data from the request body
-            if ($request->isPost()) {
-                $bookingform->loadData($request->getBody());
-
-                //validate and create booking
-                if ($bookingform->validate() && $bookingform->save()) {
-                    Application::$app->session->setFlash('success', 'Your booking is registered.');
-                    return $response->redirect('/booking');
-                }
-            }
-            //render the booking page, with the booking model
-            return $this->render('booking', [
-                'model' => $bookingform,
-                'bookings' => $bookings
             ]);
         }
     }

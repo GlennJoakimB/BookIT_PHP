@@ -2,6 +2,7 @@
 use app\core\Application;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
+use app\controllers\BookingController;
 
 //getting dependencies
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -27,9 +28,12 @@ $app = new Application(dirname(__DIR__), $config);
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'contact']);
-/*$app->router->post('/calendar', [SiteController::class, 'calendar']);*/
-$app->router->get('/booking', [SiteController::class, 'booking']);
-$app->router->post('/booking', [SiteController::class, 'booking']);
+
+//booking routes
+$app->router->get('/booking', [BookingController::class, 'booking']);
+$app->router->post('/booking', [BookingController::class, 'booking']);
+$app->router->get('/booking/setup', [BookingController::class, 'bookingSetup']);
+$app->router->post('/booking/setup', [BookingController::class, 'bookingSetup']);
 
 //auth routes
 $app->router->get('/login', [AuthController::class, 'login']);

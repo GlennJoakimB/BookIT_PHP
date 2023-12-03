@@ -20,6 +20,8 @@ namespace app\core\form
         public const TYPE_PASSWORD = 'password';
         public const TYPE_NUMBER = 'number';
         public const TYPE_DATE = 'datetime-local';
+        public const TYPE_DAY = 'date';
+        public const TYPE_TIME = 'time';
 
         public string $type;
 
@@ -37,6 +39,18 @@ namespace app\core\form
         public function dateField()
         {
             $this->type = self::TYPE_DATE;
+            return $this;
+        }
+
+        public function dayField()
+        {
+            $this->type = self::TYPE_DAY;
+            return $this;
+        }
+
+        public function timeField()
+        {
+            $this->type = self::TYPE_TIME;
             return $this;
         }
 

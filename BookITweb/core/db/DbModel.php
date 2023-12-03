@@ -91,7 +91,7 @@ namespace app\core\db
          * Find all objects from db based on paramaters
          *
          * @param mixed $where Paramaters for specifying the result
-         * @return bool|object
+         * @return bool|object|array
          */
         public static function findMany($where)
         {
@@ -103,13 +103,13 @@ namespace app\core\db
          *
          * @param mixed $where Paramaters for specifying the result
          * @param bool $many Whether to return all objects found, or first one
-         * @return bool|object
+         * @return bool|object|array
          */
-        private static function find($where, bool $many = false)
+        private static function find($where, bool $many = false):bool|object|array
         {
             $tablename = static::tableName();
             $attributes = array_keys($where);
-            $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+            $sql = implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
             $statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
             foreach ($where as $key => $item) {
                 $statement->bindValue(":$key", $item);

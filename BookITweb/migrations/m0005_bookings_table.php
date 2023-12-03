@@ -17,7 +17,6 @@ public function up()
             status TINYINT NOT NULL,
             last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            la_booked TINYINT(4) NOT NULL DEFAULT 0,
             FOREIGN KEY (course_id) REFERENCES courses(id),
             FOREIGN KEY (holder_id) REFERENCES users(id),
             FOREIGN KEY (booker_id) REFERENCES users(id)

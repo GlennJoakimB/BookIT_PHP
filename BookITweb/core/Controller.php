@@ -34,9 +34,9 @@ class Controller
      * @param mixed $params 
      * @return array|string
      */
-    public function render($view, $params = []): string
+    public function render($view, $params = [], $withComponents = false): string
     {
-        return Application::$app->view->renderView($view, $params);
+        return Application::$app->view->renderView($view, $params, $withComponents);
     }
 
     /**

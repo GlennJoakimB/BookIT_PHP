@@ -7,6 +7,7 @@ public function up()
         $db = \app\core\Application::$app->db;
         $SQL = "CREATE TABLE bookings (
             id INT AUTO_INCREMENT PRIMARY KEY,
+            group_id VARCHAR(25) NOT NULL,
             course_id INT NOT NULL,
             subject VARCHAR(255) NOT NULL,
             holder_id INT NOT NULL,

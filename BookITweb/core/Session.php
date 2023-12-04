@@ -58,7 +58,7 @@ class Session
         $this->removeFlashMessages();
     }
 
-    private function removeFlashMessages()
+    public function removeFlashMessages()
     {
         $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
         foreach ($flashMessages as $key => $flashMessage) {

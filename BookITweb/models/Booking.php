@@ -2,7 +2,6 @@
 
 namespace app\models
 {
-    use app\core\Application;
     use app\core\db\DbModel;
 
     /**
@@ -26,18 +25,22 @@ namespace app\models
         public string $course_name = '';
         public string $subject = '';
         public int $holder_id = 0;
-        public ?User $holder = null;
+        public string $holder = '';
         public string $date = '';
-        public string $start_time = '';
-        public string $end_time = '';
+        public string $start_time = '  ';
+        public string $end_time = '  ';
         public ?int $booker_id = null;
         public ?User $booker = null;
         public ?string $booker_note = '';
         public int $status = 0;
         public string $last_updated = '';
 
+
         //for determining the button pressed
         public string $submit = '';
+
+        public int $booking_duration = 15;
+        public int $break = 0;
 
 
         public static function tableName(): string
@@ -53,7 +56,7 @@ namespace app\models
         public static function attributes(): array
         {
             //array of attributes, excluding the primary key, last_updated.
-            return ['course_id', 'subject', 'holder_id', 'start_time', 'end_time', 'booker_id', 'booker_note', 'status'];
+            return ['group_id', 'course_id', 'subject', 'holder_id', 'start_time', 'end_time', 'booker_id', 'booker_note', 'status'];
         }
 
         public function rules(): array
@@ -71,19 +74,41 @@ namespace app\models
         {
             return [
                 'course_id' => 'Course',
+                'holder_id' => 'Teacher Assistant',
                 'subject' => 'Subject',
                 'date' => 'Date',
                 'start_time' => 'Start time',
                 'end_time' => 'End time',
-                'booker_note' => 'Booking notes'
+                'booking_duration' => 'Duration',
+                'break' => 'Break time'
             ];
+        }
+
+        public function getStartTime(): string
+        {
+            //extract HH:mm if time contains date
+            $str = substr($this->start_time, strpos($this->start_time, ' '));
+
+            //remove seconds from value
+            if (strlen($str) > 5) { $str = substr($str, 0, -3); }
+            return $str;
+        }
+
+        public function getEndTime(): string
+        {
+            //extract HH:mm if time contains date
+            $str = substr($this->end_time, strpos($this->end_time, ' '));
+
+            //remove seconds from value
+            if (strlen($str) > 5) { $str = substr($str, 0, -3); }
+            return $str;
         }
 
         //finds holder from db
         public function getHolder()
         {
             //return User::findOne(['id' => $this->holder_id]) and set local holder;
-            $this->holder = User::findOne(['id' => $this->holder_id]);
+            $this->holder = User::findOne(['id' => $this->holder_id])->getDisplayName();
             return $this->holder;
         }
 
@@ -98,22 +123,11 @@ namespace app\models
         public function save()
         {
             //format variables
-            $this->start_time = $this->date . 'T' . $this->start_time;
-
-
-            //tell DbModel to save
-            //return parent::save();
-        }
-
-
-        public function create() {
-            //format variables
-            $this->holder_id = Application::$app->user->id;
             $this->status = self::STATUS_AVAILABLE;
 
-
             //tell DbModel to save
-            //return parent::save();
+            return parent::save();
         }
+
     }
 }

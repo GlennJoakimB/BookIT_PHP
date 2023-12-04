@@ -32,14 +32,21 @@ use app\core\form\SelectField;
                     <?php echo $form->field($model, 'end_time')->timeField() ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <?php echo $form->selectionField($model, 'booking_duration')->setOptions($duration) ?>
+                </div>
+                <div class="col">
+                    <?php echo $form->selectionField($model, 'break')->setOptions($breakList) ?>
+                </div>
+            </div>
             <?php echo $form->field($model, 'subject') ?>
-            <?php echo new TextareaField($model, 'booker_note') ?>
             <?php echo \app\core\form\Form::end() ?>
         </div>
         <div class="row align-items-end">
             <div class="d-flex justify-content-end">
-                <button type="submit" name="submit" form="Setup" value="add" class="btn btn-primary d-flex">
-                    <div>Add</div>
+                <button type="submit" name="submit" form="Setup" value="add" class="btn btn-secondary d-flex pe-1">
+                    <div>Preview</div>
                     <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-right"></iconify-icon>
                 </button>
             </div>
@@ -49,88 +56,87 @@ use app\core\form\SelectField;
     <div class="col bg-white d-flex flex-column shadow-sm rounded py-2">
         <h2>Preview</h2>
 
-
-        <div class="shadow">
-            <!-- booking head -->
-            <div class="d-flex bg-body-tertiary">
-                <div class="shadow-sm bg-light-subtle rounded-end p-2">
-                    <div class="fs-4">05</div>
-                    12.2023
-                </div>
-                <div class="col py-1 px-2">
-                    <div>
-                        <div class="" title="Subject">Workshop</div>
-                        <div class="booking_info_label" title="Holder">Tore Super LearningAssistant</div>
-                        <div class="booking_info_label" title="Notes"><em>Booking_Note</em></div>
+        <?php if (!empty($bookingPreview)): ?>
+            <div class="border mb-3">
+                <!-- booking head -->
+                <div class="d-flex bg-body-tertiary">
+                    <div class="shadow-sm bg-light-subtle rounded-end border-end p-1 px-2">
+                        <div class="fs-4"><?php echo date('l jS', strtotime($bookingPreview[0]->date)); ?></div>
+                        <?php echo date('M Y', strtotime($bookingPreview[0]->date)); ?>
+                    </div>
+                    <div class="col py-1 px-2">
+                        <div class="" title="Subject"><?php echo $bookingPreview[0]->subject ?></div>
+                        <div class="booking_info_label" title="Holder"><?php echo $bookingPreview[0]->getHolder() ?></div>
                     </div>
                 </div>
-            </div>
-            <!-- booking card loops -->
-            <div class="bg-body-tertiary">
-                <div class=""> 14:00 - 14:15
-                </div>
-            </div>
-            <div class="bg-body-tertiary">
-                <div class=""> 14:15 - 14:30
-                </div>
-            </div>
-            <div class="bg-body-tertiary">
-                <div class=""> 14:30 - 14:45
-                </div>
-            </div>
-            <div class="bg-body-tertiary">
-                <div class=""> 14:45 - 15:00
-                </div>
-            </div>
-        </div>
 
+                <?php foreach ($bookingPreview as $booking): ?>
+                    <!-- booking card loops -->
+                    <div class="d-flex justify-content-between border-top">
+                        <div class="bg-light rounded-end p-1 pe-4 border-end"><?php echo $booking->getStartTime() . " - " . $booking->getEndTime(); ?></div>
+                        <div class="d-flex pe-1">
+                            <iconify-icon class="d-flex align-items-center fs-4 font_color_grey" icon="bx:chevron-right"></iconify-icon>
+                        </div>
+                    </div>
 
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
 
-        <?php if (!empty($bookings)):
-            foreach ($bookings as $booking): ?>
-                <?php echo $booking->course_name ?>
-                <?php echo $booking->subject ?>
-                <?php echo $booking->booker_note ?>
-                <?php echo date('d.m.Y H:i', strtotime($booking->start_time)); ?>
-                <?php echo date('d.m.Y H:i', strtotime($booking->end_time)); ?>
-            <?php endforeach; else: ?>
-            <p>No courses found</p>
+            <div class="py-2 font_color_grey">No booking created yet</div>
+
         <?php endif; ?>
         <div class="mt-auto d-flex justify-content-end">
-            <button type="submit" name="submit" form="Setup" value="create" class="btn btn-primary d-flex <?= empty($bookings) ? 'disabled' : '' ?>">
+            <button type="submit" name="submit" form="Setup" value="save" class="btn btn-primary d-flex pe-1 <?= empty($bookingPreview) ? 'disabled' : '' ?>">
                 <div>Save</div>
                 <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-right"></iconify-icon>
             </button>
         </div>
     </div>
 </div>
-<div class="row d-none">
-    <h2>Existing bookings created by you</h2>
-    <?php if (!empty($existingBookings)): ?>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Course name</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Notes</th>
-                    <th scope="col">Start date</th>
-                    <th scope="col">End date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($existingBookings as $booking): ?>
-                    <tr>
-                        <td><?php echo $booking->course_name ?></td>
-                        <td><?php echo $booking->subject ?></td>
-                        <td><?php echo $booking->booker_note ?></td>
-                        <td><?php echo date('d.m.Y H:i', strtotime($booking->start_time)); ?></td>
-                        <td><?php echo date('d.m.Y H:i', strtotime($booking->end_time)); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>No courses found</p>
-    <?php endif; ?>
-</div>
+<div class="row mb-5">
+    <div class="col bg-white shadow-sm rounded py-2">
 
+        <h2>Existing bookings created by you</h2>
+
+
+        <?php if (!empty($existingBookings)):
+            foreach ($existingBookings as $course => $groups): ?>
+                <div class="border rounded-top bg-body-tertiary p-2 fs-5"><?php echo $course; ?></div>
+
+                <?php
+                foreach ($groups as $bookings): ?>
+
+                    <div class="border mb-2">
+                        <!-- booking head -->
+                        <div class="d-flex bg-body-tertiary">
+                            <div class="shadow-sm bg-light-subtle rounded-end border-end p-1 px-2" style="min-width: 11rem;">
+                                <div class="fs-4"><?php echo date('l jS', strtotime($bookings[0]->start_time)); ?></div>
+                                <?php echo date('M Y', strtotime($bookings[0]->start_time)); ?>
+                            </div>
+                            <div class="col py-1 px-2">
+                                <div class="" title="Subject"><?php echo $bookings[0]->subject ?></div>
+                                <div class="booking_info_label" title="Holder"><?php echo $bookings[0]->getHolder() ?></div>
+                            </div>
+                        </div>
+                        <?php
+                        foreach ($bookings as $booking): ?>
+                            <!-- booking card loops -->
+                            <div class="d-flex justify-content-between border-top">
+                                <div class="bg-light rounded-end p-1 pe-4 border-end" style="min-width: 8rem;">
+                                    <?php echo $booking->getStartTime() . " - " . $booking->getEndTime(); ?>
+                                </div>
+                                <div class="d-flex pe-1">
+                                    <iconify-icon class="d-flex align-items-center fs-4 font_color_grey" icon="bx:chevron-right"></iconify-icon>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+
+        <?php else: ?>
+            <div class="py-2 font_color_grey">No booking times created yet</div>
+        <?php endif; ?>
+    </div>
+</div>

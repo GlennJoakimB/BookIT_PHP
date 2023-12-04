@@ -6,3 +6,20 @@
     color: #6e7b89;
     font-size: 0.8rem;
 }
+.booking_available {
+    /*background-color: lightgreen;*/
+    /*background-color: #74e474;*/
+    background: rgb(255,255,255);
+    /*background: linear-gradient(90deg, rgba(255,255,255,1) 65%, rgba(116,228,116,1) 100%);*/
+}
+.booking_unavailable {
+    background-color: #e7e7e7;
+}
+.font_color_grey {
+    color: #6e7b89;
+}
+
+form#Search {
+    display: flex;
+    gap: 0.5rem;
+}

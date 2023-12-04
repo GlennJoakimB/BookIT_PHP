@@ -70,13 +70,13 @@ use app\core\UserModel;
     </nav>
     <div class="container">
         <?php if (Application::$app->session->getFlash('success')): ?>
-            <div class="alert alert-success">
-                <?php echo Application::$app->session->getFlash('success'); ?>
-            </div>
+        <div class="alert alert-success" role="alert">
+            <?php echo Application::$app->session->getFlash('success'); ?>
+        </div>
         <?php elseif (Application::$app->session->getFlash('error')): ?>
-            <div class="alert alert-danger">
-                <?php echo Application::$app->session->getFlash('error'); ?>
-            </div>
+        <div class="alert alert-danger" role="alert">
+            <?php echo Application::$app->session->getFlash('error'); ?>
+        </div>
         <?php endif; ?>
         {{content}}
     </div>

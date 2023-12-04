@@ -9,6 +9,7 @@ namespace app\controllers
     use app\models\CourseMembership;
     use app\core\Response;
     use app\models\Course;
+    use app\models\User;
 
     /**
      * BookingController
@@ -31,30 +32,19 @@ namespace app\controllers
         {
             //base model for the contact form
             $bookingform = new Booking();
-
-            //get available bookings from db
-            $bookings = Booking::findMany(['status' => 1]);
             $courses = $this->getSelectableCourses(['status' => 1]);
-            $teacherAssistants = CourseMembership::findMany(['teachingAssistant' => 1]);
 
-            //find name of coresponding course and add it to each booking
-            if (!empty($bookings) && !empty($courses)) {
-                foreach ($bookings as $booking) {
-                    //get course_name from array, where:
-                    $booking->course_name = $courses[$booking->course_id];
-                }
-            }
-
-            //group together existing bookings
-            $bookings = $this->groupBookings($bookings);
-
-            //group by course
-            $courseOrderedBookings = $this->groupBookingsByCourse($bookings);
+            //set default filter values
+            $filterCourseId = array_key_first($courses);
+            $laFilterId = 0;
 
             //if the request is post, load the data from the request body
             if ($request->isPost()) {
                 $bookingform->loadData($request->getBody());
 
+                //update filtervalues
+                $filterCourseId = $bookingform->course_id;
+                $laFilterId = $bookingform->holder_id;
 
                 if ($bookingform->submit == 'save') {
                     //variable to signal an error was hit
@@ -71,23 +61,46 @@ namespace app\controllers
                         //return $response->redirect('/booking/setup');
                         $error = true;
                     }
-                    
+
                     //if no error, succsess
                     if (!$error) {
                         Application::$app->session->setFlash('success', 'Your booking registrated.');
                         return $response->redirect('/booking');
                     }
                 }
+
+                if ($bookingform->submit == 'search') {
+
+
+                }
             }
+
+            //get models from db
+            $bookingWhere = ($laFilterId == 0) ?
+                ['status' => 1, 'course_id' => $filterCourseId] :
+                ['status' => 1, 'course_id' => $filterCourseId, 'holder_id' => $laFilterId];
+
+            $bookings = Booking::findMany($bookingWhere);
+
+            $teacherAssistants = $this->getSelectableLAs($filterCourseId);
+
+            //find name of coresponding course and add it to each booking
+            if (!empty($bookings) && !empty($courses)) {
+                foreach ($bookings as $booking) {
+                    //get course_name from array, where:
+                    $booking->course_name = $courses[$booking->course_id];
+                }
+            }
+
+            //group together existing bookings
+            $bookings = $this->groupBookings($bookings);
+
             //render the booking page, with the booking model
             return $this->render('booking', [
                 'model' => $bookingform,
-                'bookings' => $courseOrderedBookings,
+                'activeBookingGroups' => $bookings,
                 'courses' => $courses,
-                'la' => [
-                    1 => 'Bob', 
-                    5 => 'Tore'
-                    ] //$teacherAssistants
+                'la' => $teacherAssistants
             ]);
         }
 
@@ -113,6 +126,13 @@ namespace app\controllers
             $existingBookings = Booking::findMany(['status' => 1, 'holder_id' => (Application::$app->user->id)]);
             $courses = $this->getSelectableCourses(['status' => 1]);
 
+            //populate every
+            if (!empty($existingBookings)) {
+                foreach ($existingBookings as $booking) {
+                    $booking->holder = Application::$app->user->getDisplayName();;
+                }
+            }
+
             //find name of coresponding course and add it to each booking
             if (!empty($existingBookings) && !empty($courses)) {
                 foreach ($existingBookings as $booking) {
@@ -122,7 +142,7 @@ namespace app\controllers
             }
 
             //group together existing bookings
-            $existingBookingGroups = $this->groupBookings($existingBookingGroups);
+            $existingBookingGroups = $this->groupBookings($existingBookings);
 
             //group by course
             $courseOrderedBookings = $this->groupBookingsByCourse($existingBookingGroups);
@@ -144,10 +164,11 @@ namespace app\controllers
                         Application::$app->session->setFlash('error', 'Duration is longer than the specified end-time.');
                     }
 
-                    //interval in minutes
+                    //setting counter variable
                     $interval = $bookingform->booking_duration;
                     $breakDuration = $bookingform->break;
                     $next_start = $this->strToMinutes($bookingform->start_time);
+
 
                     //loop until reaching the specified end time, or within.
                     while (($next_start + $interval) <= $this->strToMinutes($bookingform->end_time)) {
@@ -156,10 +177,8 @@ namespace app\controllers
 
                         //give it same data, then update fields
                         $newBooking->loadData($request->getBody());
-
-                        //generate group_id
                         $newBooking->holder_id = Application::$app->user->id;
-                        $newBooking->group_id = $newBooking->holder_id . '_' . $bookingform->date . '_' . $bookingform->start_time;
+                        $newBooking->holder = Application::$app->user->getDisplayName();
 
                         //update time
                         $newBooking->start_time = $this->minutesToStr($next_start);
@@ -187,6 +206,10 @@ namespace app\controllers
                             $booking->start_time = $booking->date . ' ' . $booking->start_time . ':00';
                             $booking->end_time = $booking->date . ' ' . $booking->end_time . ':00';
 
+
+                            //TODO: If user is attempting to create over an existing period, give error
+
+
                             //try to save
                             if (!$booking->save()) {
                                 Application::$app->session->setFlash('error', 'Something went wrong when attempting to save new booking.');
@@ -208,7 +231,7 @@ namespace app\controllers
             return $this->render('bookingSetup', [
                 'model' => $bookingform,
                 'bookingPreview' => $bookingPrev,
-                'existingBookings' => $courseOrderedBookings,
+                'existingBookingGroups' => $courseOrderedBookings,
                 'courses' => $courses,
                 'duration' => $duration,
                 'breakList' => $break
@@ -218,16 +241,18 @@ namespace app\controllers
         /**
          * Sorts and groups together bookings
          * @param array $inputBookings Unordered array of bookings
-         * @return array Bookings grouped by group_id
+         * @return array Bookings grouped
          */
-        private function groupBookings(array $inputBookings):array
+        private function groupBookings(array $inputBookings): array
         {
-            if(empty($inputBookings)) {return [];}
+            if (empty($inputBookings)) {
+                return [];
+            }
 
             //group together existing bookings
             $bookingGroups = array();
             foreach ($inputBookings as $booking) {
-                $bookingGroups[$booking->group_id][] = $booking;
+                $bookingGroups[$booking->getDate() . $booking->holder_id][] = $booking;
             }
             //sort array in ascending order based on key
             ksort($bookingGroups);
@@ -237,13 +262,14 @@ namespace app\controllers
 
         /**
          * This function groups booking-sessions together based on the courses they are related to
-         * @param array $inputBookings 
+         * @param array $inputBookings
          * @return array
          */
-        private function groupBookingsByCourse(array $inputBookings):array
+        private function groupBookingsByCourse(array $inputBookings): array
         {
-            if(empty($inputBookings)) {
-                return [];}
+            if (empty($inputBookings)) {
+                return [];
+            }
 
             //group by course
             $courseOrderedBookings = array();
@@ -269,7 +295,7 @@ namespace app\controllers
         }
 
         /**
-         * Converts int of monutes into string in HH:mm format
+         * Converts int of minutes into string in HH:mm format
          * @param int $minutes
          * @return string
          */
@@ -284,12 +310,13 @@ namespace app\controllers
         /**
          * Gets courses and creates a list for use in selection-inputs.
          *
-         * @param array $array Search parameters
+         * @param array $where Search parameters
          * @return array List with pairs of course id and name
          */
-        private function getSelectableCourses(array $array): array
+        private function getSelectableCourses(array $where): array
         {
-            $courses = Course::findMany($array);
+            $course_membership = CourseMembership::findMany(
+            $courses = Course::findMany($where);
 
             //create array with pairs of course id and name, for use in selection list
             $course_select_list = array();
@@ -301,6 +328,29 @@ namespace app\controllers
 
             //return array
             return $course_select_list;
+        }
+
+        /**
+         * Generates an array of index and displayname of selectable assistants
+         *
+         * @param int $courseId
+         * @return array List with pairs of id and display-names
+         */
+        private function getSelectableLAs(int $courseId):array
+        {
+            $la_users = CourseMembership::findMany(['teachingAssistant' => 1, 'course_id' => $courseId]);
+
+            //set default value
+            $la_select_list = [0 => 'Select'];
+
+            if (!empty($la_users)) {
+                foreach ($la_users as $la) {
+                    $la_select_list[$la->user_id] = User::findOne(['id' => $la->user_id])->getDisplayName();
+                }
+            }
+
+            //return array
+            return $la_select_list;
         }
 
         private function getSelectableDuration()

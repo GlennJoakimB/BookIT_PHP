@@ -20,7 +20,6 @@ namespace app\models
         const STATUS_UNAVAILABLE = 2;
 
         public ?int $id = 0;
-        public string $group_id = '';
         public int $course_id = 0;
         public string $course_name = '';
         public string $subject = '';
@@ -30,7 +29,7 @@ namespace app\models
         public string $start_time = '  ';
         public string $end_time = '  ';
         public ?int $booker_id = null;
-        public ?User $booker = null;
+        public ?string $booker = null;
         public ?string $booker_note = '';
         public int $status = 0;
         public string $last_updated = '';
@@ -56,7 +55,7 @@ namespace app\models
         public static function attributes(): array
         {
             //array of attributes, excluding the primary key, last_updated.
-            return ['group_id', 'course_id', 'subject', 'holder_id', 'start_time', 'end_time', 'booker_id', 'booker_note', 'status'];
+            return ['course_id', 'subject', 'holder_id', 'start_time', 'end_time', 'booker_id', 'booker_note', 'status'];
         }
 
         public function rules(): array
@@ -79,9 +78,23 @@ namespace app\models
                 'date' => 'Date',
                 'start_time' => 'Start time',
                 'end_time' => 'End time',
+                'booker_note' => 'Booking Notes',
                 'booking_duration' => 'Duration',
                 'break' => 'Break time'
             ];
+        }
+
+
+        public function getDate():string
+        {
+            $str = '';
+            if($this->date != '') {
+                $str = $this->date;
+            } else {
+                //remove HH:mm:ss from start_time
+                $str = substr($this->start_time, 0 , strpos($this->start_time, ' '));
+            }
+            return $str;
         }
 
         public function getStartTime(): string
@@ -116,7 +129,7 @@ namespace app\models
         public function getBooker()
         {
             //return User::findOne(['id' => $this->booker_id]) and set local booker;
-            $this->booker = User::findOne(['id' => $this->booker_id]);
+            $this->booker = User::findOne(['id' => $this->booker_id])->getDisplayName();
             return $this->booker;
         }
 

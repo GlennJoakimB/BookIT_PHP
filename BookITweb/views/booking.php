@@ -5,9 +5,7 @@ use app\core\form\TextareaField;
 
 //Page for booking after user has logged in.
 //Show available bookings
-//TODO: Add dropdown to filter  by course
-//TODO: Add dropdown to filter by Learning Assistant
-//TODO: Add view of available bookings
+
 //TODO: Make bookings selectable, and add form for booking selected
 ?>
 
@@ -15,8 +13,8 @@ use app\core\form\TextareaField;
 
 <!-- Booking  -->
 
-<div class="row gap-2 mb-5">
-    <div class="col mb-5 bg-white shadow-sm rounded py-2">
+<div class="row gap-2 mt-2 mb-5">
+    <div class="col-md mb-5 bg-white shadow-sm rounded py-2">
         <div class="row">
             <!-- Dropdowns -->
             <?php $form = \app\core\form\Form::begin('', 'post', 'Search') ?>
@@ -28,75 +26,80 @@ use app\core\form\TextareaField;
             </div>
             <div class="d-flex mb-3 mt-auto justify-content-center">
                 <button type="submit" name="submit" form="Search" value="search" class="btn btn-primary d-flex pe-1">
-                    <div>Search</div>
-                    <iconify-icon class="d-flex align-items-center fs-4 ps-2" icon="bx:search"></iconify-icon>
+                    <div>Apply</div>
+                    <iconify-icon class="d-flex align-items-center fs-4 ps-2" icon="bx:filter"></iconify-icon>
                 </button>
             </div>
             <?php echo \app\core\form\Form::end() ?>
 
         </div>
-        <div class="row">
-            <!-- Bookings-overview -->
-            <div class="">
-
-                <!--<h2>Active booking slots</h2>-->
+        <div class="row mb-5">
+            <div class="col py-2">
+                <!-- Bookings-overview -->
 
                 <?php
-                if (!empty($bookings)):
-                    foreach ($bookings as $course => $groups): ?>
-                <div class="border rounded-top bg-body-tertiary p-2 fs-5">
-                    <?php echo $course; ?>
-                </div>
+            if (!empty($activeBookingGroups)):
+                foreach ($activeBookingGroups as $group):
+                ?>
 
-                <?php
-                        foreach ($groups as $bookings): ?>
-
-                <div class="border mb-2">
+                <div class="rounded border overflow-hidden mb-2">
                     <!-- booking head -->
                     <div class="d-flex bg-body-tertiary">
-                        <div class="shadow-sm bg-light-subtle rounded-end border-end p-1 px-2" style="min-width: 11rem;">
-                            <div class="fs-4"><?php echo date('l jS', strtotime($bookings[0]->start_time)); ?></div>
-                            <?php echo date('M Y', strtotime($bookings[0]->start_time)); ?>
+                        <div class="shadow-sm date_bg rounded-end border-end" style="min-width: 8rem;">
+                            <div class="row d-felx p-1">
+                                <div class="col-4 px-3" style="font-size:1.6rem;">
+                                    <?php
+                                        $title_time = strtotime($group[0]->start_time);
+                                        echo date('jS', $title_time);
+                                    ?>
+                                </div>
+                                <div class="col" style="font-size: 0.8rem;">
+                                    <div><?php echo date('l', $title_time); ?></div>
+                                    <div><?php echo date('M Y', $title_time); ?></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col py-1 px-2">
-                            <div class="" title="Subject"><?php echo $bookings[0]->subject ?></div>
-                            <div class="booking_info_label" title="Holder"><?php echo $bookings[0]->getHolder() ?></div>
+                            <div class="" title="Subject"><?php echo $group[0]->subject ?></div>
+                            <div class="booking_info_label" title="Holder"><?php echo $group[0]->getHolder() ?></div>
                         </div>
                     </div>
-
-                    <?php
-                                foreach ($bookings as $booking): ?>
-                    <!-- booking card loops -->
-                    <div class="d-flex justify-content-between border-top  <?= ($booking->status == 0) ? 'booking_unavailable' : 'booking_available' ?>">
-                        <div class="bg-light rounded-end p-1 pe-4 border-end" style="min-width: 8rem;">
-                            <?php echo $booking->getStartTime() . " - " . $booking->getEndTime(); ?>
+                    <div class="rounded-bottom overflow-hidden">
+                        <?php
+                            foreach ($group as $bookingSlot): ?>
+                        <!-- booking card loops -->
+                        <div class="d-flex justify-content-between border-top booking_available">
+                            <div class="bg-light_ text-center rounded-end p-1 border-end" style="min-width: 7rem;">
+                                <?php echo $bookingSlot->getStartTime() . " - " . $bookingSlot->getEndTime(); ?>
+                            </div>
+                            <div class="d-flex pe-1">
+                                <iconify-icon class="d-flex align-items-center fs-4 font_color_wite" icon="bx:chevron-right"></iconify-icon>
+                            </div>
                         </div>
-                        <div class="d-flex pe-1">
-                            <iconify-icon class="d-flex align-items-center fs-4 font_color_grey" icon="bx:chevron-right"></iconify-icon>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
                 <?php endforeach; ?>
 
                 <?php else: ?>
-                <div class="py-2 font_color_grey">No booking times created yet</div>
+                <div class="py-2 font_color_grey">No booking times to be found</div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
-    <div class="col mb-5 bg-white shadow-sm rounded py-2">
+    <div class="col-md mb-5 bg-white shadow-sm rounded py-2">
         <div class="row">
             <!-- Booking-form -->
-            <?php $form = \app\core\form\Form::begin('/booking/setup', 'post', 'Booking'); ?>            
+            <div class="info font_color_grey py-2"> Click on an available time slot to begin booking.
+            </div>
+            <?php $form = \app\core\form\Form::begin('/booking/setup', 'post', 'Booking'); ?>
             <?php echo new TextareaField($model, 'booker_note'); ?>
             <?php echo \app\core\form\Form::end(); ?>
         </div>
-        
+
         <div class="row align-items-end">
             <div class="d-flex justify-content-end">
-                <button type="submit" name="submit" form="Booking" value="save" class="btn btn-primary d-flex pe-1">
+                <button type="submit" name="submit" form="Booking" value="save" class="btn btn-primary d-flex pe-1 <?= ($bookingform->id == 0) ? 'disabled' : '' ?>">
                     <div>Save</div>
                     <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-right"></iconify-icon>
                 </button>

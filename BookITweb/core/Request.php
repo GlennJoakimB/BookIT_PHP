@@ -28,7 +28,7 @@ class Request
     }
 
     //get Uri params method
-    public function getUriParams()
+    public function getQueryParams()
     {
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $position = strpos($path, '?');

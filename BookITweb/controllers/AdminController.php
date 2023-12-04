@@ -108,7 +108,7 @@ namespace app\controllers
         public function editCourse(Request $request)
         {
 
-            $UriParams = $request->getUriParams();
+            $UriParams = $request->getQueryParams();
             $CourseId = $UriParams['id'];
             $isEdit = true;
             $course = Course::findOne(['id' => $CourseId]);

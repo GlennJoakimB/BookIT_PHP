@@ -7,6 +7,7 @@ namespace app\controllers
     use app\core\middlewares\AuthMiddleware;
     use app\core\Request;
     use app\models\Course;
+
 	/**
 	 * CourseController short summary.
 	 *
@@ -52,8 +53,6 @@ namespace app\controllers
                 $courseID = $request->getQueryParams()['courseId'];
                 $this->loadCourseFromDb($courseID);
             }
-
-
 			if($request->isPost()){
                 //if post, get body
 				$body = $request->getBody();
@@ -70,7 +69,6 @@ namespace app\controllers
             return $this->renderCourseAdmin();
 
         }
-
         private function loadCourseFromDb($courseID)
         {
             $course = Course::findOne(['id' => $courseID]);

@@ -1,6 +1,7 @@
 <?php
 use app\core\Application;
 use app\core\UserModel;
+
 ?>
 
 <!DOCTYPE html>
@@ -38,30 +39,30 @@ use app\core\UserModel;
                         <a class="nav-link" href="/contact">Contact Us</a>
                     </li>
                     <?php if (!Application::isGuest() && Application::isRole(UserModel::ROLE_ADMIN)): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Admin</a>
+                        </li>
                     <?php endif; ?>
                 </ul>
                 <ul class="navbar-nav">
                     <?php if (Application::isGuest()): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
                     <?php else: ?>
-                    <li class="nav-item dropdown justify-content-end">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?= Application::$app->user->getDisplayName(); ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <!--<li><span class="dropdown-item-text">Hoho</span></li>-->
-                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                            <li><a class="dropdown-item" href="/logout">Log out</a></li>
-                        </ul>
-                    </li>
+                        <li class="nav-item dropdown justify-content-end">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?= Application::$app->user->getDisplayName(); ?>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                <!--<li><span class="dropdown-item-text">Hoho</span></li>-->
+                                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                            </ul>
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -69,8 +70,12 @@ use app\core\UserModel;
     </nav>
     <div class="container">
         <?php if (Application::$app->session->getFlash('success')): ?>
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="alert">
             <?php echo Application::$app->session->getFlash('success'); ?>
+        </div>
+        <?php elseif (Application::$app->session->getFlash('error')): ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo Application::$app->session->getFlash('error'); ?>
         </div>
         <?php endif; ?>
         {{content}}

@@ -23,6 +23,7 @@ use app\core\form\SelectField;
 
             <?php $form = \app\core\form\Form::begin('/booking/setup', 'post', 'Setup') ?>
             <?php echo $form->selectionField($model, 'course_id')->setOptions($courses) ?>
+            <?php echo $form->field($model, 'subject') ?>
             <?php echo $form->field($model, 'date')->dayField() ?>
             <div class="row">
                 <div class="col">
@@ -32,14 +33,20 @@ use app\core\form\SelectField;
                     <?php echo $form->field($model, 'end_time')->timeField() ?>
                 </div>
             </div>
-            <?php echo $form->field($model, 'subject') ?>
-            <?php echo new TextareaField($model, 'booker_note') ?>
+            <div class="row">
+                <div class="col">
+                    <?php echo $form->selectionField($model, 'booking_duration')->setOptions($duration) ?>
+                </div>
+                <div class="col">
+                    <?php echo $form->selectionField($model, 'break')->setOptions($breakList) ?>
+                </div>
+            </div>
             <?php echo \app\core\form\Form::end() ?>
         </div>
         <div class="row align-items-end">
             <div class="d-flex justify-content-end">
-                <button type="submit" name="submit" form="Setup" value="add" class="btn btn-primary d-flex">
-                    <div>Add</div>
+                <button type="submit" name="submit" form="Setup" value="add" class="btn btn-secondary d-flex pe-1">
+                    <div>Preview</div>
                     <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-right"></iconify-icon>
                 </button>
             </div>
@@ -48,89 +55,125 @@ use app\core\form\SelectField;
     <!-- added bookings -->
     <div class="col bg-white d-flex flex-column shadow-sm rounded py-2">
         <h2>Preview</h2>
+        <?php if (!empty($bookingPreview)): ?>
 
-
-        <div class="shadow">
-            <!-- booking head -->
-            <div class="d-flex bg-body-tertiary">
-                <div class="shadow-sm bg-light-subtle rounded-end p-2">
-                    <div class="fs-4">05</div>
-                    12.2023
-                </div>
-                <div class="col py-1 px-2">
-                    <div>
-                        <div class="" title="Subject">Workshop</div>
-                        <div class="booking_info_label" title="Holder">Tore Super LearningAssistant</div>
-                        <div class="booking_info_label" title="Notes"><em>Booking_Note</em></div>
+            <div class="rounded border overflow-hidden mb-2">
+                <!-- booking head -->
+                <div class="d-flex bg-body-tertiary">
+                    <div class="shadow-sm date_bg rounded-end border-end" style="min-width: 8rem;">
+                        <div class="row d-felx p-1">
+                            <div class="col-4 px-3" style="font-size:1.6rem;">
+                                <?php
+                                $title_time = strtotime($bookingPreview[0]->date);
+                                echo date('jS', $title_time);
+                                ?>
+                            </div>
+                            <div class="col" style="font-size: 0.8rem;">
+                                <div><?php echo date('l', $title_time); ?></div>
+                                <div><?php echo date('M Y', $title_time); ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col py-1 px-2">
+                        <div class="" title="Subject"><?php echo $bookingPreview[0]->subject ?></div>
+                        <div class="booking_info_label" title="Holder"><?php echo $bookingPreview[0]->holder ?></div>
                     </div>
                 </div>
-            </div>
-            <!-- booking card loops -->
-            <div class="bg-body-tertiary">
-                <div class=""> 14:00 - 14:15
+                <div class="rounded-bottom overflow-hidden">
+                    <?php
+                    foreach ($bookingPreview as $bookingSlot): ?>
+                        <!-- booking card loops -->
+                        <div class="d-flex justify-content-between border-top booking_available?>">
+                            <div class="bg-light text-center rounded-end p-1 border-end" style="min-width: 7rem;">
+                                <?php echo $bookingSlot->getStartTime() . " - " . $bookingSlot->getEndTime(); ?>
+                            </div>
+                            <div class="d-flex pe-1">
+                                <iconify-icon class="d-flex align-items-center fs-4 font_color_wite" icon="bx:chevron-right"></iconify-icon>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-            <div class="bg-body-tertiary">
-                <div class=""> 14:15 - 14:30
-                </div>
-            </div>
-            <div class="bg-body-tertiary">
-                <div class=""> 14:30 - 14:45
-                </div>
-            </div>
-            <div class="bg-body-tertiary">
-                <div class=""> 14:45 - 15:00
-                </div>
-            </div>
-        </div>
 
 
+        <?php else: ?>
 
-        <?php if (!empty($bookings)):
-            foreach ($bookings as $booking): ?>
-                <?php echo $booking->course_name ?>
-                <?php echo $booking->subject ?>
-                <?php echo $booking->booker_note ?>
-                <?php echo date('d.m.Y H:i', strtotime($booking->start_time)); ?>
-                <?php echo date('d.m.Y H:i', strtotime($booking->end_time)); ?>
-            <?php endforeach; else: ?>
-            <p>No courses found</p>
+            <div class="py-2 font_color_grey">No booking created yet</div>
+
         <?php endif; ?>
         <div class="mt-auto d-flex justify-content-end">
-            <button type="submit" name="submit" form="Setup" value="create" class="btn btn-primary d-flex <?= empty($bookings) ? 'disabled' : '' ?>">
+            <button type="submit" name="submit" form="Setup" value="save" class="btn btn-primary d-flex pe-1 <?= empty($bookingPreview) ? 'disabled' : '' ?>">
                 <div>Save</div>
                 <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-right"></iconify-icon>
             </button>
         </div>
     </div>
 </div>
-<div class="row d-none">
-    <h2>Existing bookings created by you</h2>
-    <?php if (!empty($existingBookings)): ?>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Course name</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Notes</th>
-                    <th scope="col">Start date</th>
-                    <th scope="col">End date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($existingBookings as $booking): ?>
-                    <tr>
-                        <td><?php echo $booking->course_name ?></td>
-                        <td><?php echo $booking->subject ?></td>
-                        <td><?php echo $booking->booker_note ?></td>
-                        <td><?php echo date('d.m.Y H:i', strtotime($booking->start_time)); ?></td>
-                        <td><?php echo date('d.m.Y H:i', strtotime($booking->end_time)); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p>No courses found</p>
-    <?php endif; ?>
-</div>
+<div class="row mb-5">
+    <div class="col bg-white shadow-sm rounded py-2">
 
+        <h2>Existing bookings created by you</h2>
+
+        <?php
+        if (!empty($existingBookingGroups)):
+            foreach ($existingBookingGroups as $course => $groups): ?>
+
+                <!-- Course Header -->
+                <div class="row border rounded-end-2 bg-body-tertiary p-2 mb-2 fs-5">
+                    <div class="col fw-bold"><?php echo $course; ?></div>
+                    <div class="col d-flex justify-content-end">
+                        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample<?= str_replace(' ', '', $course) ?>" aria-expanded="false" aria-controls="collapseExample">
+                            <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-down"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="ms-2 collapse show" id="collapseExample<?= str_replace(' ', '', $course) ?>">
+                    <?php
+                    foreach ($groups as $group): ?>
+
+                        <div class="rounded border overflow-hidden mb-2">
+                            <!-- booking head -->
+                            <div class="d-flex bg-body-tertiary">
+                                <div class="shadow-sm date_bg rounded-end border-end" style="min-width: 8rem;">
+                                    <div class="row d-felx p-1">
+                                        <div class="col-4 px-3" style="font-size:1.6rem;">
+                                            <?php
+                                            $title_time = strtotime($group[0]->start_time);
+                                            echo date('jS', $title_time);
+                                            ?>
+                                        </div>
+                                        <div class="col" style="font-size: 0.8rem;">
+                                            <div><?php echo date('l', $title_time); ?></div>
+                                            <div><?php echo date('M Y', $title_time); ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col py-1 px-2">
+                                    <div class="" title="Subject"><?php echo $group[0]->subject ?></div>
+                                    <div class="booking_info_label" title="Holder"><?php echo $group[0]->holder ?></div>
+                                </div>
+                            </div>
+                            <div class="rounded-bottom overflow-hidden">
+                                <?php
+                                foreach ($group as $bookingSlot): ?>
+                                    <!-- booking card loops -->
+                                    <div class="d-flex justify-content-between border-top booking_available">
+                                        <div class="bg-light_ text-center rounded-end p-1 border-end" style="min-width: 7rem;">
+                                            <?php echo $bookingSlot->getStartTime() . " - " . $bookingSlot->getEndTime(); ?>
+                                        </div>
+                                        <div class="d-flex pe-1">
+                                            <iconify-icon class="d-flex align-items-center fs-4 font_color_wite" icon="bx:chevron-right"></iconify-icon>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+
+        <?php else: ?>
+            <div class="py-2 font_color_grey">No booking times created yet</div>
+        <?php endif; ?>
+    </div>
+</div>

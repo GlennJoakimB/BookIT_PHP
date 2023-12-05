@@ -63,6 +63,9 @@ namespace app\middlewares
                     } elseif ($CurrentActionLvl === self::ROLE_COURSEOWNER){
                         // implement logic for course owner
                         if(!$this->isCourseOwner($courseId) && $currentRole != UserModel::ROLE_ADMIN){
+                            echo '<pre>';
+                            var_dump($this->isCourseOwner($courseId));
+                            echo '</pre>';
                             throw new ForbiddenExeption();
                         }
 

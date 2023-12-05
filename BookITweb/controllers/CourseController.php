@@ -29,7 +29,12 @@ namespace app\controllers
         protected array $members;
 		public function __construct()
         {
-			$ActionsRolemap = [];
+			$ActionsRolemap = [
+                'courseAdmin' => AuthMiddleware::ROLE_COURSEOWNER,
+                'postEditCourse' => AuthMiddleware::ROLE_COURSEOWNER,
+                'manageMembers' => AuthMiddleware::ROLE_COURSEOWNER
+
+                ];
 
 			//All actions need you to be logged in, rolespesifik later.
             $this->registerMiddleware( new AuthMiddleware( [], $ActionsRolemap));

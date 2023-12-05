@@ -20,6 +20,7 @@ namespace app\core\db
     {
         abstract public static function tableName(): string;
         abstract public static function attributes(): array;
+        abstract public static function primaryKey(): string;
 
         /**
          * Base function for saving data to the database. Returns true when process is successful.

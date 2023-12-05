@@ -127,7 +127,7 @@ namespace app\models
          */
         function getRelatedObjectsReferences(): array
         {
-            return ['CourseMembership', 'CourseOwnerships'];
+            return ['CourseMembership', 'app\models\Course'];
         }
 
         function getRefernceClassMap(): array
@@ -139,13 +139,14 @@ namespace app\models
          * @param string $relatedObjectReference
          * @return string
          */
-        function getRelatedObjectQuery(string $relatedObjectReference): string
+        function getRelatedObjectQueryParams(string $relatedObjectReference): array
         {
+            //Key is switch case, value is the array of params where Key is DB column and value is value
             switch ($relatedObjectReference) {
                 case 'CourseMembership':
-                    return "SELECT * FROM course_members WHERE user_id = $this->id";
+                    return ['user_id'=> $this->id];
                 case 'CourseOwnerships':
-                    return "SELECT * FROM courses WHERE owner_id = $this->id";
+                    return ['owner_id' => $this->id];
                 default:
                     throw new \Exception("Class reference $relatedObjectReference not found in reference class map");
             }

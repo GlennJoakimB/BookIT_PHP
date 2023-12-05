@@ -19,7 +19,7 @@ abstract class UserModel extends DbModel
     public const ROLE_TEACHER_ASSISTANT = 'teacher_assistant';
     public const ROLE_ADMIN = 'admin';
 
-    public Array $relatedObjects = []; 
+    public Array $relatedObjects = [];
 
     public string $role = self::ROLE_USER;
     abstract public function getDisplayName(): string;
@@ -49,12 +49,13 @@ abstract class UserModel extends DbModel
         return $relatedObject;
     }
 
-    protected function getRelatedObjectFromDb(string $relatedObjectReference): object
+    protected function getRelatedObjectFromDb(string $relatedObjectReference): object|array
     {
         $relatedObjectClass = $this->getRelatedObjectClass($relatedObjectReference);
+        /** @var DbModel $relatedObject */
         $relatedObject = new $relatedObjectClass();
-        $relatedObject->load($this->getRelatedObjectQuery($relatedObjectReference));
-        return $relatedObject;
+        $returnObject = $relatedObject::findMany($this->getRelatedObjectQueryParams($relatedObjectReference));
+        return $returnObject;
     }
 
     protected function getRelatedObjectClass(string $relatedObjectReference): string
@@ -67,7 +68,7 @@ abstract class UserModel extends DbModel
         return $referenceClassMap[$relatedObjectReference];
     }
 
-    abstract protected function getRelatedObjectQuery(string $relatedObjectReference): string;
+    abstract protected function getRelatedObjectQueryParams(string $relatedObjectReference): array;
 
     /**
      * @return array  [Reference => class] of classes that are related to the user

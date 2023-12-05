@@ -53,7 +53,9 @@ namespace app\middlewares
                     //get course id if it exists
                     /** @var $request app\core Request*/
                     if ($request->isGet()) {
-                        $courseId = $request->getQueryParams()['courseId'];
+                        if(isset($request->getQueryParams()['courseId'])){
+                            $courseId = $request->getQueryParams()['courseId'];
+                        }
                     } else {
                         $courseId = $request->getBody()['courseId'] ?? 0;
                     }

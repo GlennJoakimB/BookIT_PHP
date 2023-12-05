@@ -3,6 +3,8 @@ use app\core\Application;
 use app\core\UserModel;
 
 /** @var $this \app\core\View */
+/** @var $activeCourse \app\models\Course[] */
+
 $this->title = "Home";
 ?>
 
@@ -30,13 +32,13 @@ $this->title = "Home";
             <div> Current Active Courses</div>
             <div>
                 <form class="d-flex gap-2" action="/" method="post">
-                    <?php
+                    <?php 
                     foreach ($activeCourse as $course): ?>
                         <div class="w-50 bg-white shadow-sm rounded p-2">
                             <div class="d-flex flex-column">
                                 <div class="fs-5"><?= $course->name ?></div>
                                 <?php if (!Application::isGuest()): ?>
-                                    <a class="btn btn-outline-primary d-flex justify-content-between" href"/course?courseId=<?= $course->id ?>"> 
+                                    <a class="btn btn-outline-primary d-flex justify-content-between" href="/course?courseId=<?= $course->id?>"> 
                                         <div class="">Read more</div>
                                         <iconify-icon class="d-flex align-items-center" icon="bx:chevron-right"></iconify-icon>
                                     </a>
@@ -52,8 +54,7 @@ $this->title = "Home";
                                 </div>
                             </div>
                         </div>
-                        <?php
-                    endforeach; ?>
+                    <?php endforeach; ?>
                 </form>
             </div>
         <?php else: ?>

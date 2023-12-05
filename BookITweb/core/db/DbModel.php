@@ -173,6 +173,33 @@ namespace app\core\db
             return $statement->fetchAll(PDO::FETCH_CLASS, static::class);
         }
 
+        /**
+         * Find multiple objects from db based on paramaters, only the first in
+         * where array is used with the operator and checkvalue
+         * @param array $where 
+         * @param string $Operator 
+         * @param string $CheckValues 
+         * @return array
+         */
+        public static function findManyByOperator(array $where, string $Operator, string $CheckValue)
+        {
+            //check for valid operator string
+            if ($Operator != "=" && $Operator != ">" && $Operator != "<" && $Operator != ">=" && $Operator != "<=") {
+                throw new \Exception("Invalid operator");
+            }
+
+            $tablename = static::tableName();
+            $attributes = array_keys($where);
+            $sql = implode(" AND ", array_map(fn($attr) => "$attr $Operator :$attr", $attributes));
+            $statement = self::prepare("SELECT * FROM $tablename WHERE $sql");
+            foreach ($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+            $statement->bindValue(":$attributes[0]", $CheckValue);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_CLASS, static::class);
+        }
+
         public static function prepare($sql)
         {
             return Application::$app->db->pdo->prepare($sql);

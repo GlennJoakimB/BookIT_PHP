@@ -85,7 +85,7 @@ namespace app\models
 
         public function save()
         {
-            $this->status = self::STATUS_INACTIVE;
+            $this->status = self::STATUS_ACTIVE;
 
             return parent::save();
         }

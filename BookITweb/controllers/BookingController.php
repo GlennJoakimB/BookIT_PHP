@@ -28,6 +28,7 @@ namespace app\controllers
          */
         public function booking(Request $request, Response $response)
         {
+
             //base model for the contact form
             $bookingform = new Booking();
             $courses = BookingsHelper::getSelectableCourses();
@@ -41,21 +42,39 @@ namespace app\controllers
                 $bookingform->loadData($request->getBody());
 
                 //update filtervalues
-                $filterCourseId = $bookingform->course_id;
-                $laFilterId = $bookingform->holder_id;
+                $filterCourseId = $bookingform->course_id_search;
+                $laFilterId = $bookingform->holder_id_search;
 
-                if ($bookingform->submit == 'save') {
+                if (str_contains($bookingform->submit, ':')) {
+                    $var = $bookingform->submit;
+
+                    //extract only the number after ':'
+                    $bookingSlotId = intval(substr($var, strpos($var, ':') + 1));
+
+                    //get the booking by id
+                    $bookingform = Booking::findOne(['id' => $bookingSlotId]);
+
+                    //bring over filtervalues
+                    $bookingform->course_id_search = $filterCourseId;
+                    $bookingform->holder_id_search = $laFilterId;
+
+
+                } elseif ($bookingform->submit == 'book') {
+                    $bookingform = Booking::findOne(['id' => $bookingform->id]);
+                    $bookingform->booker_id = Application::$app->session->get('user');
+
+                    //bring over filtervalues
+                    $bookingform->course_id_search = $filterCourseId;
+                    $bookingform->holder_id_search = $laFilterId;
+
                     //variable to signal an error was hit
                     $error = false;
-
-                    if (!$bookingform->validate()) {
-                        Application::$app->session->setFlash('error', 'Some input was not valid.');
-                        $error = true;
-                    }
+                    
+                    
 
                     //try to save
-                    if (!$bookingform->save()) {
-                        Application::$app->session->setFlash('error', 'Something went wrong when attempting to save new booking.');
+                    if (!$bookingform->update()) {
+                        Application::$app->session->setFlash('error', 'Something went wrong when attempting to book selected slot.');
                         //return $response->redirect('/booking/setup');
                         $error = true;
                     }
@@ -63,15 +82,15 @@ namespace app\controllers
                     //if no error, succsess
                     if (!$error) {
                         Application::$app->session->setFlash('success', 'Your booking registrated.');
-                        return $response->redirect('/booking');
                     }
                 }
             }
 
+
             //get models from db
             $bookingWhere = ($laFilterId == 0) ?
-                ['status' => 1, 'course_id' => $filterCourseId] :
-                ['status' => 1, 'course_id' => $filterCourseId, 'holder_id' => $laFilterId];
+            ['status' => 1, 'course_id' => $filterCourseId] :
+            ['status' => 1, 'course_id' => $filterCourseId, 'holder_id' => $laFilterId];
 
             $bookings = Booking::findMany($bookingWhere);
 
@@ -122,7 +141,7 @@ namespace app\controllers
             //populate every
             if (!empty($existingBookings)) {
                 foreach ($existingBookings as $booking) {
-                    $booking->holder = Application::$app->user->getDisplayName();;
+                    $booking->holder = Application::$app->user->getDisplayName();
                 }
             }
 

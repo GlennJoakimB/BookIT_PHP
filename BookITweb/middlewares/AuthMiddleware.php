@@ -6,6 +6,7 @@ namespace app\middlewares
     use app\core\exeption\ForbiddenExeption;
     use app\core\middlewares\BaseMiddleware;
     use app\core\UserModel;
+    use app\models\User;
 	/**
 	 * AuthMiddleware short summary.
 	 *
@@ -85,7 +86,7 @@ namespace app\middlewares
         private function isCourseOwner($courseId): bool
         {
             $ActiveCourseId = $courseId;
-            $UserCourseOwnerships = Application::$app->user->getRelatedObject('CourseOwnerships');
+            $UserCourseOwnerships = Application::$app->user->getRelatedObject(User::REF_COURSEOWNERSHIPS);
 
             foreach ($UserCourseOwnerships as $UserCourseOwnership) {
                 if ($UserCourseOwnership->id == $ActiveCourseId) {
@@ -104,7 +105,7 @@ namespace app\middlewares
         {
             $ActiveCourseId = $courseId;
             $UserTACourses = [];
-            $UserCourses = Application::$app->user->getRelatedObject('courseMemberships');
+            $UserCourses = Application::$app->user->getRelatedObject(User::REF_COURSEMEMBERSHIP);
             //loop through courses and get TA courses
             foreach ($UserCourses as $UserCourse) {
                 if ($UserCourse->teachingAssistant == 1) {

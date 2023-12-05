@@ -15,10 +15,14 @@ namespace app\models
      */
     class User extends UserModel
     {
+        //status constants
         const STATUS_INACTIVE = 0;
         const STATUS_ACTIVE = 1;
         const STATUS_DELETED = 2;
 
+        // related object references constants
+        const REF_COURSEMEMBERSHIP = 'CourseMembership';
+        const REF_COURSEOWNERSHIPS = 'CourseOwnerships';
         public int $id = 0;
         public string $firstname = '';
         public string $lastname = '';
@@ -127,12 +131,12 @@ namespace app\models
          */
         function getRelatedObjectsReferences(): array
         {
-            return ['CourseMembership', 'CourseOwnerships'];
+            return [ self::REF_COURSEMEMBERSHIP, self::REF_COURSEOWNERSHIPS];
         }
 
         function getRefernceClassMap(): array
         {
-            return ['CourseMembership' => '\app\models\CourseMembership', 'CourseOwnerships' => 'app\models\Course'];
+            return [self::REF_COURSEMEMBERSHIP => '\app\models\CourseMembership', self::REF_COURSEOWNERSHIPS => 'app\models\Course'];
         }
         /**
          *

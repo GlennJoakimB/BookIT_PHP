@@ -82,19 +82,27 @@ namespace app\middlewares
             }
         }
 
-        private function isCourseOwner(int $courseId): bool
+        private function isCourseOwner($courseId): bool
         {
-            $UserCourseOwnerships = Application::$app->user->getRelatedObject('courseOwnerships');
+            $ActiveCourseId = $courseId;
+            $UserCourseOwnerships = Application::$app->user->getRelatedObject('CourseOwnerships');
+
             foreach ($UserCourseOwnerships as $UserCourseOwnership) {
-                if ($UserCourseOwnership->course_id == $courseId) {
-                    return true;
+                if ($UserCourseOwnership->id == $ActiveCourseId) {
+                    //check if user is course owner
+                    if ($UserCourseOwnership->owner_id == Application::$app->user->id) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
             return false;
         }
 
-        private function isTeacherAssistant(int $courseId): bool
+        private function isTeacherAssistant($courseId): bool
         {
+            $ActiveCourseId = $courseId;
             $UserTACourses = [];
             $UserCourses = Application::$app->user->getRelatedObject('courseMemberships');
             //loop through courses and get TA courses
@@ -108,7 +116,7 @@ namespace app\middlewares
             }
             //loop through TA courses and check if courseID matches
             foreach ($UserTACourses as $UserTACourse) {
-                if ($UserTACourse->course_id == $courseId) {
+                if ($UserTACourse->course_id == $ActiveCourseId) {
                     return true;
                 }
             }

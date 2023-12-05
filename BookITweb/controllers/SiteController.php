@@ -27,7 +27,14 @@ namespace app\controllers
             $membership = new CourseMembership();
             $userMemberships = array();
 
-            if ($request->isPost() && !Application::isGuest()) {
+            if(!Application::isGuest()) {
+                $user = Application::$app->user;
+                if ($user != null) {
+                    $userMemberships = $user->getSelectableCourseMemberships();
+                }
+            }
+
+            if ($request->isPost()) {
                 if (Application::isGuest()) {
                     Application::$app->session->setFlash('error', 'That action requires you to be logged in.');
                     //return $response->redirect('/');
@@ -35,13 +42,6 @@ namespace app\controllers
 
                 //get post body
                 $membership->loadData($request->getBody());
-
-                $user = Application::$app->user;
-
-                if ($user != null) {
-                    //$userMemberships = $user->getRelatedObject($user::REF_COURSEMEMBERSHIP);
-                    $userMemberships = $user->getSelectableCourseMemberships();
-                }
 
                 //assign the submitted course_id value
                 $membership->course_id = intval($membership->submit);
@@ -53,7 +53,7 @@ namespace app\controllers
                 } elseif ($membership->validate() && $membership->save()) {
                     Application::$app->session->setFlash('success', 'Successfully joined a course.');
                 }
-                //return $response->redirect('/');
+                return $response->redirect('/');
             }
 
             //renders the home page on get and post

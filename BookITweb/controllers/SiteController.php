@@ -38,31 +38,31 @@ namespace app\controllers
 
                 $user = Application::$app->user;
 
-                if($user != null) {
-                    //$userMemberships = $user->getRelatedObject(REF_COURSEMEMBERSHIP);
+                if ($user != null) {
+                    //$userMemberships = $user->getRelatedObject($user::REF_COURSEMEMBERSHIP);
+                    $userMemberships = $user->getSelectableCourseMemberships();
                 }
-
 
                 //assign the submitted course_id value
                 $membership->course_id = intval($membership->submit);
                 $membership->user_id = Application::$app->user->id;
 
                 //if the course id already is registered, do nothing
-                if(array_key_exists($membership->course_id, $userMemberships)) {
+                if (array_key_exists($membership->course_id, $userMemberships)) {
                     Application::$app->session->setFlash('error', 'You have already joined this course.');
                 } elseif ($membership->validate() && $membership->save()) {
                     Application::$app->session->setFlash('success', 'Successfully joined a course.');
                 }
                 //return $response->redirect('/');
             }
-            
+
             //renders the home page on get and post
             $params = [
                 'name' => !Application::isGuest() ? 'Welcome ' . Application::$app->user->getDisplayName() : '',
                 'model' => $membership,
                 'activeCourse' => $courses,
                 'memberships' => $userMemberships
-                ];
+            ];
             return $this->render('home', $params);
 
         }

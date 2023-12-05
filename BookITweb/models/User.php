@@ -52,23 +52,25 @@ namespace app\models
          * Generates an array of the course relations of the user
          * @return array
          */
-        public function getCourseMemberships(): array{
-            $membership = CourseMembership::findMany(['user_id' => $this->id]);
+        public function getSelectableCourseMemberships(): array{
+            $membership = $this->getRelatedObject(self::REF_COURSEMEMBERSHIP);
 
             $mem_list = array();
-            foreach($membership as $mem) {
-                $mem_list[$mem->course_id] = $mem->teachingAssistant;
+            if(!empty($membership)) {
+                foreach($membership as $mem) {
+                    $mem_list[$mem->course_id] = $mem->teachingAssistant;
+                }
             }
 
-            //store and return array
-            $this->course_memberships = $mem_list;
-            return $this->course_memberships;
+            //return array
+            return $mem_list;
         }
 
         public function isTeacherAssistant():bool{
             $var = false;
-            if(!empty($this->course_memberships)) {
-                foreach($this->course_memberships as $mem_status) {
+            $mem_list = $this->getSelectableCourseMemberships();
+            if(!empty($mem_list)) {
+                foreach($mem_list as $mem_status) {
                     //See if the value "teachingAssistant" is 1
                     if($mem_status == 1) {
                         $var = true;

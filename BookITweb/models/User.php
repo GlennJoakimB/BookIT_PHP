@@ -121,5 +121,34 @@ namespace app\models
             ];
         }
 
+
+        /**
+         * @return array of objects that are related to the user
+         */
+        function getRelatedObjectsReferences(): array
+        {
+            return ['CourseMembership', 'CourseOwnerships'];
+        }
+
+        function getRefernceClassMap(): array
+        {
+            return ['CourseMembership' => 'app\models\CourseMembership', 'CourseOwnerships' => 'app\models\CourseOwnership'];
+        }
+        /**
+         *
+         * @param string $relatedObjectReference
+         * @return string
+         */
+        function getRelatedObjectQuery(string $relatedObjectReference): string
+        {
+            switch ($relatedObjectReference) {
+                case 'CourseMembership':
+                    return "SELECT * FROM course_memberships WHERE user_id = $this->id";
+                case 'CourseOwnerships':
+                    return "SELECT * FROM course_ownerships WHERE user_id = $this->id";
+                default:
+                    throw new \Exception("Class reference $relatedObjectReference not found in reference class map");
+            }
+        }
     }
 }

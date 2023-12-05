@@ -46,6 +46,7 @@ $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
 $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/profile', [AuthController::class, 'profile']);
+$app->router->post('/profile', [AuthController::class, 'profile']);
 
 //Admin routes
 $app->router->get('/admin', [AdminController::class, 'admin']);

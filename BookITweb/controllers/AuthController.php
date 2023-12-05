@@ -91,9 +91,27 @@ namespace app\controllers
         }
 
         //render the profile view
-        public function profile()
+        public function profile(Request $request)
         {
-            return $this->render('profile');
-        }  
-	}
+            /** @var user app\models\user */
+            $user = Application::$app->user;
+
+            if($request->isPost()){
+                $body = $request->getBody();
+                $user->loadData($body);
+                if($user->update()){
+                    Application::$app->session->setFlash('success', 'Profile updated');
+                    Application::$app->response->redirect('/profile');
+                }
+            }
+            if($request->isGet()){
+                $user->password = '';
+                $user->confirmPassword = '';
+            }
+            $params = [
+                'model' => $user
+                ];
+            return $this->render('profile', $params);
+        }
+    }
 }

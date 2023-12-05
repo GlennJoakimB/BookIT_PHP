@@ -1,19 +1,18 @@
 <?php
 
-namespace app\core\middlewares
+namespace app\middlewares
 {
-	use app\core\Application;
+    use app\core\Application;
+    use app\core\exeption\ForbiddenExeption;
     use app\core\middlewares\BaseMiddleware;
-	use app\core\exeption\ForbiddenExeption;
     use app\core\UserModel;
 	/**
 	 * AuthMiddleware short summary.
 	 *
-	 * AuthMiddleware restricts access to pages based on the users role or if the user is logged in.
+	 * AuthMiddleware description.
 	 *
 	 * @version 1.0
-	 * @author Trivinyx <tom.a.s.myre@gmail.com>
-     * @package app\core\middlewares
+	 * @author Tom
 	 */
 	class AuthMiddleware extends BaseMiddleware
 	{
@@ -65,6 +64,5 @@ namespace app\core\middlewares
                 }
             }
         }
-
-    }
+	}
 }

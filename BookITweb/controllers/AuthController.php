@@ -8,7 +8,7 @@ namespace app\controllers
     use app\core\Application;
     use app\models\LoginForm;
     use app\core\Response;
-    use app\core\middlewares\AuthMiddleware;
+    use app\middlewares\AuthMiddleware;
     use app\core\UserModel;
     use app\models\Course;
 

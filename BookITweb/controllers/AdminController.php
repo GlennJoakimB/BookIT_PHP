@@ -4,10 +4,10 @@ namespace app\controllers
 {
     use app\core\Controller;
     use app\core\Request;
+    use app\middlewares\AuthMiddleware;
     use app\models\User;
     use app\core\Application;
     use app\core\Response;
-    use app\core\middlewares\AuthMiddleware;
     use app\core\UserModel;
     use app\models\Course;
 	/**

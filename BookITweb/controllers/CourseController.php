@@ -6,7 +6,7 @@ namespace app\controllers
     use app\core\Controller;
     use app\core\exeption\ForbiddenExeption;
     use app\core\exeption\NotFoundExeption;
-    use app\core\middlewares\AuthMiddleware;
+    use app\middlewares\AuthMiddleware;
     use app\core\Request;
     use app\core\UserModel;
     use app\models\Course;

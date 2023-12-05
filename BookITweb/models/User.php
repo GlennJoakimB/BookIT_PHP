@@ -127,12 +127,12 @@ namespace app\models
          */
         function getRelatedObjectsReferences(): array
         {
-            return ['CourseMembership', 'app\models\Course'];
+            return ['CourseMembership', 'CourseOwnerships'];
         }
 
         function getRefernceClassMap(): array
         {
-            return ['CourseMembership' => 'app\models\CourseMembership', 'CourseOwnerships' => 'app\models\CourseOwnership'];
+            return ['CourseMembership' => '\app\models\CourseMembership', 'CourseOwnerships' => 'app\models\Course'];
         }
         /**
          *

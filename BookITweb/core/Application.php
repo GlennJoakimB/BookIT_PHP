@@ -47,11 +47,16 @@ class Application
             $primaryKey = $this->userClass::primaryKey();
             try {
                 $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
-                $this->user->getRelatedObjects();
             }catch(\Exception $e)
             {
                 $this->user = null;
             }
+            try {
+                $this->user->getRelatedObjects();
+            } catch (Exception $e) {
+                throw new Exception("Error Processing Request", 1);
+            }
+
         } else {
             $this->user = null;
         }

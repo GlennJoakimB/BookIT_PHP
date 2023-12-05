@@ -144,5 +144,16 @@ namespace app\helpers
             //return array
             return $la_select_list;
         }
+
+
+        public static function getCommingBookings(array $bookings):array
+        {
+            $currentDate = date('Y-m-d');
+            $returnArray = array();
+
+
+
+            return $bookings;
+        }
     }
 }

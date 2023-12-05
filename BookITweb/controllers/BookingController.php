@@ -69,8 +69,8 @@ namespace app\controllers
 
                     //variable to signal an error was hit
                     $error = false;
-                    
-                    
+
+
 
                     //try to save
                     if (!$bookingform->update()) {
@@ -92,7 +92,10 @@ namespace app\controllers
             ['status' => 1, 'course_id' => $filterCourseId] :
             ['status' => 1, 'course_id' => $filterCourseId, 'holder_id' => $laFilterId];
 
-            $bookings = Booking::findMany($bookingWhere);
+            $bookings = Booking::findMany([$bookingWhere]);
+            $bookings = BookingsHelper::getCommingBookings($bookings);
+
+
 
             $teacherAssistants = BookingsHelper::getSelectableLAs($filterCourseId);
 

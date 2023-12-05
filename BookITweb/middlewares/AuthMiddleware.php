@@ -16,9 +16,15 @@ namespace app\middlewares
 	 */
 	class AuthMiddleware extends BaseMiddleware
 	{
+        //public Consts for Auth lvl
+        public const ROLE_ADMIN = 'admin';
+        public const ROLE_COURSEOWNER = 'CourseOwner';
+        public const ROLE_TA = 'TA';
+
 		public array $actions = [];
 		//array Actions => Role
 		public array $roleActionMap = [];
+
 
         public function __construct(array $actions = [], array $roleActionMap = [])
         {
@@ -28,6 +34,7 @@ namespace app\middlewares
 
 		public function execute()
         {
+            $request = Application::$app->request;
 			if(Application::isGuest()){
                 if(empty($this->actions) || in_array(Application::$app->controller->action, $this->actions))
                 {
@@ -41,19 +48,26 @@ namespace app\middlewares
                 if (array_key_exists($currentAction, $this->roleActionMap)) {
                     //gets min auth lvl
                     $CurrentActionLvl = $this->roleActionMap[$currentAction];
-
-                    if($CurrentActionLvl=== UserModel::ROLE_ADMIN){
+                    $courseId = 0;
+                    //get course id if it exists
+                    /** @var $request app\core Request*/
+                    if ($request->isGet()) {
+                        $courseId = $request->getQueryParams()['courseId'];
+                    } else {
+                        $courseId = $request->getBody()['courseId'] ?? 0;
+                    }
+                    if($CurrentActionLvl=== self::ROLE_ADMIN){
                         if($currentRole != UserModel::ROLE_ADMIN){
                             throw new ForbiddenExeption();
                         }
-                    } elseif ($CurrentActionLvl === 'CourseOwner'){
+                    } elseif ($CurrentActionLvl === self::ROLE_COURSEOWNER){
                         // implement logic for course owner
-                        if($currentRole != '' && $currentRole != UserModel::ROLE_ADMIN){
+                        if(!$this->isCourseOwner($courseId) && $currentRole != UserModel::ROLE_ADMIN){
                             throw new ForbiddenExeption();
                         }
 
-                    } elseif ($CurrentActionLvl === ''){
-                        if($currentRole != 'LA' && $currentRole != 'CourseOwner'
+                    } elseif ($CurrentActionLvl === self::ROLE_TA){
+                        if(!$this->isTeacherAssistant($courseId) && !$this->isCourseOwner($courseId)
                             && $currentRole != UserModel::ROLE_ADMIN)
                         {
                              throw new ForbiddenExeption();
@@ -65,13 +79,36 @@ namespace app\middlewares
             }
         }
 
-        private function isCourseOwner(): bool
+        private function isCourseOwner(int $courseId): bool
         {
+            $UserCourseOwnerships = Application::$app->user->getRelatedObject('courseOwnerships');
+            foreach ($UserCourseOwnerships as $UserCourseOwnership) {
+                if ($UserCourseOwnership->course_id == $courseId) {
+                    return true;
+                }
+            }
             return false;
         }
 
-        private function isTeacherAssistant(): bool
+        private function isTeacherAssistant(int $courseId): bool
         {
+            $UserTACourses = [];
+            $UserCourses = Application::$app->user->getRelatedObject('courseMemberships');
+            //loop through courses and get TA courses
+            foreach ($UserCourses as $UserCourse) {
+                if ($UserCourse->teachingAssistant == 1) {
+                    $UserTACourses[] = $UserCourse;
+                }
+            }
+            if(empty($UserTACourses)){
+                return false;
+            }
+            //loop through TA courses and check if courseID matches
+            foreach ($UserTACourses as $UserTACourse) {
+                if ($UserTACourse->course_id == $courseId) {
+                    return true;
+                }
+            }
             return false;
         }
 	}

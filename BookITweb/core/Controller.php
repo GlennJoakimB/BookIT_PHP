@@ -18,7 +18,7 @@ class Controller
     public string $action = '';
 
     /**
-     * @var \app\core\middlewares\BaseMiddleware[]
+     * @var BaseMiddleware[]
      */
     protected array $middlewares = [];
 

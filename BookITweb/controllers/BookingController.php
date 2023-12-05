@@ -5,6 +5,7 @@ namespace app\controllers
     use app\core\Application;
     use app\core\Controller;
     use app\core\Request;
+    use app\core\UserModel;
     use app\models\Booking;
     use app\models\CourseMembership;
     use app\core\Response;
@@ -32,7 +33,7 @@ namespace app\controllers
         {
             //base model for the contact form
             $bookingform = new Booking();
-            $courses = $this->getSelectableCourses(['status' => 1]);
+            $courses = $this->getSelectableCourses();
 
             //set default filter values
             $filterCourseId = array_key_first($courses);
@@ -124,7 +125,7 @@ namespace app\controllers
 
             //get data from db
             $existingBookings = Booking::findMany(['status' => 1, 'holder_id' => (Application::$app->user->id)]);
-            $courses = $this->getSelectableCourses(['status' => 1]);
+            $courses = $this->getSelectableCourses();
 
             //populate every
             if (!empty($existingBookings)) {
@@ -310,13 +311,22 @@ namespace app\controllers
         /**
          * Gets courses and creates a list for use in selection-inputs.
          *
-         * @param array $where Search parameters
          * @return array List with pairs of course id and name
          */
-        private function getSelectableCourses(array $where): array
+        private function getSelectableCourses(): array
         {
-            $course_membership = CourseMembership::findMany(
-            $courses = Course::findMany($where);
+            $courses = array();
+            if (Application::isRole(UserModel::ROLE_ADMIN)) {
+                //find every course
+                $courses = Course::findMany(['status' => 1]);
+            } else {
+                //find active courses for current user
+                $course_membership = CourseMembership::findMany(['user_id' => Application::$app->user->id]);
+
+                foreach ($course_membership as $mem) {
+                    $courses[] = Course::findOne(['status' => 1, 'id' => $mem->course_id]);
+                }
+            }
 
             //create array with pairs of course id and name, for use in selection list
             $course_select_list = array();

@@ -151,9 +151,13 @@ namespace app\helpers
             $currentDate = date('Y-m-d');
             $returnArray = array();
 
+            foreach($bookings as $booking) {
+                if($booking->start_time >= $currentDate) {
+                    $returnArray[] = $booking;
+                }
+            }
 
-
-            return $bookings;
+            return $returnArray;
         }
     }
 }

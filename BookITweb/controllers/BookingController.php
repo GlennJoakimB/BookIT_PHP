@@ -139,6 +139,7 @@ namespace app\controllers
 
             //get data from db
             $existingBookings = Booking::findMany(['status' => 1, 'holder_id' => (Application::$app->user->id)]);
+            $existingBookings = BookingsHelper::getCommingBookings($existingBookings);
             $courses = BookingsHelper::getSelectableCourses();
 
             //populate every

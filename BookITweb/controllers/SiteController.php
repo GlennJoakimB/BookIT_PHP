@@ -120,7 +120,6 @@ namespace app\controllers
             $currentBookings = BookingsHelper::groupBookingsByCourse($currentGroupedBookings);
 
 
-
             //render the page
             return $this->render('dashboard', [
                 'bookings' => $currentBookings

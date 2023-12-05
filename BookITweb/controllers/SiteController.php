@@ -5,6 +5,8 @@ namespace app\controllers
     use app\core\Application;
     use app\core\Controller;
     use app\core\Request;
+    use app\helpers\BookingsHelper;
+    use app\models\Booking;
     use app\models\ContactForm;
     use app\core\Response;
     use app\models\Course;
@@ -90,8 +92,39 @@ namespace app\controllers
 
         public function dashboard()
         {
+            //get data from db
+            $currentBookings = Booking::findMany(['booker_id' => Application::$app->session->get('user')]);
+            $currentBookings = BookingsHelper::getCommingBookings($currentBookings);
+            $courses = BookingsHelper::getSelectableCourses();
+
+            //populate every
+            if (!empty($currentBookings)) {
+                foreach ($currentBookings as $booking) {
+                    $booking->holder = Application::$app->user->getDisplayName();
+                }
+            }
+
+            //find name of coresponding course and add it to each booking
+            if (!empty($currentBookings) && !empty($courses)) {
+                foreach ($currentBookings as $booking) {
+                    //get course_name from array, where:
+                    $booking->course_name = $courses[$booking->course_id];
+                }
+            }
+
+
+            //group together existing bookings
+            $currentGroupedBookings = BookingsHelper::groupBookings($currentBookings);
+
+            //group by course
+            $currentBookings = BookingsHelper::groupBookingsByCourse($currentGroupedBookings);
+
+
+
             //render the page
-            return $this->render('dashboard', []);
+            return $this->render('dashboard', [
+                'bookings' => $currentBookings
+                ]);
         }
     }
 }

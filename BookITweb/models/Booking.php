@@ -35,9 +35,6 @@ namespace app\models
         public string $last_updated = '';
 
 
-        //for determining the button pressed
-        public string $submit = '';
-
         public int $booking_duration = 15;
         public int $break = 0;
 
@@ -178,6 +175,5 @@ namespace app\models
                 60 => '60 min'
             ];
         }
-
     }
 }

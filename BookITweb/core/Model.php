@@ -24,6 +24,7 @@ namespace app\core
         public const RULE_USER_EXISTS = 'user_exists';
         public const RULE_PWD_STRENGTH = 'pwd_strength';
 
+        public string $submit = '';
         public string $bannerError = '';
         public array $errors = [];
 

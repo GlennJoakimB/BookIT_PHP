@@ -5,14 +5,9 @@ namespace app\controllers
     use app\core\Application;
     use app\core\Controller;
     use app\core\Request;
-    use app\core\UserModel;
     use app\helpers\BookingsHelper;
     use app\models\Booking;
-    use app\models\CourseMembership;
     use app\core\Response;
-    use app\models\Course;
-    use app\models\User;
-    use app\helpers;
 
     /**
      * BookingController
@@ -53,13 +48,13 @@ namespace app\controllers
                     //variable to signal an error was hit
                     $error = false;
 
-                    if (!$booking->validate()) {
+                    if (!$bookingform->validate()) {
                         Application::$app->session->setFlash('error', 'Some input was not valid.');
                         $error = true;
                     }
 
                     //try to save
-                    if (!$booking->save()) {
+                    if (!$bookingform->save()) {
                         Application::$app->session->setFlash('error', 'Something went wrong when attempting to save new booking.');
                         //return $response->redirect('/booking/setup');
                         $error = true;

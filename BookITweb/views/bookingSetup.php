@@ -9,9 +9,6 @@ use app\core\form\SelectField;
 //Page for booking after user has logged in.
 //Show available bookings
 
-//TODO: Add form for creating new bookings as LA
-//TODO: Add course, date, perido, duration of each?, comment
-
 ?>
 
 <!--<h1>Set up page</h1>-->

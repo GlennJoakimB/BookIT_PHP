@@ -84,8 +84,15 @@ namespace app\middlewares
                 }
             }
         }
+        public static function isAdmin(): bool
+        {
+            if(Application::$app->user->role === UserModel::ROLE_ADMIN){
+                return true;
+            }
+            return false;
+        }
 
-        private function isCourseOwner($courseId): bool
+        public static function isCourseOwner($courseId): bool
         {
             $ActiveCourseId = $courseId;
             $UserCourseOwnerships = Application::$app->user->getRelatedObject(User::REF_COURSEOWNERSHIPS);
@@ -103,7 +110,7 @@ namespace app\middlewares
             return false;
         }
 
-        private function isTeacherAssistant($courseId): bool
+        private static function isTeacherAssistant($courseId): bool
         {
             $ActiveCourseId = $courseId;
             $UserTACourses = [];

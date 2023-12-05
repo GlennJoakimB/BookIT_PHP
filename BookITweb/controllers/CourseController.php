@@ -10,6 +10,7 @@ namespace app\controllers
     use app\core\Request;
     use app\core\UserModel;
     use app\models\Course;
+    use app\models\CourseMembership;
     use app\helpers\CoursesHelper;
 
 	/**
@@ -39,7 +40,17 @@ namespace app\controllers
 			//All actions need you to be logged in, rolespesifik later.
             $this->registerMiddleware( new AuthMiddleware( [], $ActionsRolemap));
         }
-
+        private function renderCourse(){
+            /** @var \app\models\User $user */
+            $user = Application::$app->user;
+            $activeCourse = $this->course;
+            $params = [
+               'model' => $activeCourse,
+               'courseId' => $activeCourse->id,
+               'userId' => $user->id
+                ];
+            return $this->render('course', $params);
+        }
 		private function renderCourseAdmin(
             $acitiveComp = 'editCourse',
             $showAll= false,
@@ -98,6 +109,47 @@ namespace app\controllers
                 'courseId' => $this->course->id
 				];
             return $this->render('courseAdmin', $params, true);
+        }
+
+        public function course(Request $request){
+            if ($request->isGet()) {
+                //get courseID from request
+                if (!isset($request->getQueryParams()['courseId'])) {
+                    throw new NotFoundExeption();
+                }
+                $courseID = $request->getQueryParams()['courseId'];
+                try {
+                    $this->loadCourseFromDb($courseID);
+                } catch (\Exception $e) {
+                    throw new NotFoundExeption();
+                }
+                $this->courseID = $courseID;
+            } elseif($request->isPost()) {
+                $courseMember = new CourseMembership();
+                //manualy load data from body
+                $body = $request->getBody();
+                $courseMember->course_id = $body['courseId'];
+                $courseMember->user_id = $body['userId'];
+                $courseMember->teachingAssistant = false;
+                
+                //check if user is already member
+                $dbReturn = CourseMembership::findOne(['course_id' => $body['courseId'], 'user_id' => $body['userId']]);
+                if($dbReturn !== false){
+                    Application::$app->session->setFlash('error', 'You are already a member of this course');
+                    return $this->renderCourse();
+                }
+                //try to save
+                
+                if (!$courseMember->save()) {
+                    Application::$app->session->setFlash('error', 'Something went wrong when attempting to save new course.');
+                    return $this->renderCourse();
+                } else {
+                    Application::$app->session->setFlash('success', 'You are now a member of this course');
+                }
+                $this->loadCourseFromDb($body['courseId']);
+                $this->courseID = $body['courseId'];
+            }
+            return $this->renderCourse();
         }
 
 		public function courseAdmin(Request $request)

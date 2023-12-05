@@ -34,6 +34,9 @@ namespace app\models
         public int $status = 0;
         public string $last_updated = '';
 
+        //values to hold and store search paramaters
+        public int $course_id_search = 0;
+        public int $holder_id_search = 0;
 
         public int $booking_duration = 15;
         public int $break = 0;
@@ -70,7 +73,9 @@ namespace app\models
         {
             return [
                 'course_id' => 'Course',
+                'course_id_search' => 'Course',
                 'holder_id' => 'Teacher Assistant',
+                'holder_id_search' => 'Teacher Assistant',
                 'subject' => 'Subject',
                 'date' => 'Date',
                 'start_time' => 'Start time',
@@ -137,6 +142,12 @@ namespace app\models
 
             //tell DbModel to save
             return parent::save();
+        }
+
+        public function update()
+        {
+            //tell DbModel to save
+            return parent::update();
         }
 
         public static function getSelectableDuration()

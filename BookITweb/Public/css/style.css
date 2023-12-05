@@ -15,6 +15,12 @@
     /*background: linear-gradient(90deg, rgba(255,255,255,1) 30%, rgba(25,160,25,1) 115%);*/
     /*background: linear-gradient(90deg, rgba(255,255,255,1) 30%, rgba(13,110,253,0.56) 85%, rgba(13,110,253,0.56) 100%);*/
 }
+    .booking_available:hover {
+        background-color: rgba(13,110,253,0.56);
+    }
+        .booking_available:hover > .icon_hover{
+            color: #fff;
+        }
 
 
 .booking_unavailable {
@@ -25,11 +31,6 @@
     color: #6e7b89;
 }
 
-.font_color_wite {
-    color: #6e7b89;
-    /*color: #fff;*/
-}
-
 .date_bg {
     background-color: rgba(13,110,253,0.15);
     /*background-color: #e5e5ee;*/
@@ -38,4 +39,14 @@
 form#Search {
     display: flex;
     gap: 0.5rem;
+}
+
+.remove-button-wrapper {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
 }

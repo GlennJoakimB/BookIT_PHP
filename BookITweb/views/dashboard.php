@@ -17,7 +17,7 @@ $this->title = "Dashboard";
             <iconify-icon class="d-flex align-items-center fs-3" icon="bx:chevron-right"></iconify-icon>
         </a>
         <?php if (Application::isTeacherAssistant() || Application::isRole(UserModel::ROLE_ADMIN)): ?>
-        <a class="btn btn-secondary d-flex justify-content-between" href="/booking/setup">
+        <a class="btn btn-outline-secondary d-flex justify-content-between" href="/booking/setup">
             <div>Set up new appointments</div>
             <iconify-icon class="d-flex align-items-center fs-3" icon="bx:chevron-right"></iconify-icon>
         </a>

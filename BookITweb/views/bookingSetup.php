@@ -84,9 +84,6 @@ use app\core\form\SelectField;
                             <div class="bg-light text-center rounded-end p-1 border-end" style="min-width: 7rem;">
                                 <?php echo $bookingSlot->getStartTime() . " - " . $bookingSlot->getEndTime(); ?>
                             </div>
-                            <div class="d-flex pe-1">
-                                <iconify-icon class="d-flex align-items-center fs-4 font_color_wite" icon="bx:chevron-right"></iconify-icon>
-                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -157,9 +154,6 @@ use app\core\form\SelectField;
                                     <div class="d-flex justify-content-between border-top booking_available">
                                         <div class="bg-light_ text-center rounded-end p-1 border-end" style="min-width: 7rem;">
                                             <?php echo $bookingSlot->getStartTime() . " - " . $bookingSlot->getEndTime(); ?>
-                                        </div>
-                                        <div class="d-flex pe-1">
-                                            <iconify-icon class="d-flex align-items-center fs-4 font_color_wite" icon="bx:chevron-right"></iconify-icon>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>

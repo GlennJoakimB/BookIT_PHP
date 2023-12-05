@@ -6,29 +6,22 @@ $this->title = "Home";
 ?>
 
 <h1>Home</h1>
-<h3><?= $name ?></h3>
 
-
-<div class="my-5">
-    <!--Temp_list of courses:-->
-    <div id="Topbar_courses" class="d-grid gap-2">
-
-        <a class="btn btn-primary d-flex justify-content-between" href="/booking">
-            Book new appointment
-            <iconify-icon class="d-flex align-items-center fs-3" icon="bx:chevron-right"></iconify-icon>
+<div class="mb-5">
+    <?php if (!Application::isGuest()): ?>
+    <h3><?= $name ?></h3>
+    <div class="py-4">
+        <a class="btn btn-primary p-4 d-flex justify-content-between" href="/dashboard">
+            <div class="h1 mb-0">Go to Dashboard</div>
+            <iconify-icon class="d-flex align-items-center h1  mb-0" icon="bx:chevron-right"></iconify-icon>
         </a>
-        <!-- Viewed if user_role == LA -->
-        <?php if (!Application::isGuest() && (Application::isRole(UserModel::ROLE_TEACHER_ASSISTANT) || Application::isRole(UserModel::ROLE_ADMIN))): ?>
-        <a class="btn btn-secondary d-flex justify-content-between" href="/booking/setup">
-            <div>Set up new appointments</div>
-            <iconify-icon class="d-flex align-items-center fs-3" icon="bx:chevron-right"></iconify-icon>
-        </a>
-        <?php else: ?>
-        <a class="btn btn-secondary d-flex justify-content-between" href="/booking/setup">
-            <div>Set up new appointments</div>
-            <iconify-icon class="d-flex align-items-center fs-3" icon="bx:chevron-right"></iconify-icon>
-        </a>
-        <?php endif; ?>
     </div>
-    <div class="list-group"></div>
+    <?php endif; ?>
+
+    <!-- Active courses -->
+    <div class="list-group">
+        <div class="font_color_grey">
+            <p>Courses to be added soon</p>
+        </div>
+    </div>
 </div>

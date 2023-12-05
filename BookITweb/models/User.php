@@ -64,8 +64,9 @@ namespace app\models
         public function isTeacherAssistant():bool{
             $var = false;
             if(!empty($this->course_memberships)) {
-                foreach($this->course_memberships as $membership) {
-                    if($membership->teachingAssistant == 1) {
+                foreach($this->course_memberships as $mem_status) {
+                    //See if the value "teachingAssistant" is 1
+                    if($mem_status == 1) {
                         $var = true;
                     }
                 }

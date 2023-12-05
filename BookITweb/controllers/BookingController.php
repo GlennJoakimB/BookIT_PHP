@@ -31,7 +31,7 @@ namespace app\controllers
          * @param Response $response
          * @return array|string
          */
-        public function booking(Request $request, Response $response):array|void
+        public function booking(Request $request, Response $response)
         {
             //base model for the contact form
             $bookingform = new Booking();

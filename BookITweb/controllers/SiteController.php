@@ -49,5 +49,11 @@ namespace app\controllers
                 'model' => $contact
             ]);
         }
+
+        public function dashboard()
+        {
+            //render the page
+            return $this->render('dashboard', []);
+        }
     }
 }

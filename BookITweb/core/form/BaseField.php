@@ -14,8 +14,12 @@ namespace app\core\form
 	 */
 	abstract class BaseField
 	{
+        public const TYPE_HIDDEN = 'hidden';
+
         public Model $model;
         public string $attribute;
+
+        public string $type;
 
         /**
          * Field constructor.
@@ -29,10 +33,11 @@ namespace app\core\form
         }
 
         abstract public function renderInput(): string;
-        
+
         public function __toString()
         {
-            return sprintf('
+            if (self::TYPE_HIDDEN != $this->type) {
+                return sprintf('
             <div class="mb-3">
                 <label>%s</label>
                 %s
@@ -41,10 +46,18 @@ namespace app\core\form
                 </div>
             </div>
             ',
-                $this->model->getLabel($this->attribute),
-                $this->renderInput(),
-                $this->model->getFirstError($this->attribute)
-            );
+                    $this->model->getLabel($this->attribute),
+                    $this->renderInput(),
+                    $this->model->getFirstError($this->attribute)
+                );
+            }else{
+                return $this->renderInput();
+            }
+        }
+        public function hiddenField()
+        {
+            $this->type = self::TYPE_HIDDEN;
+            return $this;
         }
 	}
 }

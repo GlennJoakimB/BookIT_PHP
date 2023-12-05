@@ -18,9 +18,7 @@ namespace app\models
         public int $course_id = 0;
         public int $user_id = 0;
         public int $teachingAssistant = 0;
-
-        
-        
+        public string $userDisplayName = '';
         public static function tableName(): string
         {
             return 'course_members';

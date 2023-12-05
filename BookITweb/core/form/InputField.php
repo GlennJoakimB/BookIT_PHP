@@ -23,7 +23,8 @@ namespace app\core\form
         public const TYPE_DAY = 'date';
         public const TYPE_TIME = 'time';
 
-        public string $type;
+
+        
 
         public function __construct(Model $model, string $attribute)
         {
@@ -53,6 +54,14 @@ namespace app\core\form
             $this->type = self::TYPE_TIME;
             return $this;
         }
+
+        public function numberField()
+        {
+            $this->type = self::TYPE_NUMBER;
+            return $this;
+        }
+
+
 
         public function renderInput(): string
         {

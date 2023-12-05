@@ -56,6 +56,8 @@ $app->router->post('/admin/newHolder', [AdminController::class, 'postSetNewHolde
 //Course routes
 $app->router->get('/courseAdmin', [CourseController::class, 'courseAdmin']);
 $app->router->post('/courseAdmin', [CourseController::class, 'courseAdmin']);
+$app->router->post('/courseAdmin/manageMembers', [CourseController::class, 'manageMembers']);
+$app->router->post('/courseAdmin/editCourse', [CourseController::class, 'postEditCourse']);
 
 //starting the application
 $app->run();

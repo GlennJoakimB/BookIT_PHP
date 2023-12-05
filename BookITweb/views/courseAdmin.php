@@ -4,20 +4,29 @@ $this->title = "Course Administation";
 
 ?>
 
-<!--Container with a sidebar nav and rightside content-->
-<div class="container">
-    <div class="row">
-        <!--Sidebar nav-->
-        <div class="col-3">
-            <!--Buttons to switch active components through post-->
+<!--Container with a sidebar nav and rightside content-->    
+<div class="container bg-body-secondary rounded-5">
+    <div class="sticky-top nav nav-tabs mb-3 bg-body-secondary rounded-top-5 ">        
+        <!--hidden carry of corse id to post-->
+        <div class="nav-item">
             <form method="post">
-                <button type="submit" name="activeComponent" value="editCourse" class="btn btn-primary w-100 mb-2">Edit Course</button>
-                <button type="submit" name="activeComponent" value="manageMembers" class="btn btn-primary w-100 mb-2">Manage Members</button>
+                <input type="hidden" name="courseId" value="<?= $courseId ?>" />
+                <button type="submit" name="activeComponent" value="editCourse" class="m-2 mb-1 nav-link
+                <?php if($activeComponent === 'editCourse'){
+                    echo 'active bg-body-secondary shadow'; } ?>">Edit Course</button>
             </form>
         </div>
-        <!--Rightside content-->
-        <div class="col-9">
-            {{component.<?= $activeComponent?>}}
+        <div class="nav-item">
+            <form method="post">
+                <input type="hidden" name="courseId" value="<?= $courseId ?>" />
+                <button type="submit" name="activeComponent" value="manageMembers" class="m-2 mb-1 nav-link
+                <?php if($activeComponent === 'manageMembers'){ 
+                    echo 'active bg-body-secondary shadow';} ?>">Manage Members</button>
+            </form>
         </div>
+    </div>
+    <!--Rightside content-->
+    <div class="justify-content-center mb-4 p-2 pb-3">
+        {{component.<?= $activeComponent?>}}
     </div>
 </div>

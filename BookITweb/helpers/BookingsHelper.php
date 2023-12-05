@@ -122,11 +122,14 @@ namespace app\helpers
         /**
          * Generates an array of index and displayname of selectable assistants
          *
-         * @param int $courseId
+         * @param int|null $courseId
          * @return array List with pairs of id and display-names
          */
-        public static function getSelectableLAs(int $courseId): array
+        public static function getSelectableLAs(int|null $courseId): array
         {
+            if ($courseId == null) {
+                return [];
+            }
             $la_users = CourseMembership::findMany(['teachingAssistant' => 1, 'course_id' => $courseId]);
 
             //set default value

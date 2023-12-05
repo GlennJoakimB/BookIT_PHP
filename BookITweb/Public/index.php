@@ -57,6 +57,8 @@ $app->router->post('/admin/search', [AdminController::class, 'postSearch']);
 $app->router->post('/admin/newHolder', [AdminController::class, 'postSetNewHolder']);
 
 //Course routes
+$app->router->get('/course', [CourseController::class, 'course']);
+$app->router->post('/course', [CourseController::class, 'course']);
 $app->router->get('/courseAdmin', [CourseController::class, 'courseAdmin']);
 $app->router->post('/courseAdmin', [CourseController::class, 'courseAdmin']);
 $app->router->post('/courseAdmin/manageMembers', [CourseController::class, 'manageMembers']);

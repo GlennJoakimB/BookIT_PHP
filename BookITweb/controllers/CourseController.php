@@ -46,7 +46,7 @@ namespace app\controllers
             if(!isset($this->course) && isset($this->courseId)){
                 $this->loadCourseFromDb($this->courseId);
             } elseif(!isset($this->course)) {
-                Application::$app->response->redirect('/home');
+                Application::$app->response->redirect('/');
             }
 
             $activeCourse = $this->course;

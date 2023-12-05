@@ -143,9 +143,9 @@ namespace app\models
         {
             switch ($relatedObjectReference) {
                 case 'CourseMembership':
-                    return "SELECT * FROM course_memberships WHERE user_id = $this->id";
+                    return "SELECT * FROM course_members WHERE user_id = $this->id";
                 case 'CourseOwnerships':
-                    return "SELECT * FROM course_ownerships WHERE user_id = $this->id";
+                    return "SELECT * FROM courses WHERE owner_id = $this->id";
                 default:
                     throw new \Exception("Class reference $relatedObjectReference not found in reference class map");
             }

@@ -27,7 +27,7 @@ abstract class UserModel extends DbModel
     /**
      * @return array of objects that are related to the user
      */
-    abstract public function getRelatedObjectsReferences(): array;
+    abstract protected function getRelatedObjectsReferences(): array;
 
     public function getRelatedObjects(): array
     {
@@ -35,10 +35,11 @@ abstract class UserModel extends DbModel
         foreach ($this->getRelatedObjectsReferences() as $relatedObjectReference) {
             $relatedObjects[] = $this->getRelatedObject($relatedObjectReference);
         }
-        return $relatedObjects;
+        $this->relatedObjects = $relatedObjects;
+        return $this->relatedObjects;
     }
 
-    public function getRelatedObject(string $relatedObjectReference): object
+    public function getRelatedObject(string $relatedObjectReference): object|array
     {
         if (isset($this->relatedObjects[$relatedObjectReference])) {
             return $this->relatedObjects[$relatedObjectReference];

@@ -47,7 +47,7 @@ class Application
             $primaryKey = $this->userClass::primaryKey();
             try {
                 $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
-                $this->user->getCourseMemberships();
+                $this->user->getRelatedObjects();
             }catch(\Exception $e)
             {
                 $this->user = null;

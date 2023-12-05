@@ -64,5 +64,15 @@ namespace app\middlewares
                 }
             }
         }
+
+        private function isCourseOwner(): bool
+        {
+            return false;
+        }
+
+        private function isTeacherAssistant(): bool
+        {
+            return false;
+        }
 	}
 }

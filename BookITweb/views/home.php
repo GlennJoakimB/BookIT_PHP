@@ -19,33 +19,40 @@ $this->title = "Home";
         </div>
     <?php endif; ?>
 
+
+
     <!-- Active courses -->
     <div class="pb-5">
 
         <?php
         if (!empty($activeCourse)): ?>
 
-            <div> Current Active Courses
-            </div>
+            <div> Current Active Courses</div>
             <div>
                 <form class="d-flex gap-2" action="/" method="post">
                     <?php
                     foreach ($activeCourse as $course): ?>
-                    <div class="w-50 bg-white shadow-sm rounded p-2">
-                        <div class="d-flex flex-column">
-                            <div class="fs-5"><?= $course->name ?></div>
-                            <div class="mt-auto d-flex justify-content-end">
-                                <?php if (array_key_exists($course->id, $memberships)): ?>
-                                <button class="btn btn-outline-secondary disabled"> Joined
-                                </button>
-                                <?php else: ?>
-                                <button class="btn btn-outline-primary" type="submit" name="submit" value="<?=$course->id?>"> Join
-                                </button>
+                        <div class="w-50 bg-white shadow-sm rounded p-2">
+                            <div class="d-flex flex-column">
+                                <div class="fs-5"><?= $course->name ?></div>
+                                <?php if (!Application::isGuest()): ?>
+                                    <a class="btn btn-outline-primary d-flex justify-content-between" href"/course?courseId=<?= $course->id ?>"> 
+                                        <div class="">Read more</div>
+                                        <iconify-icon class="d-flex align-items-center" icon="bx:chevron-right"></iconify-icon>
+                                    </a>
                                 <?php endif; ?>
+                                <div class="mt-auto d-flex justify-content-end">
+                                    <?php if (array_key_exists($course->id, $memberships)): ?>
+                                        <button class="btn btn-outline-secondary disabled"> Joined
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn btn-outline-primary" type="submit" name="submit" value="<?= $course->id ?>"> Join
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <?php
+                        <?php
                     endforeach; ?>
                 </form>
             </div>

@@ -99,7 +99,7 @@ use app\core\form\TextareaField;
 
         <div class="row align-items-end">
             <div class="d-flex justify-content-end">
-                <button type="submit" name="submit" form="Booking" value="save" class="btn btn-primary d-flex pe-1 <?= ($bookingform->id == 0) ? 'disabled' : '' ?>">
+                <button type="submit" name="submit" form="Booking" value="save" class="btn btn-primary d-flex pe-1 <?= ($model->id == 0) ? 'disabled' : '' ?>">
                     <div>Save</div>
                     <iconify-icon class="d-flex align-items-center fs-4" icon="bx:chevron-right"></iconify-icon>
                 </button>
@@ -107,4 +107,3 @@ use app\core\form\TextareaField;
         </div>
     </div>
 </div>
-

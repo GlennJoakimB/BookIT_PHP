@@ -55,9 +55,6 @@ class Application
         } else {
             $this->user = null;
         }
-        //echo '<pre>';
-        //var_dump($this->user);
-        //echo '</pre>';
     }
 
     /**

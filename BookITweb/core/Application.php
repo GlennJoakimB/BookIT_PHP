@@ -8,7 +8,7 @@ use app\core\db\Database;
  *
  * The core of the framework and the top of the hierarchy.
  * Defines services and properties used by the framework. Responsible for running, and delegating tasks.
- * 
+ *
  * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>
  * @package app\core
  */
@@ -55,6 +55,9 @@ class Application
         } else {
             $this->user = null;
         }
+        echo '<pre>';
+        var_dump($this->user);
+        echo '</pre>';
     }
 
     /**

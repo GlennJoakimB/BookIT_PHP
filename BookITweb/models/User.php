@@ -44,11 +44,20 @@ namespace app\models
             return $this->firstname . ' ' . $this->lastname;
         }
 
-
+        /**
+         * Generates an array of the course relations of the user
+         * @return array
+         */
         public function getCourseMemberships(): array{
-            if(empty($this->course_memberships)) {
-                $this->course_memberships = CourseMembership::findMany(['user_id' => $this->id]);
+            $membership = CourseMembership::findMany(['user_id' => $this->id]);
+
+            $mem_list = array();
+            foreach($membership as $mem) {
+                $mem_list[$mem->course_id] = $mem->teachingAssistant;
             }
+
+            //store and return array
+            $this->course_memberships = $mem_list;
             return $this->course_memberships;
         }
 

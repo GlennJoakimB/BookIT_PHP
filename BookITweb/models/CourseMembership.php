@@ -5,9 +5,7 @@ namespace app\models
     use app\core\db\DbModel;
 
     /**
-     * CourseMembership short summary.
-     *
-     * CourseMembership description.
+     * CourseMembership holds the relation a user has to a given course
      *
      * @version 1.0
      * @author GlennJoakimB <89195051+GlennJoakimB@users.noreply.github.com>

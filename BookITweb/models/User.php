@@ -27,6 +27,8 @@ namespace app\models
         public string $password = '';
         public string $confirmPassword = '';
 
+        public array $course_memberships = array();
+
         public static function tableName(): string
         {
             return 'users';
@@ -40,6 +42,26 @@ namespace app\models
         public function getDisplayName(): string
         {
             return $this->firstname . ' ' . $this->lastname;
+        }
+
+
+        public function getCourseMemberships(): array{
+            if(empty($this->course_memberships)) {
+                $this->course_memberships = CourseMembership::findMany(['user_id' => $this->id]);
+            }
+            return $this->course_memberships;
+        }
+
+        public function isTeacherAssistant():bool{
+            $var = false;
+            if(!empty($this->course_memberships)) {
+                foreach($this->course_memberships as $membership) {
+                    if($membership->teachingAssistant == 1) {
+                        $var = true;
+                    }
+                }
+            }
+            return $var;
         }
 
         public function save()

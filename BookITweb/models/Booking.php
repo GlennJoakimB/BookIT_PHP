@@ -142,5 +142,42 @@ namespace app\models
             return parent::save();
         }
 
+        public static function getSelectableDuration()
+        {
+            return [
+                5 => '5 min',
+                10 => '10 min',
+                15 => '15 min',
+                20 => '20 min',
+                25 => '25 min',
+                30 => '30 min',
+                35 => '35 min',
+                40 => '40 min',
+                45 => '45 min',
+                50 => '50 min',
+                55 => '55 min',
+                60 => '60 min'
+            ];
+        }
+
+        public static function getSelectableBreaks()
+        {
+            return [
+                0 => 'none',
+                5 => '5 min',
+                10 => '10 min',
+                15 => '15 min',
+                20 => '20 min',
+                25 => '25 min',
+                30 => '30 min',
+                35 => '35 min',
+                40 => '40 min',
+                45 => '45 min',
+                50 => '50 min',
+                55 => '55 min',
+                60 => '60 min'
+            ];
+        }
+
     }
 }

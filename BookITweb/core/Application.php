@@ -47,6 +47,7 @@ class Application
             $primaryKey = $this->userClass::primaryKey();
             try {
                 $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
+                $this->user->getCourseMemberships();
             }catch(\Exception $e)
             {
                 $this->user = null;
@@ -111,5 +112,9 @@ class Application
 
     public static function isRole(string $role){
         return self::$app->user->role === $role;
+    }
+
+    public static function isTeacherAssistant():bool {
+        return self::$app->user->isTeacherAssistant();
     }
 }

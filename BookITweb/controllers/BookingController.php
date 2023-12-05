@@ -6,11 +6,13 @@ namespace app\controllers
     use app\core\Controller;
     use app\core\Request;
     use app\core\UserModel;
+    use app\helpers\BookingsHelper;
     use app\models\Booking;
     use app\models\CourseMembership;
     use app\core\Response;
     use app\models\Course;
     use app\models\User;
+    use app\helpers;
 
     /**
      * BookingController
@@ -29,11 +31,11 @@ namespace app\controllers
          * @param Response $response
          * @return array|string
          */
-        public function booking(Request $request, Response $response)
+        public function booking(Request $request, Response $response):array|void
         {
             //base model for the contact form
             $bookingform = new Booking();
-            $courses = $this->getSelectableCourses();
+            $courses = BookingsHelper::getSelectableCourses();
 
             //set default filter values
             $filterCourseId = array_key_first($courses);
@@ -69,11 +71,6 @@ namespace app\controllers
                         return $response->redirect('/booking');
                     }
                 }
-
-                if ($bookingform->submit == 'search') {
-
-
-                }
             }
 
             //get models from db
@@ -83,7 +80,7 @@ namespace app\controllers
 
             $bookings = Booking::findMany($bookingWhere);
 
-            $teacherAssistants = $this->getSelectableLAs($filterCourseId);
+            $teacherAssistants = BookingsHelper::getSelectableLAs($filterCourseId);
 
             //find name of coresponding course and add it to each booking
             if (!empty($bookings) && !empty($courses)) {
@@ -94,7 +91,7 @@ namespace app\controllers
             }
 
             //group together existing bookings
-            $bookings = $this->groupBookings($bookings);
+            $bookings = BookingsHelper::groupBookings($bookings);
 
             //render the booking page, with the booking model
             return $this->render('booking', [
@@ -120,12 +117,12 @@ namespace app\controllers
             //preview of bookings
             $bookingPrev = array();
 
-            $duration = $this->getSelectableDuration();
-            $break = $this->getSelectableBreaks();
+            $duration = $bookingform->getSelectableDuration();
+            $break = $bookingform->getSelectableBreaks();
 
             //get data from db
             $existingBookings = Booking::findMany(['status' => 1, 'holder_id' => (Application::$app->user->id)]);
-            $courses = $this->getSelectableCourses();
+            $courses = BookingsHelper::getSelectableCourses();
 
             //populate every
             if (!empty($existingBookings)) {
@@ -143,10 +140,10 @@ namespace app\controllers
             }
 
             //group together existing bookings
-            $existingBookingGroups = $this->groupBookings($existingBookings);
+            $existingBookingGroups = BookingsHelper::groupBookings($existingBookings);
 
             //group by course
-            $courseOrderedBookings = $this->groupBookingsByCourse($existingBookingGroups);
+            $courseOrderedBookings = BookingsHelper::groupBookingsByCourse($existingBookingGroups);
 
 
 
@@ -160,7 +157,7 @@ namespace app\controllers
                     //if submit-value is 'add', only generate preview
 
                     //if duration is longer than end_time
-                    $var_form_duration = $this->strToMinutes($bookingform->getEndTime()) - $this->strToMinutes($bookingform->getStartTime());
+                    $var_form_duration = BookingsHelper::strToMinutes($bookingform->getEndTime()) - BookingsHelper::strToMinutes($bookingform->getStartTime());
                     if ($bookingform->booking_duration > $var_form_duration) {
                         Application::$app->session->setFlash('error', 'Duration is longer than the specified end-time.');
                     }
@@ -168,11 +165,11 @@ namespace app\controllers
                     //setting counter variable
                     $interval = $bookingform->booking_duration;
                     $breakDuration = $bookingform->break;
-                    $next_start = $this->strToMinutes($bookingform->start_time);
+                    $next_start = BookingsHelper::strToMinutes($bookingform->start_time);
 
 
                     //loop until reaching the specified end time, or within.
-                    while (($next_start + $interval) <= $this->strToMinutes($bookingform->end_time)) {
+                    while (($next_start + $interval) <= BookingsHelper::strToMinutes($bookingform->end_time)) {
                         //initialise new booking
                         $newBooking = new Booking();
 
@@ -182,10 +179,10 @@ namespace app\controllers
                         $newBooking->holder = Application::$app->user->getDisplayName();
 
                         //update time
-                        $newBooking->start_time = $this->minutesToStr($next_start);
+                        $newBooking->start_time = BookingsHelper::minutesToStr($next_start);
                         $next_start += $interval;
 
-                        $newBooking->end_time = $this->minutesToStr($next_start);
+                        $newBooking->end_time = BookingsHelper::minutesToStr($next_start);
                         $next_start += $breakDuration;
 
                         //store new booking
@@ -237,167 +234,6 @@ namespace app\controllers
                 'duration' => $duration,
                 'breakList' => $break
             ]);
-        }
-
-        /**
-         * Sorts and groups together bookings
-         * @param array $inputBookings Unordered array of bookings
-         * @return array Bookings grouped
-         */
-        private function groupBookings(array $inputBookings): array
-        {
-            if (empty($inputBookings)) {
-                return [];
-            }
-
-            //group together existing bookings
-            $bookingGroups = array();
-            foreach ($inputBookings as $booking) {
-                $bookingGroups[$booking->getDate() . $booking->holder_id][] = $booking;
-            }
-            //sort array in ascending order based on key
-            ksort($bookingGroups);
-
-            return $bookingGroups;
-        }
-
-        /**
-         * This function groups booking-sessions together based on the courses they are related to
-         * @param array $inputBookings
-         * @return array
-         */
-        private function groupBookingsByCourse(array $inputBookings): array
-        {
-            if (empty($inputBookings)) {
-                return [];
-            }
-
-            //group by course
-            $courseOrderedBookings = array();
-            foreach ($inputBookings as $groups) {
-                $courseOrderedBookings[$groups[0]->course_name][] = $groups;
-            }
-            //sort array in ascending order based on key
-            ksort($courseOrderedBookings);
-
-            return $courseOrderedBookings;
-        }
-
-
-        /**
-         * Turns strings in HH:mm format and converts into int of total minutes
-         * @param string $input
-         * @return int Total amount of minutes
-         */
-        private function strToMinutes(string $input): int
-        {
-            $time = explode(":", $input);
-            return intval($time[0]) * 60 + intval($time[1]);
-        }
-
-        /**
-         * Converts int of minutes into string in HH:mm format
-         * @param int $minutes
-         * @return string
-         */
-        private function minutesToStr(int $minutes): string
-        {
-            $x = ($minutes % 60);
-
-            //if x minutes is less than 10, add a 0 in front
-            return intval($minutes / 60) . ':' . ($x < 10 ? '0' . $x : $x);
-        }
-
-        /**
-         * Gets courses and creates a list for use in selection-inputs.
-         *
-         * @return array List with pairs of course id and name
-         */
-        private function getSelectableCourses(): array
-        {
-            $courses = array();
-            if (Application::isRole(UserModel::ROLE_ADMIN)) {
-                //find every course
-                $courses = Course::findMany(['status' => 1]);
-            } else {
-                //find active courses for current user
-                $course_membership = CourseMembership::findMany(['user_id' => Application::$app->user->id]);
-
-                foreach ($course_membership as $mem) {
-                    $courses[] = Course::findOne(['status' => 1, 'id' => $mem->course_id]);
-                }
-            }
-
-            //create array with pairs of course id and name, for use in selection list
-            $course_select_list = array();
-            if (!empty($courses)) {
-                foreach ($courses as $course) {
-                    $course_select_list[$course->id] = $course->name;
-                }
-            }
-
-            //return array
-            return $course_select_list;
-        }
-
-        /**
-         * Generates an array of index and displayname of selectable assistants
-         *
-         * @param int $courseId
-         * @return array List with pairs of id and display-names
-         */
-        private function getSelectableLAs(int $courseId):array
-        {
-            $la_users = CourseMembership::findMany(['teachingAssistant' => 1, 'course_id' => $courseId]);
-
-            //set default value
-            $la_select_list = [0 => 'Select'];
-
-            if (!empty($la_users)) {
-                foreach ($la_users as $la) {
-                    $la_select_list[$la->user_id] = User::findOne(['id' => $la->user_id])->getDisplayName();
-                }
-            }
-
-            //return array
-            return $la_select_list;
-        }
-
-        private function getSelectableDuration()
-        {
-            return [
-                5 => '5 min',
-                10 => '10 min',
-                15 => '15 min',
-                20 => '20 min',
-                25 => '25 min',
-                30 => '30 min',
-                35 => '35 min',
-                40 => '40 min',
-                45 => '45 min',
-                50 => '50 min',
-                55 => '55 min',
-                60 => '60 min'
-            ];
-        }
-
-        private function getSelectableBreaks()
-        {
-            return [
-                0 => 'none',
-                5 => '5 min',
-                10 => '10 min',
-                15 => '15 min',
-                20 => '20 min',
-                25 => '25 min',
-                30 => '30 min',
-                35 => '35 min',
-                40 => '40 min',
-                45 => '45 min',
-                50 => '50 min',
-                55 => '55 min',
-                60 => '60 min'
-            ];
         }
     }
 }

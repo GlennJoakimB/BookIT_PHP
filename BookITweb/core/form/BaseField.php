@@ -19,7 +19,7 @@ namespace app\core\form
         public Model $model;
         public string $attribute;
 
-        public string $type;
+        public string $type = '';
 
         /**
          * Field constructor.
@@ -36,7 +36,7 @@ namespace app\core\form
 
         public function __toString()
         {
-            if (self::TYPE_HIDDEN != $this->type) {
+            if ($this->type != self::TYPE_HIDDEN) {
                 return sprintf('
             <div class="mb-3">
                 <label>%s</label>

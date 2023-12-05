@@ -167,27 +167,30 @@ if($showAll){
                                         ' members in this course';
                                 }
                             ?>
-                        </div>
-                        <!--Button for modal-->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeDisplayAmount">
-                            Change Display Amount
-                        </button>
-                     </div>
-                </div>
-            <!--Modal-->
-            <div class="modal" id="changeDisplayAmount" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Modal body text goes here.</p>
+                            </div>
+                            <!--Button for modal-->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeDisplayAmount">
+                                Change Display Amount
+                            </button>
+                         </div>
+                    </div>
+                <!--Modal-->
+                <div class="modal" id="changeDisplayAmount" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Change Display Amount</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/courseAdmin/manageMembers" method="post" id="changeMembersPerPage">
+                                    <input type="hidden" name="courseId" value="<?= $courseId ?>" />
+                                    <input type="number" name="membersPerPage" value="<?= $membersPerPage ?>" />
+                                </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="submit" name="submit" value="changeShowcount" form="changeMembersPerPage" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -206,13 +209,23 @@ if($showAll){
                 <tbody>
                     <?php foreach($courseMembers as $member): ?>
                         <tr>
-                            <td><?php echo $member->userDisplayName ?></td>
+                            <td>
+                                <?php 
+                                    $name = $member->userDisplayName;
+                                    if(empty($member->userDisplayName)){
+                                            $name = 'not available';
+                                    };
+                                    echo $name; 
+                                    ?>
+                            </td>
                             <td><?php echo $member->teachingAssistant ? 'Yes' : 'No' ?></td>
                             <td>
                                 <form action="/courseAdmin/manageMembers" method="post">
                                     <input type="hidden" name="courseId" value="<?= $courseId ?>" />
+                                    <input type="hidden" name="page" value="<?= $currentPage?>"/>
+                                    <input type="hidden" name="membersPerPage" value="<?= $membersPerPage ?>" />
                                     <input type="hidden" name="submit" value="updateTAStatus" />
-                                    <input type="hidden" name="uid" value="<?= $member->userId ?>" />
+                                    <input type="hidden" name="uid" value="<?= $member->user_Id ?>" />
                                     <input type="hidden" name="isTa" value="<?= $member->teachingAssistant ? 'false' : 'true' ?>" />
                                     <button type="submit" class="btn btn-primary page-link">Change</button>
                                 </form>
@@ -220,8 +233,9 @@ if($showAll){
                             <td>
                                 <form action="/courseAdmin/manageMembers" method="post">
                                     <input type="hidden" name="courseId" value="<?= $courseId ?>" />
+                                    <input type="hidden" name="membersPerPage" value="<?= $membersPerPage ?>" />
                                     <input type="hidden" name="submit" value="remove" />
-                                    <input type="hidden" name="uid" value="<?= $member->userId ?>" />
+                                    <input type="hidden" name="uid" value="<?= $member->user_Id ?>" />
                                     <button type="submit" class="btn btn-primary page-link disabled" disabled>Remove</button>
                                 </form>
                             </td>

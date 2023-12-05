@@ -67,7 +67,7 @@ namespace app\controllers
                     $pages = ceil(count($members) / $membersPerPage);
                 }
             }
-            $mebersTot = 0;
+            $membersTot = 0;
             if(isset($this->members)){
                 $membersTot = count($this->members);
             }
@@ -80,7 +80,7 @@ namespace app\controllers
                     'currentPage' => $activePage,
                     'membersPerPage' => $membersPerPage,
                     'showAll' => $showAll,
-                    'membersTotal' => $mebersTot
+                    'membersTotal' => $membersTot
                 ];
 
             $params = [

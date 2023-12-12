@@ -225,7 +225,7 @@ if($showAll){
                                     <input type="hidden" name="page" value="<?= $currentPage?>"/>
                                     <input type="hidden" name="membersPerPage" value="<?= $membersPerPage ?>" />
                                     <input type="hidden" name="submit" value="updateTAStatus" />
-                                    <input type="hidden" name="uid" value="<?= $member->user_Id ?>" />
+                                    <input type="hidden" name="uid" value="<?= $member->user_id ?>" />
                                     <input type="hidden" name="isTa" value="<?= $member->teachingAssistant ? 'false' : 'true' ?>" />
                                     <button type="submit" class="btn btn-primary page-link">Change</button>
                                 </form>
@@ -235,7 +235,7 @@ if($showAll){
                                     <input type="hidden" name="courseId" value="<?= $courseId ?>" />
                                     <input type="hidden" name="membersPerPage" value="<?= $membersPerPage ?>" />
                                     <input type="hidden" name="submit" value="remove" />
-                                    <input type="hidden" name="uid" value="<?= $member->user_Id ?>" />
+                                    <input type="hidden" name="uid" value="<?= $member->user_id ?>" />
                                     <button type="submit" class="btn btn-primary page-link disabled" disabled>Remove</button>
                                 </form>
                             </td>

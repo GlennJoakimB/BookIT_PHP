@@ -137,7 +137,7 @@ namespace app\controllers
                 $courseMember->course_id = $body['courseId'];
                 $courseMember->user_id = $body['userId'];
                 $courseMember->teachingAssistant = false;
-                
+
                 //check if user is already member
                 $dbReturn = CourseMembership::findOne(['course_id' => $body['courseId'], 'user_id' => $body['userId']]);
                 if($dbReturn !== false){
@@ -145,7 +145,7 @@ namespace app\controllers
                     return $this->renderCourse();
                 }
                 //try to save
-                
+
                 if (!$courseMember->save()) {
                     Application::$app->session->setFlash('error', 'Something went wrong when attempting to save new course.');
                     return $this->renderCourse();
@@ -253,7 +253,8 @@ namespace app\controllers
             $showAll = false;
             $activePage = 1;
             $memberPerPage = 10;
-
+            //set courseID
+            $this->courseID = $request->getBody()['courseId'];
 
             //switch on post type
             switch ($postType) {
@@ -267,7 +268,33 @@ namespace app\controllers
                     $showAll = $request->getBody()['showAll'];
                     break;
                 case 'updateTAStatus':
-                    //send to helper to update status
+                    //load user from db
+                    try{
+                        $user = \app\models\User::findOne(['id' => $request->getBody()['uid']]);
+                        //find courseMembership
+                        $courseMembership = CourseMembership::findOne([
+                            'course_id' => $this->courseID,
+                            'user_id' => $user->id
+                            ]);
+                        //if not found, throw error
+                        if($courseMembership === false){
+                            throw new \Exception('CourseMembership not found');
+                        }
+                        //update teachingAssistant status
+                        $response = $request->getBody()['isTa'];
+                        if($response == 'true'){
+                            $courseMembership->teachingAssistant = true;
+                        }else {
+                            $courseMembership->teachingAssistant = false;
+                        }
+                        //save
+                        $courseMembership->update();
+
+                    }catch (\Exception $e){
+                        Application::$app->session->setFlash('error',
+                            'Something went wrong when attempting to update TA status.');
+                    }
+                    break;
                 case 'changePage':
                     $activePage = $request->getBody()['page'];
                     //continue to changeShowcount
@@ -280,8 +307,7 @@ namespace app\controllers
                     echo '</pre>';
                     exit;
             }
-            //set courseID
-            $this->courseID = $request->getBody()['courseId'];
+
             //do rendering with new params
             return $this->renderCourseAdmin($component, $showAll, $activePage, $memberPerPage);
         }

@@ -146,6 +146,8 @@ use app\core\form\TextareaField;
             <?php
             $form = \app\core\form\Form::begin('', 'post', 'Booking');
             echo $form->field($model, 'id')->hiddenField();
+            echo $form->field($model, 'course_id_search')->hiddenField();
+            echo $form->field($model, 'holder_id_search')->hiddenField();
             echo new TextareaField($model, 'booker_note');
             echo \app\core\form\Form::end();
             ?>

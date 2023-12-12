@@ -92,7 +92,7 @@ namespace app\controllers
             ['status' => 1, 'course_id' => $filterCourseId] :
             ['status' => 1, 'course_id' => $filterCourseId, 'holder_id' => $laFilterId];
 
-            $bookings = Booking::findMany([$bookingWhere]);
+            $bookings = Booking::findMany($bookingWhere);
             $bookings = BookingsHelper::getCommingBookings($bookings);
 
 
